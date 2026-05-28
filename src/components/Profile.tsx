@@ -130,6 +130,44 @@ export default function Profile() {
     }
   };
 
+  const [resettingData, setResettingData] = React.useState(false);
+
+  const handleResetData = async () => {
+    if (!window.confirm('¿Confirmas que deseas borrar todos los registros antiguos de la purificadora (Pedidos, Calidad, Asistencia, Notificaciones) para iniciar limpio con Comercializadora Ropesa? Esta acción no se puede deshacer.')) {
+      return;
+    }
+    setResettingData(true);
+    setMessage(null);
+    try {
+      // Delete orders
+      const { error: errOrders } = await supabase.from('orders').delete().neq('customer_name', 'COMPLETELY_UNUSED_STRING_9999');
+      // Delete quality logs
+      const { error: errQuality } = await supabase.from('quality_logs').delete().neq('supervisor_name', 'COMPLETELY_UNUSED_STRING_9999');
+      // Delete attendance logs
+      const { error: errAttendance } = await supabase.from('daily_attendance').delete().neq('user_name', 'COMPLETELY_UNUSED_STRING_9999');
+      // Delete notifications
+      const { error: errNotifications } = await supabase.from('notifications_log').delete().neq('title', 'COMPLETELY_UNUSED_STRING_9999');
+
+      if (errOrders || errQuality || errAttendance || errNotifications) {
+        console.warn('Algunas tablas no pudieron vaciarse completamente, posiblemente por falta de registros o permisos (ignorable si ya están vacías).');
+      }
+      
+      setMessage({ 
+        type: 'success', 
+        text: '¡Limpieza completada con éxito! Todos los antiguos registros de la purificadora han sido eliminados de la base de datos.' 
+      });
+      
+      // Limpiar caches locales residuales
+      localStorage.removeItem('activeView');
+      localStorage.removeItem('quality_water_session_backup');
+    } catch (err: any) {
+      console.error(err);
+      setMessage({ type: 'error', text: 'Ocurrió un error al limpiar datos: ' + (err.message || '') });
+    } finally {
+      setResettingData(false);
+    }
+  };
+
   const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -386,6 +424,30 @@ export default function Profile() {
                   <p className="text-sm font-black text-indigo-900 uppercase italic">Planta Iztapalapa I - Zona Oriente</p>
                 </div>
               </div>
+
+              {(user?.role === 'admin' || localStorage.getItem('currentRoleView') === 'admin') && (
+                <div className="p-6 bg-amber-50 rounded-3xl border border-amber-200 mt-4">
+                  <div className="flex gap-4 items-start mb-4">
+                    <div className="w-12 h-12 bg-amber-500 rounded-2xl flex items-center justify-center text-white shrink-0 shadow-lg">
+                      <AlertCircle size={20} />
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-black text-amber-950 uppercase tracking-wider">Transición a Ropesa</h4>
+                      <p className="text-[10px] text-slate-500 font-bold leading-relaxed mt-1">
+                        Utiliza esta herramienta para borrar todos los logs de control de calidad, antiguos pedidos y registros de asistencia anteriores para iniciar de forma limpia.
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={handleResetData}
+                    disabled={resettingData}
+                    className="w-full py-4 bg-amber-600 hover:bg-amber-700 text-white rounded-2xl font-black uppercase text-[10px] tracking-widest transition-all disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer shadow-sm shadow-amber-600/10"
+                  >
+                    {resettingData ? <Loader2 className="animate-spin" size={16} /> : null}
+                    {resettingData ? 'Limpiando Base de Datos...' : 'Borrar todos los registros antiguos ⚠️'}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 

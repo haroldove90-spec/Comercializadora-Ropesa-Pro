@@ -214,7 +214,7 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
   );
 
   const handleExportGlobal = () => {
-    const columns = ['ID / Referencia', 'Cliente', 'Dirección', 'Artículos', 'Repartidor', 'Estado', 'Fecha'];
+    const columns = ['ID / Referencia', 'Cliente', 'Dirección', 'Artículos', 'Vendedor', 'Estado', 'Fecha'];
     const data = filteredOrders.map(order => [
       order.id.slice(0, 8).toUpperCase(),
       order.customer_name,
@@ -240,7 +240,7 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
       ['Cliente', order.customer_name],
       ['Dirección de Despacho', order.address],
       ['Detalles / Artículos', order.items],
-      ['Repartidor Asignado', order.assigned_to_name || 'Sin Asignar'],
+      ['Vendedor Asignado', order.assigned_to_name || 'Sin Asignar'],
       ['Estado Actual', order.status === 'delivered' ? 'Completado / Entregado' : order.status === 'assigned' ? 'En Ruta / Asignado' : 'Pendiente de Despacho'],
       ['Tipo de Entrega', order.source === 'local' ? 'Venta Local en Planta' : 'Pedido de Entrega domicilio'],
       ['Fecha y Hora', new Date(order.created_at).toLocaleString()]
@@ -423,7 +423,7 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
               <tr>
                 <th className="px-8 py-5">Cliente / Detalle</th>
                 <th className="px-8 py-5">Productos</th>
-                <th className="px-8 py-5">Repartidor</th>
+                <th className="px-8 py-5">Vendedor</th>
                 <th className="px-8 py-5">Estatus</th>
                 <th className="px-8 py-5 text-right">Acción</th>
               </tr>
@@ -536,7 +536,7 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
                 </div>
 
                 <div className="space-y-3">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1 block mb-2">Seleccionar Repartidor</label>
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1 block mb-2">Seleccionar Vendedor</label>
                   <div className="max-h-[250px] overflow-y-auto space-y-2 pr-2 custom-scrollbar">
                     {drivers.map(driver => (
                       <button
@@ -758,7 +758,7 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
 
                 {newOrder.source !== 'local' && (
                   <div className="col-span-2">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2 px-1">Asignar Repartidor (Opcional)</label>
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2 px-1">Asignar Vendedor (Opcional)</label>
                     <select 
                       value={newOrder.assigned_to}
                       onChange={(e) => {

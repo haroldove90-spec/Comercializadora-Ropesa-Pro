@@ -412,7 +412,7 @@ export default function App() {
         
         // Normalización de roles (Español -> English Interno)
         if (role === 'planta' || role === 'operador') role = 'operator';
-        if (role === 'repartidor' || role === 'chofer' || role === 'client') role = 'driver';
+        if (role === 'repartidor' || role === 'chofer' || role === 'client' || role === 'vendedor') role = 'driver';
         if (role === 'administrador') role = 'admin';
         
         setUserRole(role as any);
@@ -442,7 +442,7 @@ export default function App() {
         const savedRoleView = localStorage.getItem('currentRoleView') as any;
         setUserRole('driver');
         setCurrentRoleView(savedRoleView && ['admin', 'operator', 'driver', 'client'].includes(savedRoleView) ? savedRoleView : 'driver');
-        setUserName(defaultName || 'Repartidor');
+        setUserName(defaultName || 'Vendedor');
         
         const savedActiveView = localStorage.getItem('activeView');
         if (savedActiveView && savedActiveView !== 'lobby') {
@@ -518,8 +518,6 @@ export default function App() {
         { id: 'sales', label: 'Métricas', icon: History },
         { id: 'customers', label: 'Clientes', icon: Users },
         { id: 'driver_sales', label: 'Empleados', icon: Truck },
-        { id: 'plant_cut', label: 'Caja Planta', icon: Store },
-        { id: 'quality', label: 'Calidad', icon: ShieldCheck },
         { id: 'notifications', label: 'Notificaciones', icon: Bell },
         { id: 'profile', label: 'Perfil', icon: User },
       ];
@@ -535,18 +533,6 @@ export default function App() {
         { id: 'notifications', label: 'Notificaciones', icon: Bell },
         { id: 'profile', label: 'Perfil', icon: User },
       ];
-    } else if (currentRoleView === 'operator') {
-      items = [
-        { id: 'pos', label: 'Rol Ventas (POS)', icon: CreditCard },
-        { id: 'dashboard', label: 'Pedidos', icon: LayoutDashboard },
-        { id: 'manual', label: 'Manual Usuario', icon: BookOpen },
-        { id: 'inventory', label: 'Gestión de Productos', icon: Package },
-        { id: 'sales', label: 'Historial Ventas', icon: History },
-        { id: 'attendance', label: 'Asistencia', icon: Clock },
-        { id: 'cash_float', label: 'Fondo de Caja', icon: DollarSign },
-        { id: 'notifications', label: 'Notificaciones', icon: Bell },
-        { id: 'profile', label: 'Perfil', icon: User },
-      ];
     } else if (currentRoleView === 'client') {
       items = [
         { id: 'client_status', label: 'Mi Pedido', icon: MessageSquare },
@@ -558,8 +544,7 @@ export default function App() {
     if (userRole === 'admin') {
       if (currentRoleView === 'admin') {
         items.push(
-          { id: 'switch_to_operator', label: 'Vista Planta', icon: Store, isShortcut: true },
-          { id: 'switch_to_driver', label: 'Vista Repartidor', icon: Truck, isShortcut: true }
+          { id: 'switch_to_driver', label: 'Vista Vendedor', icon: Truck, isShortcut: true }
         );
       } else {
         items.push(
@@ -572,10 +557,7 @@ export default function App() {
   };
 
   const handleNavClick = (itemId: string) => {
-    if (itemId === 'switch_to_operator') {
-      setCurrentRoleView('operator');
-      setActiveView('pos');
-    } else if (itemId === 'switch_to_driver') {
+    if (itemId === 'switch_to_driver') {
       setCurrentRoleView('driver');
       setActiveView('pos');
     } else if (itemId === 'switch_to_admin') {
@@ -796,7 +778,7 @@ export default function App() {
             <div className="flex items-center gap-4">
               <div className="text-right hidden sm:block">
                 <p className="text-[10px] font-black text-sky-500 uppercase tracking-widest leading-none mb-1">
-                  {currentRoleView === 'admin' ? 'Administrador' : currentRoleView === 'operator' ? 'Planta' : currentRoleView === 'driver' ? 'Repartidor' : 'Cliente'}
+                  {currentRoleView === 'admin' ? 'Administrador' : currentRoleView === 'operator' ? 'Planta' : currentRoleView === 'driver' ? 'Vendedor' : 'Cliente'}
                   {currentRoleView !== userRole && (
                     <span className="text-amber-500 ml-1 text-[8px] tracking-normal lowercase italic">(vista)</span>
                   )}

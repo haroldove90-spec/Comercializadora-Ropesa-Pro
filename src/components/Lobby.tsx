@@ -49,16 +49,16 @@ export default function Lobby({ onSelectRole }: LobbyProps) {
     },
     {
       id: 'operator',
-      title: 'Personal de Planta',
+      title: 'Personal de Planta (Desactivado)',
       desc: 'Gestión de inventarios, producción y control de calidad.',
       icon: Waves,
-      color: 'bg-sky-500',
-      shadow: 'shadow-sky-500/20',
-      disabled: false
+      color: 'bg-slate-300',
+      shadow: 'shadow-slate-300/20',
+      disabled: true
     },
     {
       id: 'driver',
-      title: 'Repartidor / Chofer',
+      title: 'Vendedor',
       desc: 'Seguimiento de rutas, navegación y confirmación de entregas.',
       icon: Truck,
       color: 'bg-emerald-500',
@@ -152,7 +152,7 @@ export default function Lobby({ onSelectRole }: LobbyProps) {
                     <span className="text-[10px] font-black uppercase tracking-wider">Perfil Autocreado</span>
                   </div>
                   <p className="text-[10px] text-slate-500 font-bold leading-normal">
-                    La plataforma registrará tu cuenta automáticamente con el perfil de <strong className="text-emerald-600 font-black">REPARTIDOR / CHOFER</strong> para facilitar el inicio de ventas y rutas.
+                    La plataforma registrará tu cuenta automáticamente con el perfil de <strong className="text-emerald-600 font-black">VENDEDOR</strong> para facilitar el inicio de ventas y rutas.
                   </p>
                 </div>
 
