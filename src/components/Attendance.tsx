@@ -183,7 +183,7 @@ export default function Attendance({ userRole, userName }: AttendanceProps) {
         <div>
           <h2 className="text-3xl font-black text-slate-800 italic uppercase">
             {isMonitorMode ? 'Monitor de ' : 'Control de '}
-            <span className="text-sky-500">Asistencia</span>
+            <span className="text-[#C32A2C]">Asistencia</span>
           </h2>
           <p className="text-sm font-bold text-slate-400 mt-2 uppercase tracking-widest">
             {isMonitorMode ? 'Estado de la Plantilla en Tiempo Real' : 'Sincronizado en tiempo real con Administrador'}
@@ -201,7 +201,7 @@ export default function Attendance({ userRole, userName }: AttendanceProps) {
               Exportar PDF
             </button>
             <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-2xl border border-slate-100 shadow-sm">
-              <Users size={16} className="text-sky-500" />
+              <Users size={16} className="text-[#C32A2C]" />
               <span className="text-xs font-black text-slate-600 uppercase tracking-tight">Activos: {Object.keys(staffStatus).length}</span>
             </div>
           </div>
@@ -251,7 +251,7 @@ export default function Attendance({ userRole, userName }: AttendanceProps) {
                     <button 
                       onClick={() => handleAction('break_end')}
                       disabled={status === 'loading'}
-                      className="flex items-center justify-between p-5 bg-sky-500 hover:bg-sky-600 text-white rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-sky-500/20 active:scale-95 transition-all disabled:opacity-50"
+                      className="flex items-center justify-between p-5 bg-[#C32A2C] hover:bg-[#a12022] text-white rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-[#C32A2C]/20 active:scale-95 transition-all disabled:opacity-50"
                     >
                       <div className="flex items-center gap-2">
                         <Clock size={16} />
@@ -285,8 +285,8 @@ export default function Attendance({ userRole, userName }: AttendanceProps) {
                   >
                     {status === 'loading' ? (
                       <>
-                        <Loader2 size={64} className="text-sky-500 animate-spin mb-6" />
-                        <p className="text-xl font-black text-slate-800 uppercase italic">Procesando <span className="text-sky-500">Registro...</span></p>
+                        <Loader2 size={64} className="text-[#C32A2C] animate-spin mb-6" />
+                        <p className="text-xl font-black text-slate-800 uppercase italic">Procesando <span className="text-[#C32A2C]">Registro...</span></p>
                       </>
                     ) : status === 'success' ? (
                       <>
@@ -321,7 +321,7 @@ export default function Attendance({ userRole, userName }: AttendanceProps) {
                   <input 
                     type="text" 
                     placeholder="Buscar empleado..." 
-                    className="pl-9 pr-4 py-2 bg-slate-50 border-none rounded-xl text-xs placeholder:text-slate-400 focus:ring-2 focus:ring-sky-500/20 placeholder:font-bold"
+                    className="pl-9 pr-4 py-2 bg-slate-50 border-none rounded-xl text-xs placeholder:text-slate-400 focus:ring-2 focus:ring-[#C32A2C]/20 placeholder:font-bold"
                   />
                 </div>
               </div>
@@ -341,7 +341,7 @@ export default function Attendance({ userRole, userName }: AttendanceProps) {
                     >
                       <div className="flex items-center gap-3">
                         <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-black text-white text-xs ${
-                          id.includes('chofer') ? 'bg-emerald-500' : 'bg-sky-500'
+                          id.includes('chofer') ? 'bg-emerald-500' : 'bg-[#C32A2C]'
                         }`}>
                           {info.name.charAt(0)}
                         </div>
@@ -355,7 +355,7 @@ export default function Attendance({ userRole, userName }: AttendanceProps) {
                         <span className={`inline-block px-2 py-0.5 rounded-lg text-[8px] font-black uppercase tracking-widest ${
                           info.last_event === 'Llegada' ? 'bg-emerald-100 text-emerald-600' :
                           info.last_event === 'Salida a Comer' ? 'bg-amber-100 text-amber-600' :
-                          info.last_event === 'Regreso de Comer' ? 'bg-sky-100 text-sky-600' :
+                          info.last_event === 'Regreso de Comer' ? 'bg-rose-100 text-[#C32A2C]' :
                           'bg-slate-100 text-slate-600'
                         }`}>
                           {info.last_event}
@@ -375,7 +375,7 @@ export default function Attendance({ userRole, userName }: AttendanceProps) {
               <div className="p-8 border-b border-slate-50 flex items-center justify-between">
                 <div>
                   <h3 className="font-black text-slate-800 uppercase text-[10px] tracking-widest flex items-center gap-2">
-                    <ClipboardList size={18} className="text-sky-500" />
+                    <ClipboardList size={18} className="text-[#C32A2C]" />
                     Historial de Asistencia Completo
                   </h3>
                   <p className="text-[9px] font-bold text-slate-400 uppercase mt-1">Todas las entradas, salidas y comidas registradas</p>
@@ -398,7 +398,7 @@ export default function Attendance({ userRole, userName }: AttendanceProps) {
                         <th className="px-8 py-4 w-10">
                           <input
                             type="checkbox"
-                            className="rounded border-slate-200 accent-sky-500 cursor-pointer w-4 h-4 text-sky-500"
+                            className="rounded border-slate-200 accent-[#C32A2C] cursor-pointer w-4 h-4 text-[#C32A2C] focus:ring-[#C32A2C]"
                             checked={history.length > 0 && selectedAttendanceIds.length === history.length}
                             onChange={(e) => {
                               if (e.target.checked) {
@@ -428,7 +428,7 @@ export default function Attendance({ userRole, userName }: AttendanceProps) {
                           <td className="px-8 py-5 w-10">
                             <input
                               type="checkbox"
-                              className="rounded border-slate-200 accent-sky-500 cursor-pointer w-4 h-4 text-sky-500"
+                              className="rounded border-slate-200 accent-[#C32A2C] cursor-pointer w-4 h-4 text-[#C32A2C] focus:ring-[#C32A2C]"
                               checked={selectedAttendanceIds.includes(record.id)}
                               onChange={(e) => {
                                 if (e.target.checked) {
@@ -457,7 +457,7 @@ export default function Attendance({ userRole, userName }: AttendanceProps) {
                               {record.break_start ? new Date(record.break_start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '-'}
                             </span>
                             <span className="text-slate-200">/</span>
-                            <span className="text-[10px] font-black text-sky-500">
+                            <span className="text-[10px] font-black text-[#C32A2C]">
                               {record.break_end ? new Date(record.break_end).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '-'}
                             </span>
                           </div>
@@ -492,7 +492,7 @@ export default function Attendance({ userRole, userName }: AttendanceProps) {
         <div className="space-y-6">
           <div className="bg-slate-900 text-white p-8 rounded-[40px] shadow-2xl relative overflow-hidden">
             <div className="relative z-10">
-              <h4 className="text-[10px] font-black text-sky-400 uppercase tracking-[0.2em] mb-6">Estado del Sistema</h4>
+              <h4 className="text-[10px] font-black text-rose-400 uppercase tracking-[0.2em] mb-6">Estado del Sistema</h4>
               <div className="flex items-center gap-6">
                 <div className="w-16 h-16 rounded-[24px] bg-white/10 text-white flex items-center justify-center backdrop-blur-md shadow-inner">
                   <MapPin size={24} />
@@ -511,7 +511,7 @@ export default function Attendance({ userRole, userName }: AttendanceProps) {
                 </div>
               )}
             </div>
-            <div className="absolute -top-12 -left-12 w-48 h-48 bg-sky-500/10 rounded-full blur-3xl" />
+            <div className="absolute -top-12 -left-12 w-48 h-48 bg-[#C32A2C]/10 rounded-full blur-3xl" />
           </div>
 
           {isMonitorMode && (

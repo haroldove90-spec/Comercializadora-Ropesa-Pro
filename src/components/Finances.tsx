@@ -54,10 +54,10 @@ const SALES_DATA = [
 ];
 
 const CHANNEL_DATA = [
-  { name: 'WhatsApp', value: 45, color: '#0ea5e9' },
-  { name: 'Ruta 1 (Norte)', value: 25, color: '#6366f1' },
-  { name: 'Ruta 2 (Sur)', value: 20, color: '#8b5cf6' },
-  { name: 'Mostrador', value: 10, color: '#f43f5e' },
+  { name: 'WhatsApp', value: 45, color: '#C32A2C' },
+  { name: 'Ruta 1 (Norte)', value: 25, color: '#f43f5e' },
+  { name: 'Ruta 2 (Sur)', value: 20, color: '#881337' },
+  { name: 'Mostrador', value: 10, color: '#27272a' },
 ];
 
 const GLOBAL_SALES = [
@@ -539,23 +539,23 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
   ];
 
   return (
-    <div className="space-y-6 pb-24 lg:pb-12">
+    <div className="space-y-6 pb-24 lg:pb-12 text-white">
       {/* Header with Title and Global Action */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black text-slate-800 tracking-tight leading-none italic uppercase">
+          <h1 className="text-3xl font-black text-white tracking-tight leading-none italic uppercase">
             {activeTab === 'sales' 
               ? (userRole === 'driver' ? 'Mis Ventas' : userRole === 'operator' ? 'Ventas Planta' : 'Ventas') 
               : 'Quality'} 
-            <span className="text-sky-500">
+            <span className="text-[#C32A2C]">
               {activeTab === 'sales' 
                 ? (userRole === 'driver' || userRole === 'operator' ? ' del Día' : ' Globales') 
                 : ' Admin'}
             </span>
           </h1>
-          <p className="text-slate-500 mt-2 font-bold flex items-center gap-2 text-sm italic">
-            <ShieldCheck size={16} className="text-sky-500" />
-            Control de Misión &bull; 13 de Mayo, 2026
+          <p className="text-zinc-400 mt-2 font-bold flex items-center gap-2 text-xs uppercase tracking-wider">
+            <ShieldCheck size={16} className="text-[#C32A2C]" />
+            Control de Misión &bull; Ropesa System
           </p>
         </div>
         
@@ -563,7 +563,7 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
           <button 
             onClick={() => handleExport('Ventas Mensuales')}
             disabled={isExporting}
-            className="flex items-center gap-2 bg-slate-900 text-white px-6 py-3 rounded-2xl font-black text-[10px] shadow-xl hover:bg-slate-800 transition-all active:scale-95 uppercase tracking-widest shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 bg-[#C32A2C] hover:bg-[#a12022] text-white px-6 py-3 rounded-2xl font-black text-[10px] shadow-xl transition-all active:scale-95 uppercase tracking-widest shrink-0 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
             {isExporting ? <Loader2 size={16} className="animate-spin" /> : <Download size={16} />}
             PDF Mensual
@@ -586,51 +586,51 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
               {/* KPI Cards */}
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 {[
-                  { label: 'Volumen Total', value: '1,240', sub: 'Galones', icon: ShoppingBag, color: 'text-sky-600', trend: '+15%', trendUp: true },
-                  { label: 'Ventas Hoy', value: '$14,580', sub: 'Calculado', icon: DollarSign, color: 'text-emerald-600', trend: '+8%', trendUp: true },
-                  { label: 'Ticket Prom.', value: '$240', sub: 'MXN', icon: TrendingUp, color: 'text-indigo-600', trend: '-2%', trendUp: false },
-                  { label: 'Nuevos', value: '12', sub: 'Registros', icon: Users, color: 'text-amber-600', trend: '+4', trendUp: true },
+                  { label: 'Volumen Total', value: '1,240', sub: 'Galones', icon: ShoppingBag, color: 'text-[#C32A2C]', trend: '+15%', trendUp: true },
+                  { label: 'Ventas Hoy', value: '$14,580', sub: 'Calculado', icon: DollarSign, color: 'text-emerald-500', trend: '+8%', trendUp: true },
+                  { label: 'Ticket Prom.', value: '$240', sub: 'MXN', icon: TrendingUp, color: 'text-[#C32A2C]', trend: '-2%', trendUp: false },
+                  { label: 'Nuevos', value: '12', sub: 'Registros', icon: Users, color: 'text-[#C32A2C]', trend: '+4', trendUp: true },
                 ].map((stat, i) => (
-                  <div key={i} className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm">
+                  <div key={i} className="bg-zinc-950 p-5 rounded-3xl border border-zinc-900 shadow-xl">
                     <div className="flex justify-between items-start mb-2">
-                      <div className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center">
-                        <stat.icon size={16} className={stat.color} />
+                      <div className="w-8 h-8 rounded-lg bg-zinc-900 flex items-center justify-center">
+                        <stat.icon size={16} className="text-[#C32A2C]" />
                       </div>
-                      <span className={`text-[10px] font-black flex items-center gap-0.5 ${stat.trendUp ? 'text-emerald-500' : 'text-rose-500'}`}>
+                      <span className={`text-[10px] font-black flex items-center gap-0.5 ${stat.trendUp ? 'text-emerald-400' : 'text-rose-500'}`}>
                         {stat.trendUp ? <ArrowUpRight size={10} /> : <ArrowDownRight size={10} />}
                         {stat.trend}
                       </span>
                     </div>
-                    <p className="text-2xl font-black text-slate-900 leading-none">{stat.value}</p>
-                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">{stat.label}</p>
+                    <p className="text-2xl font-black text-white leading-none">{stat.value}</p>
+                    <p className="text-[9px] font-black text-zinc-500 uppercase tracking-widest mt-1">{stat.label}</p>
                   </div>
                 ))}
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className="lg:col-span-2 bg-white p-6 rounded-[32px] border border-slate-200 shadow-sm">
-                  <h3 className="font-black text-slate-800 mb-6 uppercase text-[10px] tracking-widest">Rendimiento Histórico (Ventas x Día)</h3>
+                <div className="lg:col-span-2 bg-zinc-950 p-6 rounded-[32px] border border-zinc-900 shadow-xl">
+                  <h3 className="font-black text-white mb-6 uppercase text-[10px] tracking-widest">Rendimiento Histórico (Ventas x Día)</h3>
                   <div className="h-64">
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart data={SALES_DATA}>
-                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                        <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 700 }} />
-                        <YAxis axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 700 }} />
-                        <Tooltip contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }} />
-                        <Bar dataKey="sales" fill="#0ea5e9" radius={[6, 6, 0, 0]} barSize={40} />
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#18181b" />
+                        <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fill: '#71717a', fontSize: 10, fontWeight: 700 }} />
+                        <YAxis axisLine={false} tickLine={false} tick={{ fill: '#71717a', fontSize: 10, fontWeight: 700 }} />
+                        <Tooltip contentStyle={{ backgroundColor: '#09090b', borderRadius: '16px', border: '1px solid #27272a', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.5)' }} />
+                        <Bar dataKey="sales" fill="#C32A2C" radius={[6, 6, 0, 0]} barSize={40} />
                       </BarChart>
                     </ResponsiveContainer>
                   </div>
                 </div>
 
-                <div className="bg-white p-6 rounded-[32px] border border-slate-200 shadow-sm flex flex-col items-center">
-                  <h3 className="font-black text-slate-800 mb-6 uppercase text-[10px] tracking-widest w-full">Canales de Pedido</h3>
+                <div className="bg-zinc-950 p-6 rounded-[32px] border border-zinc-900 shadow-xl flex flex-col items-center">
+                  <h3 className="font-black text-white mb-6 uppercase text-[10px] tracking-widest w-full">Canales de Pedido</h3>
                   <div className="h-48 w-full mt-4">
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
                         <Pie data={CHANNEL_DATA} cx="50%" cy="50%" innerRadius={55} outerRadius={75} dataKey="value" paddingAngle={4}>
                           {CHANNEL_DATA.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.color} strokeWidth={0} />
+                             <Cell key={`cell-${index}`} fill={entry.color} strokeWidth={0} />
                           ))}
                         </Pie>
                         <Tooltip />
@@ -642,9 +642,9 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
                       <div key={idx} className="flex flex-col">
                         <div className="flex items-center gap-1.5">
                           <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: item.color }} />
-                          <span className="text-[10px] font-black uppercase text-slate-400">{item.name}</span>
+                          <span className="text-[10px] font-black uppercase text-zinc-500">{item.name}</span>
                         </div>
-                        <span className="text-sm font-black text-slate-800">{item.value}%</span>
+                        <span className="text-sm font-black text-white">{item.value}%</span>
                       </div>
                     ))}
                   </div>
@@ -671,7 +671,7 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
                     </p>
                   </div>
                   <div className="flex items-center gap-3">
-                    {loadingSales && <Loader2 size={16} className="animate-spin text-sky-500" />}
+                    {loadingSales && <Loader2 size={16} className="animate-spin text-[#C32A2C]" />}
                     {selectedSaleIds.length > 0 && userRole === 'admin' && (
                       <button
                         onClick={handleBulkDeleteSales}
@@ -696,7 +696,7 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
                         placeholder="Buscar folio o cliente..." 
                         value={salesSearch}
                         onChange={(e) => setSalesSearch(e.target.value)}
-                        className="pl-9 pr-4 py-2 bg-slate-50 border border-slate-100 rounded-xl text-xs outline-none focus:ring-2 focus:ring-sky-500/20"
+                        className="pl-9 pr-4 py-2 bg-slate-50 border border-slate-100 rounded-xl text-xs outline-none focus:ring-2 focus:ring-[#C32A2C]/20"
                       />
                     </div>
                   </div>
@@ -709,7 +709,7 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
                           <th className="px-6 py-4 w-10">
                             <input
                               type="checkbox"
-                              className="rounded border-slate-200 accent-sky-500 cursor-pointer w-4 h-4"
+                              className="rounded border-slate-200 accent-[#C32A2C] cursor-pointer w-4 h-4"
                               checked={getFilteredSales().length > 0 && selectedSaleIds.length === getFilteredSales().length}
                               onChange={(e) => {
                                 if (e.target.checked) {
@@ -737,7 +737,7 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
                             <td className="px-6 py-4 w-10">
                               <input
                                 type="checkbox"
-                                className="rounded border-slate-200 accent-sky-500 cursor-pointer w-4 h-4"
+                                className="rounded border-slate-200 accent-[#C32A2C] cursor-pointer w-4 h-4"
                                 checked={selectedSaleIds.includes(sale.id)}
                                 onChange={(e) => {
                                   if (e.target.checked) {
@@ -750,7 +750,7 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
                             </td>
                           )}
                           <td className="px-6 py-4">
-                            <p className="font-black text-sky-500 text-xs">{sale.id.slice(0, 8).toUpperCase()}</p>
+                            <p className="font-black text-[#C32A2C] text-xs">{sale.id.slice(0, 8).toUpperCase()}</p>
                             <p className="text-[10px] text-slate-400 font-bold">{new Date(sale.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                           </td>
                           <td className="px-6 py-4">
@@ -769,7 +769,7 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
                             <span className={`px-2 py-1 rounded-lg text-[9px] font-black uppercase ${
                               sale.source === 'local' ? 'bg-emerald-100 text-emerald-700' : 
                               sale.source === 'whatsapp' ? 'bg-green-100 text-green-700' : 
-                              'bg-sky-100 text-sky-700'
+                              'bg-rose-150 text-[#C32A2C]'
                             }`}>
                               {sale.source === 'local' ? 'Planta' : sale.source === 'whatsapp' ? 'WhatsApp' : 'Teléfono'}
                             </span>
@@ -827,7 +827,7 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
                       placeholder="Buscar por nombre, alias o zona..."
                       value={customerFilter}
                       onChange={(e) => setCustomerFilter(e.target.value)}
-                      className="pl-9 pr-8 py-2 bg-slate-50 border border-slate-100 rounded-xl text-xs font-bold outline-none focus:ring-2 focus:ring-sky-500/20 transition-all w-56 placeholder-slate-400"
+                      className="pl-9 pr-8 py-2 bg-slate-50 border border-slate-100 rounded-xl text-xs font-bold outline-none focus:ring-2 focus:ring-[#C32A2C]/20 transition-all w-56 placeholder-slate-400"
                     />
                     {customerFilter && (
                       <button
@@ -849,7 +849,7 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
                       setEditingCustomer(null);
                       setShowNewCustomerModal(true);
                     }}
-                    className="flex items-center gap-2 bg-sky-500 text-white px-5 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-sky-500/20 active:scale-95 transition-all shrink-0"
+                    className="flex items-center gap-2 bg-[#C32A2C] text-white px-5 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-[#C32A2C]/20 active:scale-95 transition-all shrink-0 hover:bg-[#a12022]"
                   >
                     <Plus size={16} /> Alta de Cliente
                   </button>
@@ -863,7 +863,7 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
                         <th className="px-6 py-4 w-10">
                           <input
                             type="checkbox"
-                            className="rounded border-slate-200 accent-sky-500 cursor-pointer w-4 h-4"
+                            className="rounded border-slate-200 accent-[#C32A2C] cursor-pointer w-4 h-4"
                             checked={getFilteredCustomers().length > 0 && selectedCustomerIds.length === getFilteredCustomers().length}
                             onChange={(e) => {
                               if (e.target.checked) {
@@ -889,7 +889,7 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
                           <td className="px-6 py-4 w-10">
                             <input
                               type="checkbox"
-                              className="rounded border-slate-200 accent-sky-500 cursor-pointer w-4 h-4"
+                              className="rounded border-slate-200 accent-[#C32A2C] cursor-pointer w-4 h-4"
                               checked={selectedCustomerIds.includes(client.id)}
                               onChange={(e) => {
                                 if (e.target.checked) {
@@ -916,7 +916,7 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
                         </td>
                         <td className="px-6 py-4">
                           <span className={`px-2 py-1 rounded-lg text-[9px] font-black uppercase ${
-                            client.tier?.toUpperCase() === 'VIP' ? 'bg-amber-100 text-amber-700' : 'bg-sky-100 text-sky-700'
+                            client.tier?.toUpperCase() === 'VIP' ? 'bg-amber-100 text-amber-700' : 'bg-rose-50 text-rose-600 border border-rose-105'
                           }`}>
                             {client.tier || 'Frecuente'}
                           </span>
@@ -931,7 +931,7 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
                           <div className="flex items-center justify-end gap-2">
                             <button 
                               onClick={() => handleStartEditCustomer(client)}
-                              className="p-2 text-slate-300 hover:text-sky-500 transition-colors"
+                              className="p-2 text-slate-300 hover:text-[#C32A2C] transition-colors"
                               title="Ver / Editar"
                             >
                               <Edit3 size={16} />
@@ -1003,7 +1003,7 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
                           <th className="px-6 py-4 w-10">
                             <input
                               type="checkbox"
-                              className="rounded border-slate-200 accent-sky-500 cursor-pointer w-4 h-4"
+                              className="rounded border-slate-200 accent-[#C32A2C] cursor-pointer w-4 h-4"
                               checked={employeesList.length > 0 && selectedEmployeeIds.length === employeesList.length}
                               onChange={(e) => {
                                 if (e.target.checked) {
@@ -1029,7 +1029,7 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
                             <td className="px-6 py-4 w-10">
                               <input
                                 type="checkbox"
-                                className="rounded border-slate-200 accent-sky-500 cursor-pointer w-4 h-4"
+                                className="rounded border-slate-200 accent-[#C32A2C] cursor-pointer w-4 h-4"
                                 checked={selectedEmployeeIds.includes(emp.id)}
                                 onChange={(e) => {
                                   if (e.target.checked) {
@@ -1043,7 +1043,7 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
                           )}
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-3">
-                              <div className="w-8 h-8 rounded-lg bg-sky-500 text-white flex items-center justify-center font-black text-xs">
+                              <div className="w-8 h-8 rounded-lg bg-[#C32A2C] text-white flex items-center justify-center font-black text-xs">
                                 {emp.name.charAt(0)}
                               </div>
                               <div>
@@ -1070,7 +1070,7 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
                               <select 
                                 onChange={(e) => handleUpdateEmployeeRole(emp.id, e.target.value)}
                                 value={emp.role}
-                                className="bg-slate-50 border border-slate-100 rounded-lg px-2 py-1 outline-none text-sky-600 cursor-pointer"
+                                className="bg-slate-50 border border-slate-100 rounded-lg px-2 py-1 outline-none text-[#C32A2C] cursor-pointer"
                               >
                                 <option value="admin">Admin</option>
                                 <option value="operator">Operador</option>
@@ -1134,12 +1134,12 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
               <div className="bg-white p-8 rounded-[40px] border border-slate-200 shadow-sm relative overflow-hidden">
                 <div className="flex justify-between items-start mb-8">
                   <h3 className="font-black text-slate-800 uppercase text-[10px] tracking-widest flex items-center gap-2">
-                    <Store size={18} className="text-sky-500" />
+                    <Store size={18} className="text-[#C32A2C]" />
                     Corte de Caja en Planta
                   </h3>
                   <button 
                     onClick={() => handleExport('Corte de Caja')}
-                    className="p-2 bg-slate-50 text-slate-400 rounded-xl hover:text-sky-500 transition-colors"
+                    className="p-2 bg-slate-50 text-slate-400 rounded-xl hover:text-[#C32A2C] transition-colors"
                   >
                     <Download size={18} />
                   </button>
@@ -1151,7 +1151,7 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
                       <p className="text-3xl font-black text-slate-800">$1,850.00</p>
                     </div>
                     <div className="bg-white p-3 rounded-2xl shadow-sm border border-slate-100">
-                      <ShoppingBag size={24} className="text-sky-500" />
+                      <ShoppingBag size={24} className="text-[#C32A2C]" />
                     </div>
                   </div>
                   
@@ -1187,16 +1187,16 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
                 </div>
               </div>
 
-              <div className="bg-gradient-to-br from-sky-600 to-indigo-700 p-8 rounded-[40px] text-white shadow-xl shadow-sky-500/20 flex flex-col justify-between">
+              <div className="bg-gradient-to-br from-zinc-950 to-black p-8 rounded-[40px] text-white shadow-xl border border-zinc-900 shadow-red-500/5 flex flex-col justify-between">
                 <div>
                   <div className="flex justify-between items-start mb-10">
-                    <div className="bg-white/20 p-4 rounded-3xl backdrop-blur-md">
+                    <div className="bg-white/10 p-4 rounded-3xl backdrop-blur-md">
                       <AlertCircle size={32} />
                     </div>
-                    <span className="bg-white/20 text-white px-4 py-2 rounded-2xl text-[9px] font-black uppercase tracking-widest">Insights IA</span>
+                    <span className="bg-white/10 text-white px-4 py-2 rounded-2xl text-[9px] font-black uppercase tracking-widest">Insights IA</span>
                   </div>
                   <h4 className="text-2xl font-black leading-tight mb-4">La Ruta 1 está reportando mayor eficiencia que la Ruta 2.</h4>
-                  <p className="text-sky-100/70 text-sm font-bold leading-relaxed italic">
+                  <p className="text-rose-100/70 text-sm font-bold leading-relaxed italic">
                     "Detectamos que el tiempo promedio de entrega en Carlos Ruiz es 12% menor. Considera optimizar la asignación de clientes VIP en esa zona."
                   </p>
                 </div>
@@ -1230,7 +1230,7 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
               className="relative w-full max-w-md bg-white rounded-[40px] shadow-2xl overflow-hidden p-8"
             >
               <div className="flex justify-between items-center mb-6">
-                <h3 className="text-xl font-black text-slate-800 uppercase italic">Alta de <span className="text-sky-500">Empleado</span></h3>
+                <h3 className="text-xl font-black text-slate-800 uppercase italic">Alta de <span className="text-[#C32A2C]">Empleado</span></h3>
                 <button 
                   onClick={() => setShowNewEmployeeModal(false)}
                   disabled={isSavingEmployee}
@@ -1243,12 +1243,12 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
               <form onSubmit={handleNewEmployeeSubmit} className="space-y-4">
                 <div className="space-y-1.5">
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Nombre del Trabajador</label>
-                  <input name="name" required type="text" placeholder="Ej. Juan Pérez" className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-sky-500/20 transition-all font-bold" />
+                  <input name="name" required type="text" placeholder="Ej. Juan Pérez" className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-[#C32A2C]/20 transition-all font-bold" />
                 </div>
                 
                 <div className="space-y-1.5">
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Rol / Puesto Operativo</label>
-                  <select name="role" className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-sky-500/20 transition-all font-bold appearance-none">
+                  <select name="role" className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-[#C32A2C]/20 transition-all font-bold appearance-none">
                     <option value="driver">Chofer / Repartidor</option>
                     <option value="operator">Operador de Planta</option>
                     <option value="admin">Administrador / Supervisor</option>
@@ -1257,7 +1257,7 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
 
                 <div className="space-y-1.5">
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Teléfono Móvil</label>
-                  <input name="phone" required type="tel" placeholder="55 0000 0000" className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-sky-500/20 transition-all font-bold" />
+                  <input name="phone" required type="tel" placeholder="55 0000 0000" className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-[#C32A2C]/20 transition-all font-bold" />
                 </div>
 
                 <div className="bg-slate-900 p-4 rounded-2xl border border-slate-700 mt-2">
@@ -1291,7 +1291,7 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => !isSavingCustomer && handleCloseCustomerModal()}
-              className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+              className="absolute inset-0 bg-black/80 backdrop-blur-md"
             />
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -1300,7 +1300,7 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
               className="relative w-full max-w-md bg-white rounded-[40px] shadow-2xl overflow-hidden p-8"
             >
               <div className="flex justify-between items-center mb-6">
-                <h3 className="text-xl font-black text-slate-800 uppercase italic">{editingCustomer ? 'Editar' : 'Alta de'} <span className="text-sky-500">Cliente</span></h3>
+                <h3 className="text-xl font-black text-slate-800 uppercase italic">{editingCustomer ? 'Editar' : 'Alta de'} <span className="text-[#C32A2C]">Cliente</span></h3>
                 <button 
                   onClick={handleCloseCustomerModal}
                   disabled={isSavingCustomer}
@@ -1313,24 +1313,24 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
               <form onSubmit={handleNewCustomerSubmit} className="space-y-4">
                 <div className="space-y-1.5">
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Nombre Completo</label>
-                  <input name="name" required type="text" defaultValue={editingCustomer?.name || ''} placeholder="Ej. Residencial Palmas" className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-sky-500/20 transition-all font-bold" />
+                  <input name="name" required type="text" defaultValue={editingCustomer?.name || ''} placeholder="Ej. Residencial Palmas" className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-[#C32A2C]/20 transition-all font-bold" />
                 </div>
                 <div className="space-y-1.5">
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Alias / Identificador Corto (Opcional)</label>
-                  <input name="alias" type="text" defaultValue={editingCustomer?.alias || ''} placeholder="Ej. Palmas 3, Ofi Carlos, Don Pedro" className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-sky-500/20 transition-all font-bold" />
+                  <input name="alias" type="text" defaultValue={editingCustomer?.alias || ''} placeholder="Ej. Palmas 3, Ofi Carlos, Don Pedro" className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-[#C32A2C]/20 transition-all font-bold" />
                 </div>
                 <div className="space-y-1.5">
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Colonia / Zona</label>
-                  <input name="address" required type="text" defaultValue={editingCustomer?.address || ''} placeholder="Ej. Santa Fe" className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-sky-500/20 transition-all font-bold" />
+                  <input name="address" required type="text" defaultValue={editingCustomer?.address || ''} placeholder="Ej. Santa Fe" className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-[#C32A2C]/20 transition-all font-bold" />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1.5">
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Teléfono</label>
-                    <input name="phone" required type="tel" defaultValue={editingCustomer?.phone || ''} placeholder="55 1234 5678" className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-sky-500/20 transition-all font-bold" />
+                    <input name="phone" required type="tel" defaultValue={editingCustomer?.phone || ''} placeholder="55 1234 5678" className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-[#C32A2C]/20 transition-all font-bold" />
                   </div>
                   <div className="space-y-1.5">
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Nivel</label>
-                    <select name="tier" defaultValue={editingCustomer?.tier || 'frequent'} className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-sky-500/20 transition-all font-bold appearance-none">
+                    <select name="tier" defaultValue={editingCustomer?.tier || 'frequent'} className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-[#C32A2C]/20 transition-all font-bold appearance-none">
                       <option value="frequent">Frecuente</option>
                       <option value="vip">VIP</option>
                       <option value="company">Empresa</option>
@@ -1345,12 +1345,12 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
                     type="url" 
                     defaultValue={editingCustomer?.geolocation_url || ''}
                     placeholder="https://maps.google.com/..." 
-                    className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-sky-500/20 transition-all font-bold" 
+                    className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-[#C32A2C]/20 transition-all font-bold" 
                   />
                 </div>
 
-                <div className="bg-sky-50 p-4 rounded-2xl border border-sky-100 mt-2">
-                  <p className="text-[9px] text-sky-600 font-bold uppercase tracking-tight leading-relaxed italic">
+                <div className="bg-rose-50/50 p-4 rounded-2xl border border-rose-100/30 mt-2">
+                  <p className="text-[9px] text-rose-600 font-bold uppercase tracking-tight leading-relaxed italic">
                     Al guardar este cliente, se le asignará automáticamente un folio de seguimiento y se activará su historial de pedidos.
                   </p>
                 </div>
@@ -1358,7 +1358,7 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
                 <button 
                   type="submit"
                   disabled={isSavingCustomer}
-                  className="w-full bg-sky-500 text-white py-5 rounded-3xl font-black uppercase tracking-widest text-xs shadow-xl shadow-sky-500/20 hover:bg-sky-600 transition-all active:scale-95 mt-4 flex items-center justify-center gap-2 disabled:opacity-50"
+                  className="w-full bg-[#C32A2C] text-white py-5 rounded-3xl font-black uppercase tracking-widest text-xs shadow-xl shadow-[#C32A2C]/20 hover:bg-[#a12022] transition-all active:scale-95 mt-4 flex items-center justify-center gap-2 disabled:opacity-50"
                 >
                   {isSavingCustomer ? (
                     <>

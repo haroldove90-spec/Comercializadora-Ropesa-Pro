@@ -121,7 +121,7 @@ export default function QualityLog({ userRole }: QualityLogProps) {
     <div className="p-4 md:p-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
         <div>
-          <h2 className="text-3xl font-black text-slate-800 italic uppercase">Bitácoras de <span className="text-sky-500">Calidad</span></h2>
+          <h2 className="text-3xl font-black text-slate-800 italic uppercase">Bitácoras de <span className="text-[#C32A2C]">Calidad</span></h2>
           <p className="text-sm font-bold text-slate-400 mt-2 uppercase tracking-widest italic">Monitoreo Físico-Químico • NORMA-127-SSA1</p>
         </div>
         <div className="flex items-center gap-3">
@@ -150,12 +150,12 @@ export default function QualityLog({ userRole }: QualityLogProps) {
           <div className="bg-white rounded-[40px] border border-slate-100 shadow-xl overflow-hidden">
             <div className="p-8 border-b border-slate-50 flex items-center justify-between">
               <h3 className="font-black text-slate-800 uppercase text-[10px] tracking-widest flex items-center gap-2">
-                <ClipboardList size={18} className="text-sky-500" />
+                <ClipboardList size={18} className="text-[#C32A2C]" />
                 Historial Técnico {isMonitorMode ? '(Modo Auditor)' : ''}
               </h3>
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-300" size={14} />
-                <input type="text" placeholder="Buscar parámetro..." className="pl-9 pr-4 py-2 bg-slate-50 border border-slate-100 rounded-xl text-xs outline-none focus:ring-2 focus:ring-sky-500/10 transition-all font-bold" />
+                <input type="text" placeholder="Buscar parámetro..." className="pl-9 pr-4 py-2 bg-slate-50 border border-slate-100 rounded-xl text-xs outline-none focus:ring-2 focus:ring-[#C32A2C]/10 focus:border-[#C32A2C] transition-all font-bold" />
               </div>
             </div>
             <div className="overflow-x-auto">
@@ -214,7 +214,7 @@ export default function QualityLog({ userRole }: QualityLogProps) {
 
         {/* Quick Stats */}
         <div className="space-y-6">
-          <div className="bg-sky-500 p-8 rounded-[40px] text-white shadow-2xl shadow-sky-500/20">
+          <div className="bg-[#C32A2C] p-8 rounded-[40px] text-white shadow-2xl shadow-[#C32A2C]/20">
             <h4 className="text-[10px] font-black uppercase tracking-widest mb-6 opacity-80">Cumplimiento Normativo</h4>
             <div className="flex items-center gap-6 mb-8">
               <div className="text-5xl font-black">100%</div>
@@ -258,7 +258,7 @@ export default function QualityLog({ userRole }: QualityLogProps) {
               className="relative w-full max-w-md bg-white rounded-[40px] shadow-2xl overflow-hidden p-8"
             >
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-black text-slate-800 uppercase italic">Auditoría <span className="text-sky-500">Producción</span></h2>
+                <h2 className="text-xl font-black text-slate-800 uppercase italic">Auditoría <span className="text-[#C32A2C]">Producción</span></h2>
                 <button onClick={() => setShowModal(false)} className="p-2 hover:bg-slate-100 rounded-xl transition-colors">
                   <X size={20} className="text-slate-400" />
                 </button>
@@ -276,7 +276,7 @@ export default function QualityLog({ userRole }: QualityLogProps) {
                 <form onSubmit={handleFormSubmit} className="space-y-4">
                   <div className="space-y-1.5">
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Estatus de Entrada (Pipa/Red)</label>
-                    <select name="status" className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-sky-500/20 transition-all font-bold appearance-none">
+                    <select name="status" className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-[#C32A2C]/20 focus:border-[#C32A2C] transition-all font-bold appearance-none">
                       <option value="good">Óptimo (Transparente/Sin olor)</option>
                       <option value="warning">Revisión (Turbiedad leve)</option>
                     </select>
@@ -285,17 +285,17 @@ export default function QualityLog({ userRole }: QualityLogProps) {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-1.5">
                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Volumen (Litros)</label>
-                      <input required name="volume" type="number" placeholder="Ej. 10000" className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-sky-500/20 transition-all font-bold" />
+                      <input required name="volume" type="number" placeholder="Ej. 10000" className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-[#C32A2C]/20 focus:border-[#C32A2C] transition-all font-bold" />
                     </div>
                     <div className="space-y-1.5">
                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Dosificación Cloro (g)</label>
-                      <input required name="chlorine" type="number" step="0.1" placeholder="Ej. 50" className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-sky-500/20 transition-all font-bold" />
+                      <input required name="chlorine" type="number" step="0.1" placeholder="Ej. 50" className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-[#C32A2C]/20 focus:border-[#C32A2C] transition-all font-bold" />
                     </div>
                   </div>
 
                   <button 
                     disabled={isSaving}
-                    className="w-full bg-sky-500 text-white py-5 rounded-3xl font-black uppercase tracking-widest text-xs shadow-xl shadow-sky-500/20 hover:bg-sky-600 transition-all active:scale-95 mt-6 flex items-center justify-center gap-2"
+                    className="w-full bg-[#C32A2C] hover:bg-[#a12022] text-white py-5 rounded-3xl font-black uppercase tracking-widest text-xs shadow-xl shadow-[#C32A2C]/20 transition-all active:scale-95 mt-6 flex items-center justify-center gap-2"
                   >
                     {isSaving ? <Loader2 className="animate-spin" size={18} /> : 'Registrar Bitácora'}
                   </button>

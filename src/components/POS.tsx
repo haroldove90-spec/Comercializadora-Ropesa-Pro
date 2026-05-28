@@ -480,8 +480,8 @@ export default function POS({ userRole }: { userRole: string | null }) {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1">
             <h1 className="text-3xl font-black text-slate-800 dark:text-white tracking-tight uppercase italic flex items-center gap-2">
-              <ShoppingBag className="text-sky-500 animate-bounce shrink-0" size={32} />
-              Registro de <span className="text-sky-500">Ventas (POS)</span>
+              <ShoppingBag className="text-[#C32A2C] animate-bounce shrink-0" size={32} />
+              Registro de <span className="text-[#C32A2C]">Ventas (POS)</span>
             </h1>
             <div className="flex flex-wrap items-center gap-2">
               <p className="text-slate-500 dark:text-slate-400 font-bold italic uppercase text-[10px] tracking-wider">
@@ -504,7 +504,7 @@ export default function POS({ userRole }: { userRole: string | null }) {
               placeholder="Buscar producto..."
               value={productSearch}
               onChange={(e) => setProductSearch(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-xl focus:ring-2 focus:ring-sky-500 text-sm font-bold text-slate-700 dark:text-slate-200"
+              className="w-full pl-9 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-xl focus:ring-2 focus:ring-[#C32A2C] text-sm font-bold text-slate-700 dark:text-slate-200"
             />
             {productSearch && (
               <button 
@@ -540,7 +540,7 @@ export default function POS({ userRole }: { userRole: string | null }) {
 
         {loading ? (
           <div className="flex flex-col items-center justify-center p-12 flex-1 text-slate-400">
-            <Loader2 className="animate-spin mb-3 text-sky-500" size={32} />
+            <Loader2 className="animate-spin mb-3 text-[#C32A2C]" size={32} />
             <p className="font-bold uppercase tracking-widest text-xs">Cargando catálogo...</p>
           </div>
         ) : filteredProducts.length === 0 ? (
@@ -561,8 +561,8 @@ export default function POS({ userRole }: { userRole: string | null }) {
                   onClick={() => addToCart(prod)}
                   className={`relative p-6 rounded-3xl cursor-pointer select-none border-2 transition-all overflow-hidden flex flex-col justify-between min-h-[140px] shadow-sm ${
                     qty > 0 
-                      ? 'bg-sky-50 dark:bg-sky-950/20 border-sky-500' 
-                      : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-sky-300'
+                      ? 'bg-rose-50 dark:bg-red-950/20 border-[#C32A2C]' 
+                      : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-rose-300'
                   }`}
                 >
                   {/* Badge quantity counter inside card */}
@@ -570,7 +570,7 @@ export default function POS({ userRole }: { userRole: string | null }) {
                     <motion.div
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
-                      className="absolute top-3 right-3 bg-sky-500 text-white min-w-8 h-8 rounded-full flex items-center justify-center font-black text-sm z-10 shadow-md border-2 border-white dark:border-slate-900 animate-pulse"
+                      className="absolute top-3 right-3 bg-[#C32A2C] text-white min-w-8 h-8 rounded-full flex items-center justify-center font-black text-sm z-10 shadow-md border-2 border-white dark:border-slate-900 animate-pulse"
                     >
                       {qty}
                     </motion.div>
@@ -587,7 +587,7 @@ export default function POS({ userRole }: { userRole: string | null }) {
 
                   <div className="mt-4 flex items-center justify-between">
                     <div className="text-2xl font-black text-slate-800 dark:text-white flex items-center">
-                      <span className="text-sky-500 text-sm font-black mr-0.5">$</span>
+                      <span className="text-[#C32A2C] text-sm font-black mr-0.5">$</span>
                       {prod.price.toFixed(2)}
                     </div>
 
@@ -607,7 +607,7 @@ export default function POS({ userRole }: { userRole: string | null }) {
                         onClick={() => addToCart(prod)}
                         className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors shadow-md active:scale-95 ${
                           qty > 0 
-                            ? 'bg-sky-500 hover:bg-sky-600 text-white shadow-sky-500/10' 
+                            ? 'bg-[#C32A2C] hover:bg-[#a12022] text-white shadow-[#C32A2C]/10' 
                             : 'bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-200'
                         }`}
                         title="Agregar"
@@ -629,7 +629,7 @@ export default function POS({ userRole }: { userRole: string | null }) {
           
           <div className="p-6 border-b border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/20 flex justify-between items-center">
             <h2 className="text-sm font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest flex items-center gap-2">
-              <ShoppingBag size={18} className="text-sky-500" />
+              <ShoppingBag size={18} className="text-[#C32A2C]" />
               TICKET / CARRITO
             </h2>
             {cart.length > 0 && (
@@ -647,7 +647,7 @@ export default function POS({ userRole }: { userRole: string | null }) {
             {/* Customer Lookup and Assignment */}
             <div className="space-y-2 relative">
               <label className="text-[11px] font-black text-slate-400 uppercase tracking-wider block">
-                Cliente <span className="text-sky-500 font-bold normal-case italic">(Opcional - Venta Mostrador)</span>
+                Cliente <span className="text-[#C32A2C] font-bold normal-case italic">(Opcional - Venta Mostrador)</span>
               </label>
 
               <div className="relative">
@@ -662,7 +662,7 @@ export default function POS({ userRole }: { userRole: string | null }) {
                     setManualCustomerName(e.target.value);
                     setShowCustomerDropdown(true);
                   }}
-                  className="w-full pl-9 pr-8 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-sky-500 text-sm font-bold text-slate-700 dark:text-slate-200"
+                  className="w-full pl-9 pr-8 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-[#C32A2C] text-sm font-bold text-slate-700 dark:text-slate-200"
                 />
                 
                 {customerSearch && (
@@ -697,14 +697,14 @@ export default function POS({ userRole }: { userRole: string | null }) {
                           key={c.id}
                           type="button"
                           onClick={() => handleSelectCustomer(c)}
-                          className="w-full text-left p-3 hover:bg-sky-50/50 dark:hover:bg-slate-800 flex items-center justify-between border-b border-slate-100 dark:border-slate-800 last:border-none transition-colors"
+                          className="w-full text-left p-3 hover:bg-rose-50/20 dark:hover:bg-slate-800 flex items-center justify-between border-b border-slate-100 dark:border-slate-800 last:border-none transition-colors"
                         >
                           <div>
                             <p className="font-bold text-xs text-slate-800 dark:text-slate-200 uppercase">{c.name}</p>
                             <p className="text-[10px] text-slate-400">{c.address || 'Sin dirección'}</p>
                           </div>
                           {c.phone && (
-                            <span className="text-[10px] font-mono text-sky-500">{c.phone}</span>
+                            <span className="text-[10px] font-mono text-[#C32A2C]">{c.phone}</span>
                           )}
                         </button>
                       ))
@@ -720,9 +720,9 @@ export default function POS({ userRole }: { userRole: string | null }) {
 
               {/* Selected Customer indicator badge or free input metadata details */}
               {selectedCustomer ? (
-                <div className="bg-sky-500/10 border border-sky-500/20 rounded-xl p-3 flex items-start justify-between">
+                <div className="bg-[#C32A2C]/10 border border-[#C32A2C]/20 rounded-xl p-3 flex items-start justify-between">
                   <div className="space-y-0.5">
-                    <p className="text-xs font-black text-sky-700 dark:text-sky-400 capitalize">
+                    <p className="text-xs font-black text-[#C32A2C] dark:text-rose-400 capitalize">
                       ✓ CLIENTE SELECCIONADO
                     </p>
                     <p className="text-xs font-black text-slate-700 dark:text-slate-300">
@@ -736,7 +736,7 @@ export default function POS({ userRole }: { userRole: string | null }) {
                   </div>
                   <button 
                     onClick={handleClearCustomer}
-                    className="text-sky-600 dark:text-sky-400 hover:text-rose-500 hover:bg-rose-500/10 p-1.5 rounded-lg transition-colors"
+                    className="text-[#C32A2C] hover:text-rose-500 hover:bg-rose-500/10 p-1.5 rounded-lg transition-colors"
                   >
                     <X size={14} />
                   </button>
@@ -751,7 +751,7 @@ export default function POS({ userRole }: { userRole: string | null }) {
                         placeholder="Ej. 5512345678"
                         value={manualCustomerPhone}
                         onChange={(e) => setManualCustomerPhone(e.target.value)}
-                        className="w-full bg-transparent border-b border-slate-200 dark:border-slate-800 focus:border-sky-500 text-xs font-bold font-mono py-1 text-slate-700 dark:text-slate-200 outline-none"
+                        className="w-full bg-transparent border-b border-slate-200 dark:border-slate-800 focus:border-[#C32A2C] text-xs font-bold font-mono py-1 text-slate-700 dark:text-slate-200 outline-none"
                       />
                     </div>
                     <div>
@@ -761,7 +761,7 @@ export default function POS({ userRole }: { userRole: string | null }) {
                         placeholder="Mostrador/Calle"
                         value={manualCustomerAddress}
                         onChange={(e) => setManualCustomerAddress(e.target.value)}
-                        className="w-full bg-transparent border-b border-slate-200 dark:border-slate-800 focus:border-sky-500 text-xs font-bold py-1 text-slate-700 dark:text-slate-200 outline-none"
+                        className="w-full bg-transparent border-b border-slate-200 dark:border-slate-800 focus:border-[#C32A2C] text-xs font-bold py-1 text-slate-700 dark:text-slate-200 outline-none"
                       />
                     </div>
                   </div>
@@ -792,7 +792,7 @@ export default function POS({ userRole }: { userRole: string | null }) {
                         <p className="font-extrabold text-xs text-slate-800 dark:text-slate-200 uppercase truncate">
                           {item.product.name}
                         </p>
-                        <p className="text-[10px] font-black text-sky-500 tracking-tight font-mono">
+                        <p className="text-[10px] font-black text-[#C32A2C] tracking-tight font-mono">
                           {item.quantity} x ${item.product.price.toFixed(2)}
                         </p>
                       </div>
@@ -811,7 +811,7 @@ export default function POS({ userRole }: { userRole: string | null }) {
 
                         <button
                           onClick={() => addToCart(item.product)}
-                          className="w-7 h-7 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 rounded-lg flex items-center justify-center hover:bg-sky-500 hover:text-white hover:border-sky-500 transition-colors"
+                          className="w-7 h-7 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 rounded-lg flex items-center justify-center hover:bg-[#C32A2C] hover:text-white hover:border-[#C32A2C] transition-colors"
                         >
                           <Plus size={12} strokeWidth={3} />
                         </button>
@@ -844,8 +844,8 @@ export default function POS({ userRole }: { userRole: string | null }) {
                         meth.disabled
                           ? 'opacity-35 cursor-not-allowed bg-slate-100 dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-400 text-[9px]'
                           : active 
-                            ? 'bg-sky-500 border-sky-500 text-white font-black' 
-                            : 'bg-slate-50 dark:bg-slate-950 text-slate-500 border-slate-200 dark:border-slate-800 hover:border-sky-300 hover:text-slate-700'
+                            ? 'bg-[#C32A2C] border-[#C32A2C] text-white font-black' 
+                            : 'bg-slate-50 dark:bg-slate-950 text-slate-500 border-slate-200 dark:border-slate-800 hover:border-rose-300 hover:text-slate-700'
                       }`}
                     >
                       <Icon size={16} />
@@ -866,7 +866,7 @@ export default function POS({ userRole }: { userRole: string | null }) {
                 <p className="text-[11px] font-bold text-slate-400 uppercase italic mt-1">Con IVA incluido</p>
               </div>
               <div className="text-3xl font-black text-slate-800 dark:text-white flex items-center font-mono">
-                <span className="text-sky-500 text-lg mr-0.5">$</span>
+                <span className="text-[#C32A2C] text-lg mr-0.5">$</span>
                 {getCartTotal().toFixed(2)}
               </div>
             </div>
@@ -877,7 +877,7 @@ export default function POS({ userRole }: { userRole: string | null }) {
               className={`w-full py-4 rounded-2xl flex items-center justify-center gap-2 text-sm font-black uppercase tracking-wider transition-all shadow-lg active:scale-[0.98] ${
                 cart.length === 0 
                   ? 'bg-slate-200 dark:bg-slate-800 text-slate-400 cursor-not-allowed shadow-none' 
-                  : 'bg-gradient-to-r from-sky-500 to-indigo-500 hover:from-sky-600 hover:to-indigo-600 text-white shadow-sky-500/20 hover:shadow-indigo-500/20'
+                  : 'bg-[#C32A2C] hover:bg-[#a12022] text-white shadow-[#C32A2C]/10'
               }`}
             >
               {isSubmitting ? (
@@ -919,7 +919,7 @@ export default function POS({ userRole }: { userRole: string | null }) {
             >
               {/* Header */}
               <div className="p-4 bg-white border-b border-slate-100 flex justify-between items-center">
-                <span className="text-[10px] font-black uppercase text-sky-500 tracking-wider">COMPROBANTE DE VENTA (SISTEMA)</span>
+                <span className="text-[10px] font-black uppercase text-[#C32A2C] tracking-wider">COMPROBANTE DE VENTA (SISTEMA)</span>
                 <button 
                   onClick={() => setShowTicketModal(false)}
                   className="text-slate-400 hover:text-slate-600 p-1 rounded-lg transition-colors"
@@ -931,7 +931,7 @@ export default function POS({ userRole }: { userRole: string | null }) {
               {/* Pure White Background Plain Ticket */}
               <div className="p-6 space-y-6 bg-white select-all font-sans text-xs text-slate-800 border-b border-dashed border-slate-200">
                 <div className="text-center space-y-1 pb-4 border-b border-slate-100">
-                  <div className="w-12 h-12 bg-sky-500/10 text-sky-600 rounded-full flex items-center justify-center mx-auto mb-2">
+                  <div className="w-12 h-12 bg-rose-50 text-[#C32A2C] rounded-full flex items-center justify-center mx-auto mb-2">
                     <ShoppingBag size={24} />
                   </div>
                   <h3 className="font-extrabold text-lg text-slate-950 uppercase tracking-tight">ROPESA</h3>
@@ -988,7 +988,7 @@ export default function POS({ userRole }: { userRole: string | null }) {
                 <button
                   onClick={handleSaveTransaction}
                   disabled={isSubmitting}
-                  className="w-full py-3 bg-gradient-to-r from-sky-500 to-indigo-500 hover:from-sky-600 hover:to-indigo-600 text-white font-black uppercase text-xs tracking-wider rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-sky-500/20 active:scale-95 transition-all text-center disabled:opacity-50"
+                  className="w-full py-3 bg-[#C32A2C] hover:bg-[#a12022] text-white font-black uppercase text-xs tracking-wider rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-[#C32A2C]/10 active:scale-95 transition-all text-center disabled:opacity-50"
                 >
                   {isSubmitting ? (
                     <>
@@ -1032,12 +1032,12 @@ export default function POS({ userRole }: { userRole: string | null }) {
             initial={{ opacity: 0, y: 55 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 55 }}
-            className="fixed bottom-24 lg:bottom-12 left-4 right-4 lg:left-1/2 lg:-translate-x-1/2 lg:max-w-2xl z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md p-4 rounded-3xl shadow-[0_-12px_40px_rgba(0,0,0,0.18)] dark:shadow-[0_-12px_40px_rgba(0,0,0,0.5)] border border-sky-500/40 flex items-center justify-between gap-4 select-none"
+            className="fixed bottom-24 lg:bottom-12 left-4 right-4 lg:left-1/2 lg:-translate-x-1/2 lg:max-w-2xl z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md p-4 rounded-3xl shadow-[0_-12px_40px_rgba(0,0,0,0.18)] dark:shadow-[0_-12px_40px_rgba(0,0,0,0.5)] border border-[#C32A2C]/40 flex items-center justify-between gap-4 select-none"
           >
             <div className="flex flex-col min-w-0">
-              <p className="text-[10px] font-black uppercase text-sky-500 tracking-wider">Total del Ticket</p>
+              <p className="text-[10px] font-black uppercase text-[#C32A2C] tracking-wider">Total del Ticket</p>
               <div className="text-2xl font-black text-slate-800 dark:text-white flex items-center leading-none mt-1">
-                <span className="text-sm font-black text-sky-500 mr-0.5">$</span>
+                <span className="text-sm font-black text-[#C32A2C] mr-0.5">$</span>
                 {getCartTotal().toFixed(2)}
                 <span className="text-[11px] text-slate-400 dark:text-slate-500 font-bold uppercase ml-2.5 truncate max-w-[120px]">
                   ({cart.reduce((acc, x) => acc + x.quantity, 0)} {cart.reduce((acc, x) => acc + x.quantity, 0) === 1 ? 'prod.' : 'prods.'})
@@ -1056,7 +1056,7 @@ export default function POS({ userRole }: { userRole: string | null }) {
 
               <button
                 onClick={handleCheckout}
-                className="px-6 h-12 bg-gradient-to-r from-sky-500 to-indigo-500 hover:from-sky-600 hover:to-indigo-600 text-white font-black text-xs uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-sky-500/20 active:scale-95 transition-all text-center"
+                className="px-6 h-12 bg-[#C32A2C] hover:bg-[#a12022] text-white font-black text-xs uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-[#C32A2C]/10 active:scale-95 transition-all text-center"
               >
                 <Check size={16} strokeWidth={3} />
                 <span>GENERAR TICKET</span>

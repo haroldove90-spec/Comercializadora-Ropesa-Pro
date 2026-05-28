@@ -180,7 +180,7 @@ export default function DeliveryRoute() {
       <div className="bg-slate-900 text-white p-6 rounded-3xl shadow-xl border border-slate-800">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-sky-500 rounded-2xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-[#C32A2C] rounded-2xl flex items-center justify-center">
               <Truck size={24} className="text-white" />
             </div>
             <div>
@@ -198,7 +198,7 @@ export default function DeliveryRoute() {
               Hoja de Ruta
             </button>
             <div>
-              <p className="text-2xl font-black text-sky-400">
+              <p className="text-2xl font-black text-rose-400">
                 {deliveries.filter(d => d.status === 'delivered').length}/{deliveries.length}
               </p>
               <p className="text-[10px] font-bold text-slate-400 uppercase">Entregas</p>
@@ -207,7 +207,7 @@ export default function DeliveryRoute() {
         </div>
         
         <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-          <div className="bg-sky-500 h-full w-[48%]" />
+          <div className="bg-[#C32A2C] h-full w-[48%]" />
         </div>
       </div>
 
@@ -219,7 +219,7 @@ export default function DeliveryRoute() {
         >
           <div className="flex items-center justify-between px-2">
             <h2 className="text-sm font-black uppercase tracking-widest text-slate-500">Próximas Paradas</h2>
-            <span className="flex items-center gap-1 text-[10px] font-bold bg-sky-100 text-sky-700 px-2 py-1 rounded-lg">
+            <span className="flex items-center gap-1 text-[10px] font-bold bg-rose-100/50 text-[#C32A2C] px-2 py-1 rounded-lg">
               {deliveries.filter(d => d.status !== 'delivered').length} PENDIENTES
             </span>
           </div>
@@ -237,7 +237,7 @@ export default function DeliveryRoute() {
                     }
                   }}
                   className={`bg-white p-5 rounded-3xl border border-slate-200 shadow-sm transition-all cursor-pointer group ${
-                    delivery.status === 'delivered' ? 'opacity-50 grayscale pointer-events-none' : 'hover:border-sky-500'
+                    delivery.status === 'delivered' ? 'opacity-50 grayscale pointer-events-none' : 'hover:border-[#C32A2C]'
                   }`}
                 >
                   <div className="flex justify-between items-start">
@@ -256,11 +256,11 @@ export default function DeliveryRoute() {
                       </p>
                     </div>
                   <div className="text-right">
-                    <p className="text-xs font-black text-sky-600 uppercase">
+                    <p className="text-xs font-black text-[#C32A2C] uppercase">
                       {new Date(delivery.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </p>
                     <span className={`text-[9px] font-bold px-2 py-0.5 rounded-lg uppercase ${
-                      delivery.status === 'assigned' ? 'bg-sky-100 text-sky-600' : 
+                      delivery.status === 'assigned' ? 'bg-rose-100/50 text-[#C32A2C]' : 
                       delivery.status === 'delivered' ? 'bg-emerald-100 text-emerald-600' :
                       'bg-slate-100 text-slate-500'
                     }`}>
@@ -276,7 +276,7 @@ export default function DeliveryRoute() {
                     </span>
                   </div>
                   {delivery.status !== 'delivered' && (
-                    <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-sky-500 group-hover:text-white transition-colors">
+                    <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-[#C32A2C] group-hover:text-white transition-colors">
                       <ArrowLeft size={16} className="rotate-180" />
                     </div>
                   )}
@@ -299,7 +299,7 @@ export default function DeliveryRoute() {
             <ArrowLeft size={16} /> Volver a la Lista
           </button>
 
-          <div className="bg-white p-6 rounded-3xl border-2 border-sky-100 shadow-xl shadow-sky-900/5">
+          <div className="bg-white p-6 rounded-3xl border-2 border-rose-100/30 shadow-xl shadow-[#C32A2C]/5">
             {(() => {
               const currentClientMatch = customersList.find(c => c.name === currentDelivery?.customer_name);
               return (
@@ -317,7 +317,7 @@ export default function DeliveryRoute() {
                       <MapPin size={14} className="text-rose-500 shrink-0" /> {currentDelivery?.address}
                     </p>
                   </div>
-                  <div className="bg-sky-50 text-sky-600 px-3 py-1 rounded-xl text-xs font-black uppercase whitespace-nowrap">
+                  <div className="bg-rose-50/20 text-[#C32A2C] px-3 py-1 rounded-xl text-xs font-black uppercase whitespace-nowrap">
                     {currentDelivery?.status}
                   </div>
                 </div>
@@ -328,7 +328,7 @@ export default function DeliveryRoute() {
               <p className="text-xs font-bold text-slate-500 uppercase tracking-widest border-b border-slate-100 pb-2">Artículos a Entregar</p>
               <div className="flex justify-between items-center bg-slate-50 p-3 rounded-2xl">
                 <span className="text-sm font-bold text-slate-700">{currentDelivery?.items}</span>
-                <span className="text-lg font-black text-sky-600">${currentDelivery?.total_price.toFixed(2)}</span>
+                <span className="text-lg font-black text-[#C32A2C]">${currentDelivery?.total_price.toFixed(2)}</span>
               </div>
             </div>
 
@@ -337,7 +337,7 @@ export default function DeliveryRoute() {
                 onClick={() => currentDelivery && handleOpenNavigation(currentDelivery)}
                 className="flex flex-col items-center justify-center gap-2 bg-slate-100 p-4 rounded-2xl hover:bg-slate-200 transition-all min-h-[44px]"
               >
-                <Navigation size={20} className="text-sky-600" />
+                <Navigation size={20} className="text-[#C32A2C]" />
                 <span className="text-[10px] font-black uppercase text-slate-600">Navegar</span>
               </button>
               <button 
@@ -351,7 +351,7 @@ export default function DeliveryRoute() {
 
             <button 
               onClick={() => setStep(3)}
-              className="w-full bg-sky-500 text-white mt-6 py-5 rounded-2xl font-black text-lg shadow-xl shadow-sky-500/30 active:scale-95 transition-all min-h-[44px]"
+              className="w-full bg-[#C32A2C] text-white mt-6 py-5 rounded-2xl font-black text-lg shadow-xl shadow-[#C32A2C]/30 hover:bg-[#a12022] active:scale-95 transition-all min-h-[44px]"
             >
               Llegué al Domicilio
             </button>
@@ -387,7 +387,7 @@ export default function DeliveryRoute() {
                 <span className="text-4xl font-black text-slate-950 w-12">{jugsReceived}</span>
                 <button 
                   onClick={() => setJugsReceived(jugsReceived + 1)}
-                  className="w-12 h-12 bg-sky-500 rounded-xl flex items-center justify-center text-white active:bg-sky-600 shadow-lg shadow-sky-500/20 min-h-[44px]"
+                  className="w-12 h-12 bg-[#C32A2C] rounded-xl flex items-center justify-center text-white active:bg-[#a12022] shadow-lg shadow-[#C32A2C]/20 min-h-[44px]"
                 >
                   <Plus size={20} />
                 </button>
@@ -409,7 +409,7 @@ export default function DeliveryRoute() {
                       setDeliveryItems(prev => prev + prefix + '1x ' + p.name);
                       setDeliveryTotal(prev => prev + p.price);
                     }}
-                    className="bg-white hover:bg-sky-50 border border-slate-200 hover:border-sky-300 text-slate-700 hover:text-sky-600 px-3 py-2 rounded-xl text-[10px] font-extrabold transition-all text-left flex justify-between items-center"
+                    className="bg-white hover:bg-rose-50/20 border border-slate-200 hover:border-rose-300 hover:text-[#C32A2C] px-3 py-2 rounded-xl text-[10px] font-extrabold transition-all text-left flex justify-between items-center"
                   >
                     <span className="truncate">{p.name}</span>
                     <span className="text-emerald-500 font-mono shrink-0">${p.price}</span>
@@ -421,7 +421,7 @@ export default function DeliveryRoute() {
                 value={deliveryItems}
                 onChange={(e) => setDeliveryItems(e.target.value)}
                 placeholder="Ej. 1x Garrafón 20L, 1x Botella 1.5L"
-                className="w-full p-4 bg-white border border-slate-200 rounded-2xl font-bold text-xs focus:ring-2 focus:ring-sky-500 outline-none h-16 resize-none"
+                className="w-full p-4 bg-white border border-slate-200 rounded-2xl font-bold text-xs focus:ring-2 focus:ring-[#C32A2C]/20 outline-none h-16 resize-none"
               />
 
               <div className="flex justify-between items-center pt-2">
@@ -442,7 +442,7 @@ export default function DeliveryRoute() {
                     step="0.01"
                     value={deliveryTotal}
                     onChange={(e) => setDeliveryTotal(parseFloat(e.target.value) || 0)}
-                    className="w-24 p-2 bg-white border border-slate-200 rounded-xl font-bold text-sm text-right focus:ring-2 focus:ring-sky-500 outline-none"
+                    className="w-24 p-2 bg-white border border-slate-200 rounded-xl font-bold text-sm text-right focus:ring-2 focus:ring-[#C32A2C]/20 outline-none"
                   />
                 </div>
               </div>

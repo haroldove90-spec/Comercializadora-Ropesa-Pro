@@ -206,7 +206,7 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
   const stats = [
     { label: 'Pedidos Hoy', value: orders.length.toString(), subValue: 'Total', color: 'text-white' },
     { label: 'Pdtes de Asignar', value: orders.filter(o => o.status === 'pending').length.toString(), subValue: '! Acción Requerida', color: 'text-[#C32A2C]', trendColor: 'text-[#C32A2C]' },
-    { label: 'En Ruta', value: orders.filter(o => o.status === 'assigned').length.toString(), subValue: 'Activos', color: 'text-sky-400' },
+    { label: 'En Ruta', value: orders.filter(o => o.status === 'assigned').length.toString(), subValue: 'Activos', color: 'text-rose-400' },
   ];
 
   const filteredOrders = orders.filter(order => 
@@ -548,12 +548,12 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
                       {order.status === 'pending' ? (
                         <button 
                           onClick={() => setSelectedOrder(order)}
-                          className="bg-sky-500 text-white px-4 py-2 rounded-xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-sky-200 hover:bg-sky-600 transition-all active:scale-95 flex items-center gap-2"
+                          className="bg-[#C32A2C] text-white px-4 py-2 rounded-xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-[#C32A2C]/20 hover:bg-[#a12022] transition-all active:scale-95 flex items-center gap-2 cursor-pointer"
                         >
                           <UserPlus size={14} /> Asignar
                         </button>
                       ) : (
-                        <button className="text-slate-300 hover:text-sky-500 p-2 transition-colors">
+                        <button className="text-zinc-500 hover:text-[#C32A2C] p-2 transition-colors cursor-pointer">
                           <ChevronRight size={20} />
                         </button>
                       )}
@@ -573,55 +573,55 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
             <motion.div 
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               onClick={() => setSelectedOrder(null)}
-              className="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[100]"
+              className="fixed inset-0 bg-black/80 backdrop-blur-md z-[100]"
             />
             <motion.div 
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white rounded-[48px] shadow-2xl z-[101] overflow-hidden"
+              className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-zinc-950 rounded-[32px] shadow-2xl border border-zinc-900 z-[101] overflow-hidden text-white"
             >
-              <div className="p-10 pb-0 flex justify-between items-center">
+              <div className="p-10 pb-0 flex justify-between items-center bg-zinc-950">
                 <div>
-                  <h2 className="text-2xl font-black text-slate-800 uppercase italic">Despachar <span className="text-sky-500">Pedido</span></h2>
-                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1 italic">Cliente: {selectedOrder.customer_name}</p>
+                  <h2 className="text-2xl font-black text-white uppercase italic">Despachar <span className="text-[#C32A2C]">Pedido</span></h2>
+                  <p className="text-[10px] font-black text-[#C32A2C] uppercase tracking-widest mt-1 italic">Cliente: {selectedOrder.customer_name}</p>
                 </div>
-                <button onClick={() => setSelectedOrder(null)} className="p-3 bg-slate-50 rounded-2xl text-slate-400 hover:text-rose-500">
-                  <X />
+                <button onClick={() => setSelectedOrder(null)} className="p-3 bg-zinc-900 border border-zinc-850 rounded-2xl text-zinc-400 hover:text-[#C32A2C] transition-all cursor-pointer">
+                  <X size={18} />
                 </button>
               </div>
 
               <div className="p-10 pt-8 space-y-6">
-                <div className="bg-slate-50 p-6 rounded-[24px] border border-slate-100 flex items-center justify-between">
+                <div className="bg-[#000000]/60 p-6 rounded-[24px] border border-zinc-900 flex items-center justify-between">
                   <div className="flex flex-col">
-                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Choferes Activos</span>
-                    <span className="text-lg font-black text-slate-800">{drivers.length}</span>
+                    <span className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Choferes Activos</span>
+                    <span className="text-lg font-black text-white">{drivers.length}</span>
                   </div>
-                  <Truck size={32} className="text-sky-500 opacity-20" />
+                  <Truck size={32} className="text-[#C32A2C] opacity-30 animate-pulse" />
                 </div>
 
                 <div className="space-y-3">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1 block mb-2">Seleccionar Vendedor</label>
+                  <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest px-1 block mb-2">Seleccionar Vendedor</label>
                   <div className="max-h-[250px] overflow-y-auto space-y-2 pr-2 custom-scrollbar">
                     {drivers.map(driver => (
                       <button
                         key={driver.id}
                         disabled={isAssigning}
                         onClick={() => handleAssignOrder(driver.id, driver.name)}
-                        className="w-full flex items-center justify-between p-4 bg-white border border-slate-100 rounded-2xl hover:border-sky-500 hover:shadow-lg hover:shadow-sky-500/10 transition-all group"
+                        className="w-full flex items-center justify-between p-4 bg-zinc-900 border border-zinc-850 rounded-2xl hover:border-[#C32A2C] hover:shadow-lg hover:shadow-[#C32A2C]/10 transition-all group cursor-pointer text-white"
                       >
                         <div className="flex items-center gap-4">
-                          <div className="w-10 h-10 bg-sky-50 rounded-xl flex items-center justify-center text-sky-500 group-hover:bg-sky-500 group-hover:text-white transition-colors">
+                          <div className="w-10 h-10 bg-zinc-950 border border-zinc-800 rounded-xl flex items-center justify-center text-[#C32A2C] group-hover:bg-[#C32A2C] group-hover:text-white transition-colors">
                             <Users size={18} />
                           </div>
-                          <span className="font-bold text-slate-700 italic uppercase">{driver.name}</span>
+                          <span className="font-bold text-zinc-250 italic uppercase group-hover:text-white transition-colors">{driver.name}</span>
                         </div>
-                        <Send size={16} className="text-slate-300 group-hover:text-sky-500 transition-colors" />
+                        <Send size={16} className="text-zinc-650 group-hover:text-[#C32A2C] transition-colors" />
                       </button>
                     ))}
                     {drivers.length === 0 && (
-                      <div className="p-8 text-center text-slate-400 border border-dashed border-slate-200 rounded-3xl mt-4">
-                         <Users size={32} className="mx-auto mb-3 opacity-20 text-slate-400" />
+                      <div className="p-8 text-center text-zinc-500 border border-dashed border-zinc-800 rounded-3xl mt-4">
+                         <Users size={32} className="mx-auto mb-3 opacity-20 text-zinc-400" />
                          <p className="text-[10px] font-black uppercase tracking-widest">No hay choferes disponibles</p>
                       </div>
                     )}
@@ -630,7 +630,7 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
 
                 <button 
                   onClick={() => setSelectedOrder(null)}
-                  className="w-full p-4 rounded-2xl font-black uppercase text-[10px] tracking-widest text-slate-400 hover:bg-slate-50 mt-4"
+                  className="w-full p-4 rounded-xl font-black uppercase text-[10px] tracking-widest text-[#C32A2C] hover:bg-[#C32A2C]/10 transition-colors mt-4 cursor-pointer"
                 >
                   Cancelar Operación
                 </button>
@@ -647,28 +647,28 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
             <motion.div 
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               onClick={() => setShowRegisterModal(false)}
-              className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100]"
+              className="fixed inset-0 bg-black/80 backdrop-blur-md z-[100]"
             />
             <motion.div 
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] md:w-full max-w-xl bg-white rounded-[40px] shadow-2xl z-[101] overflow-y-auto max-h-[90vh] md:max-h-auto"
+              className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] md:w-full max-w-xl bg-zinc-950 rounded-[32px] shadow-2xl border border-zinc-900 z-[101] overflow-y-auto max-h-[90vh] md:max-h-auto text-white"
             >
-              <div className="p-8 pb-4 flex justify-between items-center">
-                <h2 className="text-2xl font-black text-slate-800 uppercase italic">Registrar <span className="text-sky-500">Venta/Pedido</span></h2>
-                <button onClick={() => setShowRegisterModal(false)} className="p-2 text-slate-400 hover:text-slate-800">
+              <div className="p-8 pb-4 flex justify-between items-center bg-zinc-950">
+                <h2 className="text-2xl font-black text-white uppercase italic">Registrar <span className="text-[#C32A2C]">Venta/Pedido</span></h2>
+                <button onClick={() => setShowRegisterModal(false)} className="p-2 text-zinc-500 hover:text-[#C32A2C] transition-colors cursor-pointer">
                   <X />
                 </button>
               </div>
 
-              <form onSubmit={handleRegisterOrder} className="p-8 pt-4 grid grid-cols-2 gap-6">
+              <form onSubmit={handleRegisterOrder} className="p-8 pt-4 grid grid-cols-2 gap-6 bg-zinc-950">
                 <div className="col-span-2">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2 px-1">Fuente del Registro</label>
+                  <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest block mb-2 px-1">Fuente del Registro</label>
                   <div className="grid grid-cols-3 gap-2">
                     {[
                       { id: 'local', label: 'Local', icon: Store, color: 'bg-emerald-500', disabled: false },
-                      { id: 'phone', label: 'Teléfono', icon: Phone, color: 'bg-sky-500', disabled: false },
+                      { id: 'phone', label: 'Teléfono', icon: Phone, color: 'bg-[#C32A2C]', disabled: false },
                       { id: 'whatsapp', label: 'WhatsApp', icon: MessageSquare, color: 'bg-green-500', disabled: true }
                     ].map(btn => (
                       <button
@@ -678,10 +678,10 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
                         onClick={() => setNewOrder({...newOrder, source: btn.id as any})}
                         className={`flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all ${
                           btn.disabled 
-                            ? 'opacity-40 cursor-not-allowed border-slate-50 bg-slate-50 text-slate-300'
+                            ? 'opacity-40 cursor-not-allowed border-zinc-900 bg-zinc-900 text-zinc-650'
                             : newOrder.source === btn.id 
                               ? `border-transparent text-white ${btn.color}` 
-                              : 'border-slate-50 text-slate-400 bg-slate-50 hover:bg-slate-100'
+                              : 'border-zinc-900 text-zinc-500 bg-zinc-900/40 hover:bg-zinc-900'
                         }`}
                       >
                         <btn.icon size={20} />
@@ -693,11 +693,11 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
 
                 <div className={`${newOrder.source === 'local' ? 'col-span-2' : 'col-span-1'} relative`}>
                   <div className="flex justify-between items-center mb-2 px-1">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Nombre del Cliente</label>
+                    <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest block">Nombre del Cliente</label>
                     <button
                       type="button"
                       onClick={() => setShowNewCustomerModal(true)}
-                      className="text-[10px] font-black text-sky-500 hover:text-sky-600 uppercase tracking-wider flex items-center gap-1 transition-colors"
+                      className="text-[10px] font-black text-[#C32A2C] hover:text-[#a12022] uppercase tracking-wider flex items-center gap-1 transition-colors cursor-pointer"
                     >
                       <UserPlus size={12} /> + Nuevo Cliente
                     </button>
@@ -717,12 +717,12 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
                       setShowCustomerDropdown(true);
                     }}
                     placeholder="Escribe para buscar o ingresar..."
-                    className="w-full p-4 bg-slate-50 border-none rounded-2xl font-bold focus:ring-2 focus:ring-sky-500 outline-none"
+                    className="w-full p-4 bg-zinc-900 border border-zinc-850 rounded-2xl font-bold text-white placeholder-zinc-500 focus:ring-2 focus:ring-[#C32A2C] outline-none"
                   />
                   
                   {showCustomerDropdown && (
-                    <div className="absolute left-0 right-0 z-[110] mt-1 bg-white border border-slate-100 rounded-2xl shadow-xl max-h-48 overflow-y-auto custom-scrollbar">
-                      <div className="p-2 border-b border-slate-50 text-[9px] font-black uppercase text-slate-400 tracking-wider">
+                    <div className="absolute left-0 right-0 z-[110] mt-1 bg-zinc-900 border border-zinc-800 rounded-2xl shadow-xl max-h-48 overflow-y-auto custom-scrollbar text-white">
+                      <div className="p-2 border-b border-zinc-800 text-[9px] font-black uppercase text-zinc-500 tracking-wider">
                         Clientes Registrados
                       </div>
                       {customers
@@ -739,14 +739,14 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
                               });
                               setShowCustomerDropdown(false);
                             }}
-                            className="w-full text-left p-3 hover:bg-slate-50 flex flex-col transition-colors border-b border-slate-50 last:border-none"
+                            className="w-full text-left p-3 hover:bg-zinc-800 flex flex-col transition-colors border-b border-zinc-800 last:border-none cursor-pointer"
                           >
-                            <span className="font-bold text-xs text-slate-800">{c.name}</span>
-                            <span className="text-[10px] font-medium text-slate-400">{c.address || 'Sin dirección'}</span>
+                            <span className="font-bold text-xs text-white">{c.name}</span>
+                            <span className="text-[10px] font-medium text-zinc-400">{c.address || 'Sin dirección'}</span>
                           </button>
                         ))}
                       {customers.filter(c => c.name.toLowerCase().includes(customerSearchQuery.toLowerCase())).length === 0 && (
-                        <div className="p-4 text-center text-xs text-slate-400 font-bold">
+                        <div className="p-4 text-center text-xs text-zinc-500 font-bold">
                           Sin coincidencias. Haz clic en "+ Nuevo Cliente" arriba.
                         </div>
                       )}
@@ -762,20 +762,20 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
 
                 {newOrder.source !== 'local' && (
                   <div className="col-span-1">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2 px-1">Dirección de Entrega</label>
+                    <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest block mb-2 px-1">Dirección de Entrega</label>
                     <input 
                       required
                       type="text"
                       value={newOrder.address}
                       onChange={(e) => setNewOrder({...newOrder, address: e.target.value})}
                       placeholder="Calle, Colonia, CP"
-                      className="w-full p-4 bg-slate-50 border-none rounded-2xl font-bold focus:ring-2 focus:ring-sky-500 outline-none"
+                      className="w-full p-4 bg-zinc-900 border border-zinc-850 rounded-2xl font-bold text-white placeholder-zinc-500 focus:ring-2 focus:ring-[#C32A2C] outline-none"
                     />
                   </div>
                 )}
 
                 <div className="col-span-2">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2 px-1">Detalle de Productos</label>
+                  <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest block mb-2 px-1">Detalle de Productos</label>
                   <div className="flex flex-wrap gap-2 mb-3">
                     {products.map(p => (
                       <button
@@ -790,7 +790,7 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
                             total_price: currentTotal.toFixed(2)
                           });
                         }}
-                        className="bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-600 px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all"
+                        className="bg-zinc-900 hover:bg-[#C32A2C]/25 text-zinc-350 hover:text-white border border-zinc-850 hover:border-[#C32A2C]/50 px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all cursor-pointer"
                       >
                         + {p.name} (${p.price})
                       </button>
@@ -801,14 +801,14 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
                     value={newOrder.items}
                     onChange={(e) => setNewOrder({...newOrder, items: e.target.value})}
                     placeholder="Ej. 1x Garrafón 20L"
-                    className="w-full p-4 bg-slate-50 border-none rounded-2xl font-bold focus:ring-2 focus:ring-sky-500 outline-none h-20 resize-none"
+                    className="w-full p-4 bg-zinc-900 border border-zinc-850 rounded-2xl font-bold text-white placeholder-zinc-500 focus:ring-2 focus:ring-[#C32A2C] outline-none h-20 resize-none"
                   />
                 </div>
 
                 <div className="col-span-2">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2 px-1">Total ($)</label>
+                  <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest block mb-2 px-1">Total ($)</label>
                   <div className="relative">
-                    <DollarSign size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-500" />
+                    <DollarSign size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#C32A2C]" />
                     <input 
                       required
                       type="number"
@@ -816,14 +816,14 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
                       value={newOrder.total_price}
                       onChange={(e) => setNewOrder({...newOrder, total_price: e.target.value})}
                       placeholder="0.00"
-                      className="w-full p-4 pl-10 bg-slate-50 border-none rounded-2xl font-bold focus:ring-2 focus:ring-sky-500 outline-none text-xl"
+                      className="w-full p-4 pl-10 bg-zinc-900 border border-zinc-850 text-white font-bold rounded-2xl focus:ring-2 focus:ring-[#C32A2C] outline-none text-xl"
                     />
                   </div>
                 </div>
 
                 {newOrder.source !== 'local' && (
                   <div className="col-span-2">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2 px-1">Asignar Vendedor (Opcional)</label>
+                    <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest block mb-2 px-1">Asignar Vendedor (Opcional)</label>
                     <select 
                       value={newOrder.assigned_to}
                       onChange={(e) => {
@@ -834,11 +834,11 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
                           assigned_to_name: driver ? driver.name : ''
                         });
                       }}
-                      className="w-full p-4 bg-slate-50 border-none rounded-2xl font-bold focus:ring-2 focus:ring-sky-500 outline-none appearance-none"
+                      className="w-full p-4 bg-zinc-900 border border-zinc-850 rounded-2xl font-bold text-white focus:ring-2 focus:ring-[#C32A2C] outline-none appearance-none"
                     >
-                      <option value="">Pendiente de Asignar</option>
+                      <option value="" className="bg-zinc-900 text-white">Pendiente de Asignar</option>
                       {drivers.map(driver => (
-                        <option key={driver.id} value={driver.id}>
+                        <option key={driver.id} value={driver.id} className="bg-zinc-900 text-white">
                           {driver.name.toUpperCase()}
                         </option>
                       ))}
@@ -850,14 +850,14 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
                   <button 
                     type="button"
                     onClick={() => setShowRegisterModal(false)}
-                    className="flex-1 p-4 rounded-2xl font-black uppercase text-[10px] tracking-widest text-slate-400 hover:bg-slate-50"
+                    className="flex-1 p-4 rounded-xl font-black uppercase text-[10px] tracking-widest text-[#C32A2C] hover:bg-[#C32A2C]/10 transition-colors cursor-pointer"
                   >
                     Cerrar
                   </button>
                   <button 
                     type="submit"
                     disabled={isSavingOrder}
-                    className="flex-[2] bg-sky-500 text-white p-4 rounded-2xl font-black uppercase text-[10px] tracking-widest shadow-lg shadow-sky-200 active:scale-95 transition-all flex items-center justify-center gap-2"
+                    className="flex-[2] bg-[#C32A2C] text-white p-4 rounded-2xl font-black uppercase text-[10px] tracking-widest shadow-lg shadow-[#C32A2C]/20 hover:bg-[#a12022] active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer"
                   >
                     {isSavingOrder ? <Loader2 className="animate-spin" size={16} /> : <Save size={16} />}
                     Finalizar Registro
@@ -878,23 +878,23 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => !isSavingCustomer && setShowNewCustomerModal(false)}
-              className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+              className="absolute inset-0 bg-black/80 backdrop-blur-md"
             />
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-md bg-white rounded-[40px] shadow-2xl overflow-hidden p-8 z-[121]"
+              className="relative w-full max-w-md bg-zinc-950 rounded-[32px] shadow-2xl p-8 border border-zinc-900 z-[121] text-white"
             >
               <div className="flex justify-between items-center mb-6">
-                <h3 className="text-xl font-black text-slate-800 uppercase italic">Alta de <span className="text-sky-500">Cliente (Pedido)</span></h3>
+                <h3 className="text-xl font-black text-white uppercase italic">Alta de <span className="text-[#C32A2C]">Cliente (Pedido)</span></h3>
                 <button 
                   type="button"
                   onClick={() => setShowNewCustomerModal(false)}
                   disabled={isSavingCustomer}
-                  className="p-2 hover:bg-slate-100 rounded-xl transition-colors"
+                  className="p-2 hover:bg-zinc-900 rounded-xl transition-colors text-zinc-400 hover:text-white cursor-pointer"
                 >
-                  <X size={20} className="text-slate-400" />
+                  <X size={20} />
                 </button>
               </div>
 
@@ -959,48 +959,48 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
                 } finally {
                   setIsSavingCustomer(false);
                 }
-              }} className="space-y-4">
+              }} className="space-y-4 bg-zinc-950">
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Nombre Completo / Razón Social</label>
-                  <input name="name" required type="text" placeholder="Ej. Juan Pérez / Residencial Palmas" className="w-[100%] bg-slate-50 border border-slate-100 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-sky-500/20 transition-all font-bold" />
+                  <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Nombre Completo / Razón Social</label>
+                  <input name="name" required type="text" placeholder="Ej. Juan Pérez / Residencial Palmas" className="w-[100%] bg-zinc-900 border border-zinc-850 text-white placeholder-zinc-500 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-[#C32A2C] transition-all font-bold" />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Alias / Identificador Corto (Opcional)</label>
-                  <input name="alias" type="text" placeholder="Ej. Palmas 3, Ofi Carlos, Don Pedro" className="w-[100%] bg-slate-50 border border-slate-100 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-sky-500/20 transition-all font-bold" />
+                  <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Alias / Identificador Corto (Opcional)</label>
+                  <input name="alias" type="text" placeholder="Ej. Palmas 3, Ofi Carlos, Don Pedro" className="w-[100%] bg-zinc-900 border border-zinc-850 text-white placeholder-zinc-500 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-[#C32A2C] transition-all font-bold" />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Dirección de Entrega</label>
-                  <input name="address" required type="text" placeholder="Ej. Calle Palmas #123, Santa Fe" className="w-[100%] bg-slate-50 border border-slate-100 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-sky-500/20 transition-all font-bold" />
+                  <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Dirección de Entrega</label>
+                  <input name="address" required type="text" placeholder="Ej. Calle Palmas #123, Santa Fe" className="w-[100%] bg-zinc-900 border border-zinc-850 text-white placeholder-zinc-500 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-[#C32A2C] transition-all font-bold" />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Teléfono</label>
-                    <input name="phone" required type="tel" placeholder="55 1234 5678" className="w-[100%] bg-slate-50 border border-slate-100 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-sky-500/20 transition-all font-bold" />
+                    <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Teléfono</label>
+                    <input name="phone" required type="tel" placeholder="55 1234 5678" className="w-[100%] bg-zinc-900 border border-zinc-850 text-white placeholder-zinc-500 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-[#C32A2C] transition-all font-bold" />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Nivel</label>
-                    <select name="tier" className="w-[100%] bg-slate-50 border border-slate-100 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-sky-500/20 transition-all font-bold appearance-none">
-                      <option value="frequent">Frecuente</option>
-                      <option value="vip">VIP</option>
-                      <option value="company">Empresa</option>
+                    <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Nivel</label>
+                    <select name="tier" className="w-[100%] bg-zinc-900 border border-zinc-850 text-white p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-[#C32A2C] transition-all font-bold appearance-none">
+                      <option value="frequent" className="bg-zinc-900 text-white">Frecuente</option>
+                      <option value="vip" className="bg-zinc-900 text-white">VIP</option>
+                      <option value="company" className="bg-zinc-900 text-white">Empresa</option>
                     </select>
                   </div>
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Link de Ubicación (Google Maps / Waze)</label>
+                  <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Link de Ubicación (Google Maps / Waze)</label>
                   <input 
                     name="geolocation_url"
                     type="url" 
                     placeholder="https://maps.google.com/..." 
-                    className="w-[100%] bg-slate-50 border border-slate-100 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-sky-500/20 transition-all font-bold" 
+                    className="w-[100%] bg-zinc-900 border border-zinc-850 text-white placeholder-zinc-500 p-4 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-[#C32A2C] transition-all font-bold" 
                   />
                 </div>
 
                 <button 
                   type="submit"
                   disabled={isSavingCustomer}
-                  className="w-full bg-sky-500 text-white py-5 rounded-3xl font-black uppercase tracking-widest text-xs shadow-xl shadow-sky-500/20 hover:bg-sky-600 transition-all active:scale-95 mt-4 flex items-center justify-center gap-2"
+                  className="w-full bg-[#C32A2C] text-white py-5 rounded-3xl font-black uppercase tracking-widest text-xs shadow-xl shadow-[#C32A2C]/20 hover:bg-[#a12022] transition-all active:scale-95 mt-4 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {isSavingCustomer ? (
                     <>

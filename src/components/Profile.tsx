@@ -269,7 +269,7 @@ export default function Profile() {
         {/* Left Side: Avatar & Basic Info */}
         <div className="flex flex-col items-center text-center space-y-6 lg:w-1/3">
           <div className="relative group">
-            <div className="w-40 h-40 bg-gradient-to-tr from-sky-500 to-indigo-600 rounded-[56px] flex items-center justify-center text-white text-5xl font-black shadow-2xl overflow-hidden ring-8 ring-white">
+            <div className="w-40 h-40 bg-gradient-to-tr from-[#C32A2C] to-red-600 rounded-[56px] flex items-center justify-center text-white text-5xl font-black shadow-2xl overflow-hidden ring-8 ring-white">
               {user?.avatar_url ? (
                 <img src={user.avatar_url} alt={user.name} className="w-full h-full object-cover" />
               ) : (
@@ -278,7 +278,7 @@ export default function Profile() {
             </div>
             <button 
               onClick={() => fileInputRef.current?.click()}
-              className="absolute -bottom-2 -right-2 w-12 h-12 bg-sky-500 text-white border-4 border-white rounded-2xl flex items-center justify-center shadow-xl hover:scale-110 active:scale-95 transition-all"
+              className="absolute -bottom-2 -right-2 w-12 h-12 bg-[#C32A2C] text-white border-4 border-white rounded-2xl flex items-center justify-center shadow-xl hover:scale-110 active:scale-95 transition-all"
             >
               <Camera size={20} />
             </button>
@@ -288,14 +288,14 @@ export default function Profile() {
               onChange={handlePhotoUpload} 
               className="hidden" 
               accept="image/*" 
-            />
+              />
           </div>
           
           <div>
             <h1 className="text-3xl font-black text-slate-800 tracking-tight leading-none italic uppercase">
               {user?.name || 'Usuario'}
             </h1>
-            <p className="text-sky-500 font-bold italic mt-2 uppercase text-xs tracking-widest">
+            <p className="text-[#C32A2C] font-bold italic mt-2 uppercase text-xs tracking-widest">
               {user?.role === 'admin' ? 'Administrador Maestro' : 
                user?.role === 'operator' ? 'Operador de Planta' : 
                user?.role === 'driver' ? 'Experto en Logística (Chofer)' : 'Cliente Distinguido'}
@@ -328,7 +328,7 @@ export default function Profile() {
               <h3 className="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">Información General</h3>
               <button 
                 onClick={() => setEditMode(!editMode)}
-                className="text-xs font-black text-sky-500 uppercase tracking-widest hover:underline"
+                className="text-xs font-black text-[#C32A2C] uppercase tracking-widest hover:underline"
               >
                 {editMode ? 'Cancelar' : 'Editar Perfil'}
               </button>
@@ -346,7 +346,7 @@ export default function Profile() {
                         disabled={!editMode}
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-3xl text-sm font-black text-slate-700 outline-none focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 transition-all disabled:opacity-70"
+                        className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-3xl text-sm font-black text-slate-700 outline-none focus:ring-4 focus:ring-[#C32A2C]/10 focus:border-[#C32A2C] transition-all disabled:opacity-70"
                       />
                     </div>
                   </div>
@@ -359,7 +359,7 @@ export default function Profile() {
                         disabled={!editMode}
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
-                        className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-3xl text-sm font-black text-slate-700 outline-none focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 transition-all disabled:opacity-70"
+                        className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-3xl text-sm font-black text-slate-700 outline-none focus:ring-4 focus:ring-[#C32A2C]/10 focus:border-[#C32A2C] transition-all disabled:opacity-70"
                       />
                     </div>
                   </div>
@@ -375,7 +375,7 @@ export default function Profile() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="email@ejemplo.com"
-                      className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-3xl text-sm font-black text-slate-700 outline-none focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 transition-all disabled:opacity-70"
+                      className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-3xl text-sm font-black text-slate-700 outline-none focus:ring-4 focus:ring-[#C32A2C]/10 focus:border-[#C32A2C] transition-all disabled:opacity-70"
                     />
                   </div>
                 </div>
@@ -401,10 +401,10 @@ export default function Profile() {
             <div className="p-8 space-y-4">
               <button 
                 onClick={() => setShowPasswordModal(true)}
-                className="w-full flex items-center justify-between p-6 bg-slate-50 rounded-3xl border border-slate-100 hover:bg-sky-50 hover:border-sky-100 transition-colors group"
+                className="w-full flex items-center justify-between p-6 bg-slate-50 rounded-3xl border border-slate-100 hover:bg-rose-50/50 hover:border-rose-100/30 transition-colors group"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-slate-400 group-hover:text-sky-500 shadow-sm transition-colors">
+                  <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-slate-400 group-hover:text-[#C32A2C] shadow-sm transition-colors">
                     <Lock size={20} />
                   </div>
                   <div className="text-left">
@@ -412,7 +412,7 @@ export default function Profile() {
                     <p className="text-sm font-black text-slate-800 uppercase italic">Cambiar Contraseña</p>
                   </div>
                 </div>
-                <ChevronRight size={20} className="text-slate-300 group-hover:text-sky-500 transition-all" />
+                <ChevronRight size={20} className="text-slate-300 group-hover:text-[#C32A2C] transition-all" />
               </button>
 
               <div className="flex items-center gap-4 p-6 bg-indigo-50/50 rounded-3xl border border-indigo-100">
@@ -477,7 +477,7 @@ export default function Profile() {
               className="bg-white w-full max-w-sm rounded-[48px] p-10 shadow-2xl border border-slate-100"
             >
               <div className="text-center mb-8">
-                <div className="w-16 h-16 bg-sky-500 text-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-sky-500/20">
+                <div className="w-16 h-16 bg-[#C32A2C] text-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-[#C32A2C]/20">
                   <Lock size={32} />
                 </div>
                 <h3 className="text-xl font-black text-slate-800 uppercase tracking-tight">Nueva Contraseña</h3>
@@ -494,12 +494,12 @@ export default function Profile() {
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
                       placeholder="••••••••"
-                      className="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-3xl text-sm font-black text-slate-700 outline-none focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 transition-all"
+                      className="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-3xl text-sm font-black text-slate-700 outline-none focus:ring-4 focus:ring-[#C32A2C]/10 focus:border-[#C32A2C] transition-all"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-sky-500 transition-colors"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-[#C32A2C] transition-colors"
                     >
                       {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                     </button>
@@ -517,7 +517,7 @@ export default function Profile() {
                   <button 
                     type="submit"
                     disabled={saving}
-                    className="flex-1 py-4 bg-sky-500 text-white rounded-2xl font-black uppercase text-[10px] tracking-widest shadow-lg shadow-sky-500/20 hover:bg-sky-600 transition-all"
+                    className="flex-1 py-4 bg-[#C32A2C] text-white rounded-2xl font-black uppercase text-[10px] tracking-widest shadow-lg shadow-[#C32A2C]/20 hover:bg-[#a12022] transition-all"
                   >
                     {saving ? 'Cargando...' : 'Cambiar'}
                   </button>

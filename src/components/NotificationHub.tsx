@@ -48,9 +48,9 @@ export default function NotificationHub({ userRole, onViewAll }: NotificationHub
               initial={{ opacity: 0, x: 50, scale: 0.9 }}
               animate={{ opacity: 1, x: 0, scale: 1 }}
               exit={{ opacity: 0, x: 20, scale: 0.9 }}
-              className="bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-2xl border-l-4 border-sky-500 flex items-center gap-4 min-w-[280px]"
+              className="bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-2xl border-l-4 border-[#C32A2C] flex items-center gap-4 min-w-[280px]"
             >
-              <div className="w-10 h-10 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-rose-100/50 text-[#C32A2C] flex items-center justify-center">
                 {toast.type === 'order' ? <MessageSquare size={18} /> : <Clock size={18} />}
               </div>
               <div>
@@ -80,7 +80,7 @@ export default function NotificationHub({ userRole, onViewAll }: NotificationHub
             >
               <div className="p-6 border-b border-slate-50 flex items-center justify-between bg-slate-50/50">
                 <div>
-                  <h3 className="text-sm font-black text-slate-800 uppercase tracking-widest italic">Panel de <span className="text-sky-500">Alertas</span></h3>
+                  <h3 className="text-sm font-black text-slate-800 uppercase tracking-widest italic">Panel de <span className="text-[#C32A2C]">Alertas</span></h3>
                   <p className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">Historial de Notificaciones</p>
                 </div>
                 <button 
@@ -109,14 +109,14 @@ export default function NotificationHub({ userRole, onViewAll }: NotificationHub
                         className={`group p-4 rounded-2xl transition-all cursor-pointer border ${
                           notif.read 
                             ? 'bg-white border-transparent' 
-                            : 'bg-sky-50/50 border-sky-100'
+                            : 'bg-rose-50/20 border-rose-100/30'
                         }`}
                       >
                         <div className="flex gap-4">
                           <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
                             notif.type === 'order' ? 'bg-emerald-100 text-emerald-600' :
                             notif.type === 'attendance' ? 'bg-amber-100 text-amber-600' :
-                            'bg-sky-100 text-sky-600'
+                            'bg-rose-100/50 text-[#C32A2C]'
                           }`}>
                             {notif.type === 'order' ? <MessageSquare size={18} /> :
                              notif.type === 'attendance' ? <Clock size={18} /> :
@@ -145,7 +145,7 @@ export default function NotificationHub({ userRole, onViewAll }: NotificationHub
                       onViewAll();
                       setIsOpen(false);
                     }}
-                    className="w-full p-4 bg-sky-500 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all shadow-lg shadow-sky-500/20 active:scale-95"
+                    className="w-full p-4 bg-[#C32A2C] text-white rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all shadow-lg shadow-[#C32A2C]/20 hover:bg-[#a12022] active:scale-95"
                   >
                     Ver todas las notificaciones
                   </button>

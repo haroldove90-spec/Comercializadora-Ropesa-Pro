@@ -1014,7 +1014,7 @@ export default function CashFloat({ userRole }: CashFloatProps) {
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-2">
         <div>
           <h2 className="text-3xl font-black text-slate-800 italic uppercase">
-            Módulo <span className="text-sky-500">Fondo de Caja</span>
+            Módulo <span className="text-[#C32A2C]">Fondo de Caja</span>
           </h2>
           <p className="text-sm font-bold text-slate-400 mt-2 uppercase tracking-widest leading-none">
             {isAdmin 
@@ -1062,7 +1062,7 @@ export default function CashFloat({ userRole }: CashFloatProps) {
 
       {loading ? (
         <div className="bg-white rounded-[40px] border border-slate-100 p-20 flex flex-col justify-center items-center shadow-sm">
-          <Loader2 size={48} className="text-sky-500 animate-spin mb-4" />
+          <Loader2 size={48} className="text-[#C32A2C] animate-spin mb-4" />
           <p className="font-black text-slate-400 uppercase text-xs tracking-widest">Cargando cuentas de caja...</p>
         </div>
       ) : (
@@ -1075,7 +1075,7 @@ export default function CashFloat({ userRole }: CashFloatProps) {
                 <div className="bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm relative overflow-hidden">
                   <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Fondos de Caja Asignados</p>
                   <p className="text-2xl font-black text-slate-800 mt-2">${assignedFloatsTotal.toLocaleString('es-MX', { minimumFractionDigits: 2 })}</p>
-                  <div className="absolute top-6 right-6 w-10 h-10 bg-sky-50 rounded-2xl flex items-center justify-center text-sky-500">
+                  <div className="absolute top-6 right-6 w-10 h-10 bg-rose-50/20 rounded-2xl flex items-center justify-center text-[#C32A2C]">
                     <DollarSign size={20} />
                   </div>
                 </div>
@@ -1109,8 +1109,8 @@ export default function CashFloat({ userRole }: CashFloatProps) {
               <div className="bg-white rounded-[40px] border border-slate-100 p-8 shadow-sm space-y-6">
                 <div>
                   <h3 className="font-black text-slate-800 uppercase text-sm tracking-tight flex items-center gap-2">
-                    <Plus size={18} className="text-sky-500" />
-                    Registrar y Asignar <span className="text-sky-500">Fondo de Caja</span>
+                    <Plus size={18} className="text-[#C32A2C]" />
+                    Registrar y Asignar <span className="text-[#C32A2C]">Fondo de Caja</span>
                   </h3>
                   <p className="text-[10px] font-bold text-slate-400 uppercase mt-0.5">
                     Habilita el fondo de caja diario seleccionando a cualquier empleado, ingresando el monto y enviando el registro
@@ -1124,7 +1124,7 @@ export default function CashFloat({ userRole }: CashFloatProps) {
                     <select
                       value={formEmployeeName}
                       onChange={(e) => setFormEmployeeName(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl text-xs font-black text-slate-700 outline-none focus:ring-2 focus:ring-sky-500/20 transition-all cursor-pointer"
+                      className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl text-xs font-black text-slate-700 outline-none focus:ring-2 focus:ring-[#C32A2C]/20 focus:border-[#C32A2C] transition-all cursor-pointer"
                     >
                       <option value="">Selecciona un empleado...</option>
                       {employees.map(e => (
@@ -1146,7 +1146,7 @@ export default function CashFloat({ userRole }: CashFloatProps) {
                         value={formFloatAmount}
                         onChange={(e) => setFormFloatAmount(e.target.value)}
                         placeholder="Ej. 600"
-                        className="w-full bg-slate-50 border border-slate-100 pl-8 pr-4 py-4 rounded-2xl text-xs font-black text-slate-800 outline-none focus:ring-2 focus:ring-sky-500/20 transition-all placeholder:font-bold"
+                        className="w-full bg-slate-50 border border-slate-100 pl-8 pr-4 py-4 rounded-2xl text-xs font-black text-slate-800 outline-none focus:ring-2 focus:ring-[#C32A2C]/20 focus:border-[#C32A2C] transition-all placeholder:font-bold"
                       />
                     </div>
                   </div>
@@ -1178,7 +1178,7 @@ export default function CashFloat({ userRole }: CashFloatProps) {
                     <button
                       type="submit"
                       disabled={actionLoading}
-                      className="w-full bg-sky-500 hover:bg-sky-600 text-white py-4 px-6 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-sky-500/10 transition-all active:scale-95 flex items-center justify-center gap-2"
+                      className="w-full bg-[#C32A2C] hover:bg-[#a12022] text-white py-4 px-6 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-[#C32A2C]/10 transition-all active:scale-95 flex items-center justify-center gap-2"
                     >
                       {actionLoading ? (
                         <Loader2 size={14} className="animate-spin" />
@@ -1196,7 +1196,7 @@ export default function CashFloat({ userRole }: CashFloatProps) {
                 <div className="p-8 border-b border-slate-50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div>
                     <h3 className="font-black text-slate-800 uppercase text-[10px] tracking-widest flex items-center gap-2">
-                      <ClipboardList size={18} className="text-sky-500" />
+                      <ClipboardList size={18} className="text-[#C32A2C]" />
                       Estado de Fondos y Cierres de Personal
                     </h3>
                     <p className="text-[9px] font-bold text-slate-400 uppercase mt-1">Asignación diaria de fondos e historial de liquidaciones de hoy</p>
@@ -1267,7 +1267,7 @@ export default function CashFloat({ userRole }: CashFloatProps) {
                                   setSelectedEmployees(driversStatusData.map(d => d.name));
                                 }
                               }}
-                              className="rounded border-slate-300 text-sky-600 focus:ring-sky-500 cursor-pointer h-4 w-4"
+                              className="rounded border-slate-300 text-[#C32A2C] focus:ring-[#C32A2C] cursor-pointer h-4 w-4"
                             />
                           </th>
                         )}
@@ -1302,7 +1302,7 @@ export default function CashFloat({ userRole }: CashFloatProps) {
                                       setSelectedEmployees([...selectedEmployees, drv.name]);
                                     }
                                   }}
-                                  className="rounded border-slate-300 text-sky-600 focus:ring-sky-500 cursor-pointer h-4 w-4"
+                                  className="rounded border-slate-300 text-[#C32A2C] focus:ring-[#C32A2C] cursor-pointer h-4 w-4"
                                 />
                               </td>
                             )}
@@ -1314,7 +1314,7 @@ export default function CashFloat({ userRole }: CashFloatProps) {
                                     ? 'bg-rose-50 text-rose-500 border border-rose-100' 
                                     : drv.role === 'operator' 
                                       ? 'bg-indigo-50 text-indigo-500 border border-indigo-100'
-                                      : 'bg-sky-50 text-sky-500 border border-sky-100'
+                                      : 'bg-rose-50 text-[#C32A2C] border border-rose-100/50'
                                 }`}>
                                   {drv.role === 'admin' ? 'Admin' : drv.role === 'operator' ? 'Planta' : 'Repartidor'}
                                 </span>
@@ -1394,7 +1394,7 @@ export default function CashFloat({ userRole }: CashFloatProps) {
                                 {!drv.is_closed && drv.cash_float !== null ? (
                                   <button
                                     onClick={() => setSelectedDriverForClose(drv)}
-                                    className="px-3 py-1.5 bg-sky-500 hover:bg-sky-600 text-white rounded-xl font-black text-[9px] uppercase tracking-widest shadow-md shadow-sky-100 transition-all active:scale-95"
+                                    className="px-3 py-1.5 bg-[#C32A2C] hover:bg-[#a12022] text-white rounded-xl font-black text-[9px] uppercase tracking-widest shadow-md shadow-[#C32A2C]/10 transition-all active:scale-95"
                                   >
                                     Cerrar Caja
                                   </button>
@@ -1405,7 +1405,7 @@ export default function CashFloat({ userRole }: CashFloatProps) {
                                   <>
                                     <button
                                       onClick={() => handleExportReceiptPDF(drv)}
-                                      className="p-2 bg-slate-50 text-slate-400 hover:text-sky-500 rounded-xl hover:bg-slate-100 transition-all"
+                                      className="p-2 bg-slate-50 text-slate-400 hover:text-[#C32A2C] rounded-xl hover:bg-slate-100 transition-all"
                                       title="Comprobante PDF"
                                     >
                                       <Printer size={15} />
@@ -1435,7 +1435,7 @@ export default function CashFloat({ userRole }: CashFloatProps) {
               {/* Shift status banner */}
               <div className="bg-slate-900 text-white p-8 rounded-[40px] shadow-2xl relative overflow-hidden">
                 <div className="relative z-10 space-y-4">
-                  <span className="text-[9px] font-black text-sky-400 uppercase tracking-[0.2em] block">
+                  <span className="text-[9px] font-black text-rose-400 uppercase tracking-[0.2em] block">
                     {currentUser.role === 'operator' ? 'SISTEMA DE LIQUIDACIÓN DE PLANTA' : 'SISTEMA DE LIQUIDACIÓN DE RUTA'}
                   </span>
                   <div className="flex items-center gap-4">
@@ -1479,7 +1479,7 @@ export default function CashFloat({ userRole }: CashFloatProps) {
                     )}
                   </div>
                 </div>
-                <div className="absolute -top-12 -right-12 w-48 h-48 bg-sky-500/10 rounded-full blur-3xl" />
+                <div className="absolute -top-12 -right-12 w-48 h-48 bg-[#C32A2C]/10 rounded-full blur-3xl" />
               </div>
 
               {/* Main workflow box */}
@@ -1563,21 +1563,21 @@ export default function CashFloat({ userRole }: CashFloatProps) {
                   </div>
 
                   {/* Math Formula visual presentation */}
-                  <div className="bg-sky-50/50 p-8 rounded-[36px] border border-sky-100/50 space-y-6">
-                    <h4 className="text-[10px] font-black text-sky-600 uppercase tracking-widest mb-1">Cálculo de Fórmula de Cierre de Caja</h4>
+                  <div className="bg-rose-50/20 p-8 rounded-[36px] border border-rose-100/30 space-y-6">
+                    <h4 className="text-[10px] font-black text-[#C32A2C] uppercase tracking-widest mb-1">Cálculo de Fórmula de Cierre de Caja</h4>
                     
                     <div className="space-y-3 font-bold text-sm text-slate-600">
                       <div className="flex justify-between">
                         <span>Fondo de Caja inicial:</span>
                         <span className="text-slate-800">${Number(activeDriverSession.last_location.cash_float).toFixed(2)}</span>
                       </div>
-                      <div className="flex justify-between border-b border-sky-100 pb-3">
+                      <div className="flex justify-between border-b border-rose-100/30 pb-3">
                         <span>+ Ventas cobradas hoy:</span>
                         <span className="text-slate-800">${Number(getDriverSalesObj(currentUser.name).salesTotal).toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between text-base font-black pt-2 text-slate-800">
                         <span className="uppercase">EFECTIVO A ENTREGAR:</span>
-                        <span className="text-sky-600">
+                        <span className="text-[#C32A2C]">
                           ${(Number(activeDriverSession.last_location.cash_float) + Number(getDriverSalesObj(currentUser.name).salesTotal)).toFixed(2)}
                         </span>
                       </div>
@@ -1643,7 +1643,7 @@ export default function CashFloat({ userRole }: CashFloatProps) {
               className="relative w-full max-w-md bg-white rounded-[40px] shadow-2xl overflow-hidden p-8 z-[121]"
             >
               <div className="flex justify-between items-center mb-6">
-                <h3 className="text-lg font-black text-slate-800 uppercase italic">Asignar <span className="text-sky-500">Fondo de Caja</span></h3>
+                <h3 className="text-lg font-black text-slate-800 uppercase italic">Asignar <span className="text-[#C32A2C]">Fondo de Caja</span></h3>
                 <button 
                   type="button"
                   onClick={() => setSelectedDriverForFloat(null)}
@@ -1656,7 +1656,7 @@ export default function CashFloat({ userRole }: CashFloatProps) {
 
               <div className="space-y-6">
                 <div className="bg-slate-50 p-4 rounded-2xl flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-sky-500 text-white flex items-center justify-center font-black">
+                  <div className="w-10 h-10 rounded-xl bg-[#C32A2C] text-white flex items-center justify-center font-black">
                     {selectedDriverForFloat.name.charAt(0)}
                   </div>
                   <div>
@@ -1676,7 +1676,7 @@ export default function CashFloat({ userRole }: CashFloatProps) {
                         onClick={() => setCustomFloatAmount(val)}
                         className={`p-3 rounded-2xl font-black text-xs transition-all border ${
                           customFloatAmount === val 
-                            ? 'bg-sky-50 border-sky-500 text-sky-600' 
+                            ? 'bg-rose-50 border-[#C32A2C] text-[#C32A2C]' 
                             : 'bg-white border-slate-100 text-slate-600 hover:bg-slate-50'
                         }`}
                       >
@@ -1695,7 +1695,7 @@ export default function CashFloat({ userRole }: CashFloatProps) {
                     onChange={(e) => setCustomFloatAmount(e.target.value)}
                     placeholder="Ej. 600"
                     placeholderClassName="placeholder:font-bold"
-                    className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl text-base font-black text-slate-800 outline-none focus:ring-2 focus:ring-sky-500/20 transition-all"
+                    className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl text-base font-black text-slate-800 outline-none focus:ring-2 focus:ring-[#C32A2C]/20 focus:border-[#C32A2C] transition-all"
                   />
                 </div>
 
@@ -1712,7 +1712,7 @@ export default function CashFloat({ userRole }: CashFloatProps) {
                     type="button"
                     disabled={actionLoading || !customFloatAmount || isNaN(Number(customFloatAmount))}
                     onClick={() => handleAssignFloat(selectedDriverForFloat.name, Number(customFloatAmount))}
-                    className="flex-2 bg-sky-500 text-white py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl shadow-sky-500/10 hover:bg-sky-600 transition-all active:scale-95 flex items-center justify-center gap-2"
+                    className="flex-2 bg-[#C32A2C] text-white py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl shadow-[#C32A2C]/10 hover:bg-[#a12022] transition-all active:scale-95 flex items-center justify-center gap-2"
                   >
                     {actionLoading ? <Loader2 size={14} className="animate-spin" /> : <Unlock size={14} />}
                     Asignar $ {customFloatAmount}
@@ -1742,7 +1742,7 @@ export default function CashFloat({ userRole }: CashFloatProps) {
               className="relative w-full max-w-md bg-white rounded-[40px] shadow-2xl overflow-hidden p-8 z-[121]"
             >
               <div className="flex justify-between items-center mb-6">
-                <h3 className="text-lg font-black text-slate-800 uppercase italic">Confirmar <span className="text-sky-500">Cierre de Caja</span></h3>
+                <h3 className="text-lg font-black text-slate-800 uppercase italic">Confirmar <span className="text-[#C32A2C]">Cierre de Caja</span></h3>
                 <button 
                   type="button"
                   onClick={() => setSelectedDriverForClose(null)}
@@ -1777,7 +1777,7 @@ export default function CashFloat({ userRole }: CashFloatProps) {
 
                   <div className="border-t border-dashed border-slate-200 pt-3.5 flex justify-between text-slate-800 font-extrabold">
                     <span className="font-bold text-slate-500 uppercase text-[10px] tracking-widest">EFECTIVO TOTAL ENTREGADO:</span>
-                    <span className="text-sm font-black text-sky-600">
+                    <span className="text-sm font-black text-[#C32A2C]">
                       ${(Number(selectedDriverForClose.cash_float) + Number(selectedDriverForClose.sales_total)).toFixed(2)} pesos
                     </span>
                   </div>

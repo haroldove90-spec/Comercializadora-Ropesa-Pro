@@ -32,7 +32,7 @@ export default function Notifications({ userRole }: NotificationsProps) {
   const getIcon = (type: string) => {
     switch(type) {
       case 'sale': return <CheckCircle2 size={18} className="text-emerald-500" />;
-      case 'order': return <MessageSquare size={18} className="text-sky-500" />;
+      case 'order': return <MessageSquare size={18} className="text-[#C32A2C]" />;
       case 'attendance': return <Clock size={18} className="text-amber-500" />;
       default: return <Bell size={18} className="text-slate-400" />;
     }
@@ -74,7 +74,7 @@ export default function Notifications({ userRole }: NotificationsProps) {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl md:text-3xl font-black text-slate-800 tracking-tight uppercase italic leading-none">Historial de <span className="text-sky-500">Notificaciones</span></h1>
+          <h1 className="text-xl md:text-3xl font-black text-slate-800 tracking-tight uppercase italic leading-none">Historial de <span className="text-[#C32A2C]">Notificaciones</span></h1>
           <p className="text-slate-500 mt-2 font-bold italic uppercase text-[9px] md:text-[10px] tracking-wider">Registros de actividad del día: {new Date().toLocaleDateString()}</p>
         </div>
         
@@ -117,15 +117,15 @@ export default function Notifications({ userRole }: NotificationsProps) {
               >
                 <div className={`w-5 h-5 rounded-lg border flex items-center justify-center transition-all bg-slate-50 ${
                   filteredLogs.every(l => selectedIds.includes(l.id)) 
-                    ? 'border-sky-500 bg-sky-50 text-sky-500' 
+                    ? 'border-[#C32A2C] bg-rose-55 text-[#C32A2C]' 
                     : filteredLogs.some(l => selectedIds.includes(l.id))
-                    ? 'border-sky-300 bg-sky-50/50 text-sky-400'
+                    ? 'border-rose-300 bg-rose-50/20 text-rose-500'
                     : 'border-slate-300'
                 }`}>
                   {filteredLogs.every(l => selectedIds.includes(l.id)) ? (
                     <Check size={12} strokeWidth={3} />
                   ) : filteredLogs.some(l => selectedIds.includes(l.id)) ? (
-                    <div className="w-2 h-2 bg-sky-400 rounded-sm" />
+                    <div className="w-2 h-2 bg-rose-500 rounded-sm" />
                   ) : null}
                 </div>
                 Seleccionar Todo
@@ -142,7 +142,7 @@ export default function Notifications({ userRole }: NotificationsProps) {
                   <button 
                     type="button"
                     onClick={handleMarkSelectedAsRead}
-                    className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-sky-500 hover:text-sky-600 transition-colors bg-sky-50/50 px-3 py-1.5 rounded-xl border border-sky-100"
+                    className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#C32A2C] hover:text-[#a12022] transition-colors bg-rose-50/20 px-3 py-1.5 rounded-xl border border-rose-100/30"
                   >
                     <CheckCircle size={13} />
                     Marcar Leídas
@@ -184,7 +184,7 @@ export default function Notifications({ userRole }: NotificationsProps) {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 className={`bg-white p-4 md:p-6 rounded-[24px] md:rounded-[32px] border cursor-pointer ${
-                  isSelected ? 'border-sky-300 ring-2 ring-sky-500/10 bg-sky-50/5' : log.read ? 'border-slate-50' : 'border-sky-100 shadow-lg shadow-sky-500/5'
+                  isSelected ? 'border-rose-300 ring-2 ring-[#C32A2C]/10 bg-rose-50/5' : log.read ? 'border-slate-50' : 'border-rose-100/30 shadow-lg shadow-[#C32A2C]/5'
                 } flex items-center md:items-start gap-4 md:gap-6 group transition-all`}
               >
                 {/* Custom Checkbox selector */}
@@ -200,10 +200,10 @@ export default function Notifications({ userRole }: NotificationsProps) {
                 >
                   <div className={`w-5 h-5 rounded-lg border flex items-center justify-center transition-all ${
                     isSelected 
-                      ? 'border-sky-500 bg-sky-500 text-white' 
+                      ? 'border-[#C32A2C] bg-[#C32A2C] text-white' 
                       : log.read 
                       ? 'border-slate-200 hover:border-slate-300 bg-slate-50/50'
-                      : 'border-sky-200 hover:border-sky-300 bg-sky-50/20'
+                      : 'border-rose-200 hover:border-rose-300 bg-rose-50/10'
                   }`}>
                     {isSelected && <Check size={12} strokeWidth={3} />}
                   </div>
@@ -215,7 +215,7 @@ export default function Notifications({ userRole }: NotificationsProps) {
                   className="flex-1 flex items-start gap-4 md:gap-6"
                 >
                   <div className={`w-10 h-10 md:w-14 md:h-14 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0 ${
-                    log.read ? 'bg-slate-50 text-slate-400' : 'bg-sky-50 text-sky-500'
+                    log.read ? 'bg-slate-50 text-slate-400' : 'bg-rose-50/30 text-[#C32A2C]'
                   }`}>
                     {getIcon(log.type)}
                   </div>
@@ -226,7 +226,7 @@ export default function Notifications({ userRole }: NotificationsProps) {
                         <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1 block">
                           {new Date(log.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </span>
-                        <h3 className={`font-black uppercase italic tracking-tight ${log.read ? 'text-slate-600' : 'text-slate-900 group-hover:text-sky-500 transition-colors'}`}>
+                        <h3 className={`font-black uppercase italic tracking-tight ${log.read ? 'text-slate-600' : 'text-slate-900 group-hover:text-[#C32A2C] transition-colors'}`}>
                           {log.title}
                         </h3>
                       </div>

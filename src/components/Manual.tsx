@@ -14,7 +14,7 @@ interface StepProps {
 const StepList = ({ title, steps }: StepProps) => (
   <div className="bg-slate-50 border border-slate-200 p-5 rounded-2xl mb-4">
     <h4 className="font-black text-slate-800 text-xs uppercase mb-3 tracking-wider flex items-center gap-2">
-      <div className="w-1.5 h-4 bg-sky-500 rounded-full" />
+      <div className="w-1.5 h-4 bg-[#C32A2C] rounded-full" />
       {title}
     </h4>
     <ol className="space-y-3">
@@ -36,7 +36,7 @@ export default function Manual({ role }: ManualProps) {
   return (
     <div className="space-y-10 pb-24 max-w-4xl mx-auto">
       <header className="flex items-center gap-5 mb-10 pt-4">
-        <div className="w-14 h-14 bg-sky-500/10 rounded-[22px] flex items-center justify-center text-sky-500 shadow-inner">
+        <div className="w-14 h-14 bg-rose-50 rounded-[22px] flex items-center justify-center text-[#C32A2C] shadow-inner">
           <Book size={32} />
         </div>
         <div>
@@ -47,16 +47,16 @@ export default function Manual({ role }: ManualProps) {
 
       {role === 'admin' && (
         <section className="space-y-6">
-          <div className="bg-sky-900 text-white p-8 rounded-[40px] shadow-2xl shadow-sky-900/30 relative overflow-hidden">
+          <div className="bg-[#000000] text-white p-8 rounded-[40px] shadow-2xl border border-zinc-800 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-20 -mt-20 blur-3xl" />
             <div className="relative z-10">
               <div className="flex items-center gap-4 mb-4">
-                <div className="p-3 bg-white/10 rounded-2xl backdrop-blur-md">
+                <div className="p-3 bg-white/10 rounded-2xl backdrop-blur-md text-[#C32A2C]">
                   <Shield size={28} />
                 </div>
                 <h2 className="text-2xl font-black uppercase italic tracking-tight">Administrador Maestro</h2>
               </div>
-              <p className="text-sky-100 text-base leading-relaxed mb-8 opacity-80 font-medium">
+              <p className="text-zinc-300 text-base leading-relaxed mb-8 opacity-80 font-medium">
                 Gestión estratégica de la empresa: Finanzas, Capital Humano y Crecimiento.
               </p>
             </div>
@@ -208,7 +208,7 @@ export default function Manual({ role }: ManualProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="space-y-6">
           <header className="flex items-center gap-3">
-            <Clock className="text-sky-500" size={24} />
+            <Clock className="text-[#C32A2C]" size={24} />
             <h3 className="font-black text-slate-800 uppercase tracking-tight italic">Control de Asistencia</h3>
           </header>
           <StepList 
@@ -224,7 +224,7 @@ export default function Manual({ role }: ManualProps) {
 
         <div className="space-y-6">
           <header className="flex items-center gap-3">
-            <User className="text-sky-500" size={24} />
+            <User className="text-[#C32A2C]" size={24} />
             <h3 className="font-black text-slate-800 uppercase tracking-tight italic">Perfil y Seguridad</h3>
           </header>
           <StepList 
@@ -238,13 +238,13 @@ export default function Manual({ role }: ManualProps) {
         </div>
       </div>
 
-      <footer className="mt-16 p-10 bg-slate-900 text-white rounded-[50px] relative overflow-hidden">
-        <div className="absolute bottom-0 right-0 w-32 h-32 bg-sky-500/20 rounded-full blur-3xl" />
-        <div className="flex items-center gap-4 mb-6 text-sky-400">
+      <footer className="mt-16 p-10 bg-slate-950 text-white rounded-[50px] border border-zinc-800 relative overflow-hidden">
+        <div className="absolute bottom-0 right-0 w-32 h-32 bg-[#C32A2C]/10 rounded-full blur-3xl" />
+        <div className="flex items-center gap-4 mb-6 text-rose-500">
           <Lightbulb size={28} />
           <h4 className="font-black uppercase italic text-lg tracking-wider">Misión de Calidad</h4>
         </div>
-        <p className="text-sky-100/70 text-sm font-medium leading-relaxed italic">
+        <p className="text-zinc-300 text-sm font-medium leading-relaxed italic">
           "Cada dato registrado correctamente es un paso más hacia la excelencia de Quality Water. Tu precisión protege la salud de nuestras familias y la estabilidad del negocio."
         </p>
       </footer>

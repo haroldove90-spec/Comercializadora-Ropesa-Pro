@@ -143,7 +143,7 @@ export default function Products({ userRole }: { userRole: string | null }) {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black text-slate-800 tracking-tight leading-none uppercase italic">Catálogo de <span className="text-sky-500">Productos</span></h1>
+          <h1 className="text-3xl font-black text-slate-800 tracking-tight leading-none uppercase italic">Catálogo de <span className="text-[#C32A2C]">Productos</span></h1>
           <p className="text-slate-500 mt-2 font-bold italic uppercase text-[10px] tracking-wider">Gestión centralizada para ventas y pedidos</p>
         </div>
         
@@ -165,7 +165,7 @@ export default function Products({ userRole }: { userRole: string | null }) {
               placeholder="Buscar..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-sky-500 outline-none transition-all shadow-sm font-bold text-sm"
+              className="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-[#C32A2C]/20 focus:border-[#C32A2C] outline-none transition-all shadow-sm font-bold text-sm"
             />
           </div>
         </div>
@@ -191,7 +191,7 @@ export default function Products({ userRole }: { userRole: string | null }) {
               <div className="flex items-center gap-2">
                 <input 
                   type="checkbox"
-                  className="rounded border-slate-200 accent-sky-500 cursor-pointer w-4 h-4 ml-1"
+                  className="rounded border-slate-200 accent-[#C32A2C] cursor-pointer w-4 h-4 ml-1"
                   checked={selectedProductIds.length === filteredProducts.length && filteredProducts.length > 0}
                   onChange={(e) => {
                     if (e.target.checked) {
@@ -232,7 +232,7 @@ export default function Products({ userRole }: { userRole: string | null }) {
                     {userRole === 'admin' && (
                       <input 
                         type="checkbox"
-                        className="rounded border-slate-200 accent-sky-500 cursor-pointer w-4 h-4"
+                        className="rounded border-slate-200 accent-[#C32A2C] cursor-pointer w-4 h-4"
                         checked={selectedProductIds.includes(product.id)}
                         onChange={(e) => {
                           if (e.target.checked) {
@@ -243,14 +243,14 @@ export default function Products({ userRole }: { userRole: string | null }) {
                         }}
                       />
                     )}
-                    <div className="p-3 bg-sky-50 text-sky-500 rounded-2xl group-hover:scale-110 transition-transform">
+                    <div className="p-3 bg-rose-50/20 text-[#C32A2C] rounded-2xl group-hover:scale-110 transition-transform">
                       <Tag size={24} />
                     </div>
                   </div>
                   <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                     <button 
                       onClick={() => handleStartEdit(product)} 
-                      className="p-2 text-slate-400 hover:text-sky-500 transition-colors"
+                      className="p-2 text-slate-400 hover:text-[#C32A2C] transition-colors"
                     >
                       <Edit3 size={18} />
                     </button>
@@ -304,7 +304,7 @@ export default function Products({ userRole }: { userRole: string | null }) {
             >
               <div className="p-8 pb-4 flex justify-between items-center">
                 <h2 className="text-2xl font-black text-slate-800 uppercase italic">
-                  {editingProduct ? 'Editar' : 'Nuevo'} <span className="text-sky-500">Producto</span>
+                  {editingProduct ? 'Editar' : 'Nuevo'} <span className="text-[#C32A2C]">Producto</span>
                 </h2>
                 <button onClick={handleCloseModal} className="p-2 text-slate-400 hover:text-slate-800">
                   <X />
@@ -320,7 +320,7 @@ export default function Products({ userRole }: { userRole: string | null }) {
                     value={formData.name}
                     onChange={(e) => setFormData({...formData, name: e.target.value})}
                     placeholder="Ej. Garrafón 20L Purificada"
-                    className="w-full p-4 bg-slate-50 border-none rounded-2xl font-bold focus:ring-2 focus:ring-sky-500 outline-none"
+                    className="w-full p-4 bg-slate-50 border-none rounded-2xl font-bold focus:ring-2 focus:ring-[#C32A2C]/20 outline-none"
                   />
                 </div>
 
@@ -330,7 +330,7 @@ export default function Products({ userRole }: { userRole: string | null }) {
                     value={formData.description}
                     onChange={(e) => setFormData({...formData, description: e.target.value})}
                     placeholder="Detalles sobre el envase o proceso..."
-                    className="w-full p-4 bg-slate-50 border-none rounded-2xl font-bold focus:ring-2 focus:ring-sky-500 outline-none h-24 resize-none"
+                    className="w-full p-4 bg-slate-50 border-none rounded-2xl font-bold focus:ring-2 focus:ring-[#C32A2C]/20 outline-none h-24 resize-none"
                   />
                 </div>
 
@@ -345,7 +345,7 @@ export default function Products({ userRole }: { userRole: string | null }) {
                       value={formData.price}
                       onChange={(e) => setFormData({...formData, price: e.target.value})}
                       placeholder="0.00"
-                      className="w-full p-4 pl-10 bg-slate-50 border-none rounded-2xl font-bold focus:ring-2 focus:ring-sky-500 outline-none"
+                      className="w-full p-4 pl-10 bg-slate-50 border-none rounded-2xl font-bold focus:ring-2 focus:ring-[#C32A2C]/20 outline-none"
                     />
                   </div>
                 </div>
@@ -361,7 +361,7 @@ export default function Products({ userRole }: { userRole: string | null }) {
                   <button 
                     type="submit"
                     disabled={isSaving}
-                    className="flex-3 bg-sky-500 text-white p-4 rounded-2xl font-black uppercase text-[10px] tracking-widest shadow-lg shadow-sky-200 active:scale-95 transition-all flex items-center justify-center gap-2"
+                    className="flex-3 bg-[#C32A2C] text-white p-4 rounded-2xl font-black uppercase text-[10px] tracking-widest shadow-lg shadow-[#C32A2C]/10 hover:bg-[#a12022] active:scale-95 transition-all flex items-center justify-center gap-2"
                   >
                     {isSaving ? <Loader2 className="animate-spin" size={16} /> : <Save size={16} />}
                     {editingProduct ? 'Guardar Cambios' : 'Registrar Producto'}

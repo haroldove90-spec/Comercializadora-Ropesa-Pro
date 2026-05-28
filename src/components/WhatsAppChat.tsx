@@ -53,7 +53,7 @@ export default function WhatsAppChat() {
       {/* Header */}
       <div className="bg-[#075E54] px-4 py-3 text-white flex items-center justify-between shadow-md z-10">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-slate-300 border border-white/20 overflow-hidden bg-gradient-to-tr from-sky-400 to-indigo-500" />
+          <div className="w-10 h-10 rounded-full border border-white/20 overflow-hidden bg-gradient-to-tr from-rose-400 to-[#C32A2C]" />
           <div className="leading-tight">
             <h3 className="font-bold text-sm">AquaControl Bot</h3>
             <p className="text-[10px] opacity-80 flex items-center gap-1">
@@ -99,7 +99,7 @@ export default function WhatsAppChat() {
                   <span className="text-[9px] text-slate-400 font-medium">
                     {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </span>
-                  {msg.sender === 'system' ? null : <CheckCheck size={12} className="text-sky-500" />}
+                  {msg.sender === 'system' ? null : <CheckCheck size={12} className="text-[#C32A2C]" />}
                 </div>
               </div>
             </motion.div>
