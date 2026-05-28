@@ -127,6 +127,50 @@ export default function POS({ userRole }: { userRole: string | null }) {
           const { error } = await supabase.from('orders').insert([payload]);
           if (!error) {
             successfulIndexes.push(i);
+
+            // Automatically decrement seller's inventory in their active cash drawer session
+            try {
+              const todayStr = new Date().toISOString().split('T')[0];
+              const { data: att } = await supabase
+                .from('daily_attendance')
+                .select('*')
+                .eq('user_name', payload.assigned_to_name)
+                .eq('work_date', todayStr)
+                .maybeSingle();
+
+              if (att) {
+                const lastLoc = att.last_location || {};
+                const inventory = lastLoc.inventory || {};
+                let updatedIn = false;
+
+                Object.keys(inventory).forEach(prodId => {
+                  const prod = inventory[prodId];
+                  const regex = new RegExp(`(\\d+)x\\s+` + prod.name.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'i');
+                  const match = String(payload.items).match(regex);
+                  if (match) {
+                    const qty = Number(match[1]) || 0;
+                    if (qty > 0) {
+                      prod.sold = (Number(prod.sold) || 0) + qty;
+                      updatedIn = true;
+                    }
+                  }
+                });
+
+                if (updatedIn) {
+                  await supabase
+                    .from('daily_attendance')
+                    .update({
+                      last_location: {
+                        ...lastLoc,
+                        inventory
+                      }
+                    })
+                    .eq('id', att.id);
+                }
+              }
+            } catch (invOfflineErr) {
+              console.warn('Error decrementing inventory in offline sync:', invOfflineErr);
+            }
           } else {
             console.error('Error insertando venta offline:', error);
           }
@@ -416,6 +460,47 @@ export default function POS({ userRole }: { userRole: string | null }) {
       const { error }: any = await Promise.race([savePromise, timeoutPromise]);
 
       if (error) throw error;
+
+      // Automatically decrement seller's inventory in their active cash drawer session
+      try {
+        const todayStr = new Date().toISOString().split('T')[0];
+        const { data: att } = await supabase
+          .from('daily_attendance')
+          .select('*')
+          .eq('user_name', payload.assigned_to_name)
+          .eq('work_date', todayStr)
+          .maybeSingle();
+
+        if (att) {
+          const lastLoc = att.last_location || {};
+          const inventory = lastLoc.inventory || {};
+          let updatedIn = false;
+
+          generatedTicket.items.forEach(item => {
+            const matchingKey = Object.keys(inventory).find(k => 
+              inventory[k].name.toLowerCase() === item.name.toLowerCase()
+            );
+            if (matchingKey) {
+              inventory[matchingKey].sold = (Number(inventory[matchingKey].sold) || 0) + item.quantity;
+              updatedIn = true;
+            }
+          });
+
+          if (updatedIn) {
+            await supabase
+              .from('daily_attendance')
+              .update({
+                last_location: {
+                  ...lastLoc,
+                  inventory
+                }
+              })
+              .eq('id', att.id);
+          }
+        }
+      } catch (invError) {
+        console.warn('Error decrementing driver inventory from POS sale:', invError);
+      }
 
       // Clear operational states on success
       clearCart();

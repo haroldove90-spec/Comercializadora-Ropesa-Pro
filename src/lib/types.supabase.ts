@@ -16,6 +16,7 @@ export interface Order {
   items: string; // e.g. "2 Garrafones"
   status: 'pending' | 'assigned' | 'delivered' | 'cancelled';
   driver_id?: string;
+  assigned_to_name?: string;
   total_price: number;
   payment_method: 'cash' | 'card' | 'transfer';
   created_at: string;

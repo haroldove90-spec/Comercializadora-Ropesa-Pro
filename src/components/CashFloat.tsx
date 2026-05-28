@@ -154,6 +154,8 @@ export default function CashFloat({ userRole }: CashFloatProps) {
   const [assignedSuccessModal, setAssignedSuccessModal] = useState<{ employeeName: string; amount: number } | null>(null);
   const [customFloatAmount, setCustomFloatAmount] = useState('600');
   const [selectedDriverForClose, setSelectedDriverForClose] = useState<any | null>(null);
+  const [productList, setProductList] = useState<any[]>([]);
+  const [assignedQuantities, setAssignedQuantities] = useState<Record<string, string>>({});
 
   // Get current date
   const todayDate = new Date().toISOString().split('T')[0];
@@ -282,6 +284,15 @@ export default function CashFloat({ userRole }: CashFloatProps) {
       }
       setTodaySales(salesSummary);
 
+      // Fetch product catalog for inventory assignment
+      const { data: prodData } = await supabase
+        .from('products')
+        .select('*')
+        .order('name');
+      if (prodData) {
+        setProductList(prodData);
+      }
+
       // 4. Find if there is a session for the currently logged-in driver employee
       const loggedInDriverName = currentUser.name;
       const driverAttendance = attendancesList.find(a => namesMatch(a.user_name, loggedInDriverName));
@@ -328,11 +339,28 @@ export default function CashFloat({ userRole }: CashFloatProps) {
         .maybeSingle();
 
       const existingLocation = parseJsonFields(existing?.last_location);
+      
+      // Build the inventory schema-less object
+      const inventoryDic: Record<string, any> = {};
+      productList.forEach(prod => {
+        const qty = Number(assignedQuantities[prod.id]) || 0;
+        // Keep existing item progress (like 'sold' or 'returned') if editing
+        const existingItem = existingLocation.inventory && existingLocation.inventory[prod.id];
+        inventoryDic[prod.id] = {
+          product_id: prod.id,
+          name: prod.name,
+          assigned: qty,
+          sold: existingItem ? (Number(existingItem.sold) || 0) : 0,
+          returned: existingItem ? (Number(existingItem.returned) || 0) : 0
+        };
+      });
+
       const updatedLocation = {
         ...existingLocation,
         cash_float: amount,
         cash_closed: false,
-        cash_assigned_at: new Date().toISOString()
+        cash_assigned_at: new Date().toISOString(),
+        inventory: inventoryDic
       };
 
       const targetEmp = employees.find(e => namesMatch(e.name, employeeName));
@@ -442,6 +470,14 @@ export default function CashFloat({ userRole }: CashFloatProps) {
         .maybeSingle();
 
       const existingLocation = parseJsonFields(existing?.last_location);
+      const inventory = existingLocation.inventory || {};
+      
+      // Calculate and save final returned quantities
+      Object.keys(inventory).forEach(prodId => {
+        const item = inventory[prodId];
+        item.returned = Math.max(0, (item.assigned || 0) - (item.sold || 0));
+      });
+
       const updatedLocation = {
         ...existingLocation,
         cash_float: cleanFloatAmount,
@@ -451,7 +487,8 @@ export default function CashFloat({ userRole }: CashFloatProps) {
         cash_orders_count: cleanOrdersCount,
         cash_total_to_deliver: totalToDeliver,
         closed_by_role: currentUser.role,
-        closed_by_name: currentUser.name
+        closed_by_name: currentUser.name,
+        inventory: inventory
       };
 
       const targetEmp = employees.find(e => namesMatch(e.name, employeeName));
@@ -950,6 +987,17 @@ export default function CashFloat({ userRole }: CashFloatProps) {
       ['Recibido por', `${driverData.closed_by_name || 'Administrador (Pendiente)'}`],
     ];
 
+    if (driverData.inventory) {
+      Object.keys(driverData.inventory).forEach((prodId: string) => {
+        const item = driverData.inventory[prodId];
+        const remaining = Math.max(0, (item.assigned || 0) - (item.sold || 0));
+        data.push([
+          `INV: ${item.name}`,
+          `Asig: ${item.assigned} | Vend: ${item.sold} | Dev: ${remaining}`
+        ]);
+      });
+    }
+
     exportToPDF({
       title: isClosed ? 'Comprobante de Cierre de Caja' : 'Borrador de Corte de Caja',
       subtitle: `QualityWater - Empleado: ${driverData.name} - Fecha: ${todayDate}`,
@@ -993,7 +1041,8 @@ export default function CashFloat({ userRole }: CashFloatProps) {
         is_closed: isClosed,
         closed_at: closedAt,
         closed_by_name: closedByName,
-        total_to_deliver: floatVal !== null ? floatVal + salesTotal : salesTotal
+        total_to_deliver: floatVal !== null ? floatVal + salesTotal : salesTotal,
+        inventory: lastLoc.inventory || null
       };
     });
   };
@@ -1070,36 +1119,36 @@ export default function CashFloat({ userRole }: CashFloatProps) {
           {/* ROL ADMIN / PLANTA PANEL */}
           {isAdmin && viewMode === 'admin' ? (
             <div className="space-y-8">
-              {/* Metrics KPIs Dashboard */}
+               {/* Metrics KPIs Dashboard */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div className="bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm relative overflow-hidden">
-                  <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Fondos de Caja Asignados</p>
-                  <p className="text-2xl font-black text-slate-800 mt-2">${assignedFloatsTotal.toLocaleString('es-MX', { minimumFractionDigits: 2 })}</p>
-                  <div className="absolute top-6 right-6 w-10 h-10 bg-rose-50/20 rounded-2xl flex items-center justify-center text-[#C32A2C]">
+                <div className="bg-[#212020] p-6 rounded-[32px] border border-neutral-800 shadow-xl relative overflow-hidden">
+                  <p className="text-[9px] font-black text-neutral-400 uppercase tracking-widest">Fondos de Caja Asignados</p>
+                  <p className="text-2xl font-black text-white mt-2">${assignedFloatsTotal.toLocaleString('es-MX', { minimumFractionDigits: 2 })}</p>
+                  <div className="absolute top-6 right-6 w-10 h-10 bg-[#C32A2C]/10 rounded-2xl flex items-center justify-center text-[#C32A2C]">
                     <DollarSign size={20} />
                   </div>
                 </div>
 
-                <div className="bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm relative overflow-hidden">
-                  <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Ventas en Ruta Hoy</p>
-                  <p className="text-2xl font-black text-slate-800 mt-2">${registeredSalesTotal.toLocaleString('es-MX', { minimumFractionDigits: 2 })}</p>
-                  <div className="absolute top-6 right-6 w-10 h-10 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-500">
+                <div className="bg-[#212020] p-6 rounded-[32px] border border-neutral-800 shadow-xl relative overflow-hidden">
+                  <p className="text-[9px] font-black text-neutral-400 uppercase tracking-widest">Ventas en Ruta Hoy</p>
+                  <p className="text-2xl font-black text-white mt-2">${registeredSalesTotal.toLocaleString('es-MX', { minimumFractionDigits: 2 })}</p>
+                  <div className="absolute top-6 right-6 w-10 h-10 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-500">
                     <TrendingUp size={20} />
                   </div>
                 </div>
 
-                <div className="bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm relative overflow-hidden">
-                  <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Efectivo Recaudado</p>
-                  <p className="text-2xl font-black text-emerald-500 mt-2">${collectedTotal.toLocaleString('es-MX', { minimumFractionDigits: 2 })}</p>
-                  <div className="absolute top-6 right-6 w-10 h-10 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center">
+                <div className="bg-[#212020] p-6 rounded-[32px] border border-neutral-800 shadow-xl relative overflow-hidden">
+                  <p className="text-[9px] font-black text-neutral-400 uppercase tracking-widest">Efectivo Recaudado</p>
+                  <p className="text-2xl font-black text-emerald-400 mt-2">${collectedTotal.toLocaleString('es-MX', { minimumFractionDigits: 2 })}</p>
+                  <div className="absolute top-6 right-6 w-10 h-10 bg-emerald-500/10 text-emerald-400 rounded-2xl flex items-center justify-center">
                     <CheckCircle2 size={20} />
                   </div>
                 </div>
 
-                <div className="bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm relative overflow-hidden">
-                  <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Pendiente en Ruta</p>
-                  <p className="text-2xl font-black text-slate-800 mt-2">${activeInPlayTotal.toLocaleString('es-MX', { minimumFractionDigits: 2 })}</p>
-                  <div className="absolute top-6 right-6 w-10 h-10 bg-amber-50 rounded-2xl flex items-center justify-center text-amber-500">
+                <div className="bg-[#212020] p-6 rounded-[32px] border border-neutral-800 shadow-xl relative overflow-hidden">
+                  <p className="text-[9px] font-black text-neutral-400 uppercase tracking-widest">Pendiente en Ruta</p>
+                  <p className="text-2xl font-black text-white mt-2">${activeInPlayTotal.toLocaleString('es-MX', { minimumFractionDigits: 2 })}</p>
+                  <div className="absolute top-6 right-6 w-10 h-10 bg-amber-500/10 rounded-2xl flex items-center justify-center text-amber-500">
                     <Clock size={20} />
                   </div>
                 </div>
@@ -1192,14 +1241,14 @@ export default function CashFloat({ userRole }: CashFloatProps) {
               </div>
 
               {/* Main Table for staff cash registers */}
-              <div className="bg-white rounded-[40px] border border-slate-100 shadow-sm overflow-hidden">
-                <div className="p-8 border-b border-slate-50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="bg-[#212020] rounded-[40px] border border-zinc-900 shadow-2xl overflow-hidden">
+                <div className="p-8 border-b border-zinc-900 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#212020]">
                   <div>
-                    <h3 className="font-black text-slate-800 uppercase text-[10px] tracking-widest flex items-center gap-2">
+                    <h3 className="font-black text-white uppercase text-[10px] tracking-widest flex items-center gap-2">
                       <ClipboardList size={18} className="text-[#C32A2C]" />
                       Estado de Fondos y Cierres de Personal
                     </h3>
-                    <p className="text-[9px] font-bold text-slate-400 uppercase mt-1">Asignación diaria de fondos e historial de liquidaciones de hoy</p>
+                    <p className="text-[9px] font-bold text-zinc-400 uppercase mt-1">Asignación diaria de fondos e historial de liquidaciones de hoy</p>
                   </div>
                   {isAdmin && (
                      <div className="flex items-center gap-2">
@@ -1207,7 +1256,7 @@ export default function CashFloat({ userRole }: CashFloatProps) {
                         <button
                           type="button"
                           onClick={handleBulkDeleteFloat}
-                          className="flex items-center gap-1.5 px-4 py-2.5 bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-xl font-black text-[9px] uppercase tracking-widest transition-all shadow-sm border border-rose-100"
+                          className="flex items-center gap-1.5 px-4 py-2.5 bg-rose-950/25 text-rose-400 hover:bg-rose-950/40 rounded-xl font-black text-[9px] uppercase tracking-widest transition-all shadow-sm border border-rose-900/35"
                         >
                           <Trash2 size={12} />
                           Borrar Seleccionados ({selectedEmployees.length})
@@ -1218,7 +1267,7 @@ export default function CashFloat({ userRole }: CashFloatProps) {
                           type="button"
                           onClick={handleGlobalCashClose}
                           disabled={actionLoading}
-                          className="flex items-center gap-1.5 px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-black text-[9px] uppercase tracking-widest transition-all shadow-md shadow-amber-500/10"
+                          className="flex items-center gap-1.5 px-4 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl font-black text-[9px] uppercase tracking-widest transition-all shadow-md shadow-amber-600/10"
                           title="Realizar Corte de Caja Global para todos los empleados de hoy"
                         >
                           <Lock size={12} />
@@ -1230,7 +1279,7 @@ export default function CashFloat({ userRole }: CashFloatProps) {
                           type="button"
                           onClick={handleExportGlobalPDF}
                           disabled={actionLoading}
-                          className="flex items-center gap-1.5 px-4 py-2.5 bg-indigo-50 border border-indigo-200 hover:bg-indigo-100 text-indigo-700 rounded-xl font-black text-[9px] uppercase tracking-widest transition-all shadow-sm"
+                          className="flex items-center gap-1.5 px-4 py-2.5 bg-indigo-950/25 border border-indigo-900 hover:bg-indigo-950/50 text-indigo-400 rounded-xl font-black text-[9px] uppercase tracking-widest transition-all shadow-sm"
                           title="Exportar Reporte Global de Cortes de Caja de hoy en PDF"
                         >
                           <Printer size={12} />
@@ -1240,7 +1289,7 @@ export default function CashFloat({ userRole }: CashFloatProps) {
                       <button
                         type="button"
                         onClick={handleResetAllFloats}
-                        className="flex items-center gap-1.5 px-4 py-2.5 bg-slate-100 border border-slate-200 hover:bg-slate-200 text-slate-600 rounded-xl font-black text-[9px] uppercase tracking-widest transition-all"
+                        className="flex items-center gap-1.5 px-4 py-2.5 bg-zinc-800 border border-zinc-700/50 hover:bg-zinc-700 text-zinc-300 rounded-xl font-black text-[9px] uppercase tracking-widest transition-all"
                         title="Restablecer todos los registros de fondos y asistencia de hoy"
                       >
                         <RefreshCw size={12} className={actionLoading ? 'animate-spin' : ''} />
@@ -1252,10 +1301,10 @@ export default function CashFloat({ userRole }: CashFloatProps) {
 
                 <div className="overflow-x-auto">
                   <table className="w-full text-left">
-                    <thead className="bg-slate-50/50 text-[10px] font-black uppercase text-slate-400 tracking-widest">
+                    <thead className="bg-[#1c1b1b] text-[10px] font-black uppercase text-zinc-400 tracking-widest border-b border-zinc-900/80">
                       <tr>
                         {isAdmin && (
-                          <th className="px-6 py-4 text-center w-12">
+                          <th className="px-6 py-4 text-center w-12 border-b border-zinc-900/80">
                             <input
                               type="checkbox"
                               checked={driversStatusData.length > 0 && selectedEmployees.length === driversStatusData.length}
@@ -1267,23 +1316,24 @@ export default function CashFloat({ userRole }: CashFloatProps) {
                                   setSelectedEmployees(driversStatusData.map(d => d.name));
                                 }
                               }}
-                              className="rounded border-slate-300 text-[#C32A2C] focus:ring-[#C32A2C] cursor-pointer h-4 w-4"
+                              className="rounded border-zinc-700 bg-zinc-850 text-[#C32A2C] focus:ring-[#C32A2C] cursor-pointer h-4 w-4"
                             />
                           </th>
                         )}
-                        <th className="px-8 py-4">Personal</th>
-                        <th className="px-8 py-4">Asistencia</th>
-                        <th className="px-8 py-4 text-center">Fondo Inicial</th>
-                        <th className="px-8 py-4 text-center">Ventas Hoy</th>
-                        <th className="px-8 py-4 text-center">Total a Cobrar</th>
-                        <th className="px-8 py-4">Estado Caja</th>
-                        <th className="px-8 py-4 text-right">Caja / Acciones</th>
+                        <th className="px-8 py-4 border-b border-zinc-900/80">Personal</th>
+                        <th className="px-8 py-4 border-b border-zinc-900/80">Asistencia</th>
+                        <th className="px-8 py-4 text-center border-b border-zinc-900/80">Fondo Inicial</th>
+                        <th className="px-8 py-4 text-center border-b border-zinc-900/80">Ventas Hoy</th>
+                        <th className="px-8 py-4 text-center border-b border-zinc-900/80">Total a Cobrar</th>
+                        <th className="px-8 py-4 border-b border-zinc-900/80">Inventario (Asig | Vend | Disp)</th>
+                        <th className="px-8 py-4 border-b border-zinc-900/80">Estado Caja</th>
+                        <th className="px-8 py-4 text-right border-b border-zinc-900/80">Caja / Acciones</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-50">
+                    <tbody className="divide-y divide-zinc-900/50 bg-[#212020]">
                       {driversStatusData.length === 0 ? (
                         <tr>
-                          <td colSpan={isAdmin ? 8 : 7} className="px-8 py-12 text-center text-xs font-bold text-slate-300 uppercase italic">
+                          <td colSpan={isAdmin ? 9 : 8} className="px-8 py-12 text-center text-xs font-bold text-slate-300 uppercase italic">
                             Sin personal registrado en el sistema.
                           </td>
                         </tr>
@@ -1307,48 +1357,71 @@ export default function CashFloat({ userRole }: CashFloatProps) {
                               </td>
                             )}
                             <td className="px-8 py-5">
-                              <p className="font-black text-slate-800 text-sm whitespace-nowrap italic">{drv.name}</p>
+                              <p className="font-black text-white text-sm whitespace-nowrap italic">{drv.name}</p>
                               <div className="flex items-center gap-1.5 mt-1">
                                 <span className={`text-[8px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider ${
                                   drv.role === 'admin' 
-                                    ? 'bg-rose-50 text-rose-500 border border-rose-100' 
+                                    ? 'bg-rose-950/40 text-rose-300 border border-rose-900/40' 
                                     : drv.role === 'operator' 
-                                      ? 'bg-indigo-50 text-indigo-500 border border-indigo-100'
-                                      : 'bg-rose-50 text-[#C32A2C] border border-rose-100/50'
+                                      ? 'bg-indigo-950/40 text-indigo-300 border border-indigo-900/40'
+                                      : 'bg-rose-950/40 text-rose-400 border border-rose-900/30'
                                 }`}>
                                   {drv.role === 'admin' ? 'Admin' : drv.role === 'operator' ? 'Planta' : 'Repartidor'}
                                 </span>
-                                <span className="text-[9px] text-slate-400 font-bold uppercase tracking-tighter">{drv.phone || 'Sin número'}</span>
+                                <span className="text-[9px] text-zinc-400 font-bold uppercase tracking-tighter">{drv.phone || 'Sin número'}</span>
                               </div>
                             </td>
                             <td className="px-8 py-5">
                               {drv.hasClockedIn ? (
                                 <div className="flex flex-col">
-                                  <span className="text-[9px] font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-lg border border-emerald-100 uppercase inline-block self-start">En Turno</span>
-                                  <span className="text-[9px] font-bold text-slate-400 mt-1">
+                                  <span className="text-[9px] font-black text-emerald-400 bg-emerald-950/30 px-2 py-0.5 rounded-lg border border-emerald-900/40 uppercase inline-block self-start">En Turno</span>
+                                  <span className="text-[9px] font-bold text-zinc-400 mt-1">
                                     {new Date(drv.checkInTime || '').toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                   </span>
                                 </div>
                               ) : (
-                                <span className="text-[9px] font-black text-slate-300 bg-slate-50 px-2 py-0.5 rounded-lg uppercase inline-block">Sin Marcaje</span>
+                                <span className="text-[9px] font-black text-zinc-400 bg-zinc-800/40 px-2 py-0.5 rounded-lg uppercase inline-block">Sin Marcaje</span>
                               )}
                             </td>
                             <td className="px-8 py-5 text-center">
                               {drv.cash_float !== null ? (
-                                <span className="font-black text-sm text-slate-800">$ {drv.cash_float.toFixed(2)}</span>
+                                <span className="font-black text-sm text-white">$ {drv.cash_float.toFixed(2)}</span>
                               ) : (
                                 <span className="text-[10px] font-bold text-rose-400 uppercase italic">No asignado</span>
                               )}
                             </td>
                             <td className="px-8 py-5 text-center">
-                              <span className="font-bold text-xs text-slate-500">${drv.sales_total.toFixed(2)}</span>
-                              <span className="text-[9px] font-bold text-slate-400 block mt-0.5">{drv.orders_count} pedidos</span>
+                              <span className="font-bold text-xs text-zinc-300">${drv.sales_total.toFixed(2)}</span>
+                              <span className="text-[9px] font-bold text-zinc-400 block mt-0.5">{drv.orders_count} pedidos</span>
                             </td>
                             <td className="px-8 py-5 text-center">
-                              <span className="font-black text-sm text-slate-800">
+                              <span className="font-black text-sm text-white">
                                 ${drv.total_to_deliver.toFixed(2)}
                               </span>
-                              <span className="text-[8px] font-black text-slate-400 block leading-tight mt-0.5 uppercase tracking-widest">(Fondo + Ventas)</span>
+                              <span className="text-[8px] font-black text-zinc-400 block leading-tight mt-0.5 uppercase tracking-widest">(Fondo + Ventas)</span>
+                            </td>
+                            <td className="px-8 py-5 min-w-[200px]">
+                              {drv.inventory ? (
+                                <div className="space-y-1.5 text-[10px]">
+                                  {Object.values(drv.inventory).map((item: any) => {
+                                    const remaining = Math.max(0, (item.assigned || 0) - (item.sold || 0));
+                                    return (
+                                      <div key={item.product_id} className="flex flex-col border-b border-zinc-800 pb-1.5 last:border-b-0 last:pb-0">
+                                        <span className="font-extrabold text-zinc-200 leading-tight block">{item.name}</span>
+                                        <div className="flex items-center gap-1.5 text-[9px] text-zinc-400 font-bold mt-0.5">
+                                          <span>Asig: <strong className="text-white font-black">{item.assigned}</strong></span>
+                                          <span>•</span>
+                                          <span>Vend: <strong className="text-emerald-400 font-black">{item.sold}</strong></span>
+                                          <span>•</span>
+                                          <span>Disp: <strong className={`font-black ${remaining <= 3 ? 'text-rose-400' : 'text-zinc-300'}`}>{remaining}</strong></span>
+                                        </div>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              ) : (
+                                <span className="text-[10px] font-bold text-slate-400 uppercase italic">Sin inventario</span>
+                              )}
                             </td>
                             <td className="px-8 py-5">
                               {drv.is_closed ? (
@@ -1372,8 +1445,19 @@ export default function CashFloat({ userRole }: CashFloatProps) {
                                     onClick={() => {
                                       setSelectedDriverForFloat(drv);
                                       setCustomFloatAmount(drv.cash_float !== null ? String(drv.cash_float) : '600');
+                                      
+                                      // Pre-populate inventory assigned quantities
+                                      const quantities: Record<string, string> = {};
+                                      productList.forEach(prod => {
+                                        if (drv.inventory && drv.inventory[prod.id]) {
+                                          quantities[prod.id] = String(drv.inventory[prod.id].assigned || 0);
+                                        } else {
+                                          quantities[prod.id] = '0';
+                                        }
+                                      });
+                                      setAssignedQuantities(quantities);
                                     }}
-                                    className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold text-[9px] uppercase tracking-widest transition-all"
+                                    className="px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-100 rounded-xl font-bold text-[9px] uppercase tracking-widest transition-all border border-zinc-700/50"
                                   >
                                     {drv.cash_float !== null ? 'Modif. Fondo' : '+ Dar Fondo'}
                                   </button>
@@ -1383,7 +1467,7 @@ export default function CashFloat({ userRole }: CashFloatProps) {
                                 {isAdmin && (
                                   <button
                                     onClick={() => handleDeleteFloat(drv.name)}
-                                    className="p-1.5 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded-lg transition-colors"
+                                    className="p-1.5 text-rose-400 hover:text-rose-300 hover:bg-rose-950/40 rounded-lg transition-colors"
                                     title="Eliminar registro de fondo/cierre/asistencia"
                                   >
                                     <Trash2 size={15} />
@@ -1405,14 +1489,14 @@ export default function CashFloat({ userRole }: CashFloatProps) {
                                   <>
                                     <button
                                       onClick={() => handleExportReceiptPDF(drv)}
-                                      className="p-2 bg-slate-50 text-slate-400 hover:text-[#C32A2C] rounded-xl hover:bg-slate-100 transition-all"
+                                      className="p-2 bg-zinc-800 text-zinc-400 hover:text-[#C32A2C] rounded-xl hover:bg-zinc-750 transition-all border border-zinc-700/50"
                                       title="Comprobante PDF"
                                     >
                                       <Printer size={15} />
                                     </button>
                                     <button
                                       onClick={() => { if (drv.is_closed) handleReopenCashDrawer(drv.name); }}
-                                      className={`p-1.5 text-slate-400 hover:text-amber-500 transition-colors ${drv.is_closed ? "" : "hidden"}`}
+                                      className={`p-1.5 text-zinc-400 hover:text-amber-400 transition-colors ${drv.is_closed ? "" : "hidden"}`}
                                       title="Reabrir caja"
                                     >
                                       <Unlock size={14} />
@@ -1562,6 +1646,37 @@ export default function CashFloat({ userRole }: CashFloatProps) {
                     </div>
                   </div>
 
+                  {/* Your Active Inventory */}
+                  {activeDriverSession?.last_location?.inventory && (
+                    <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm text-left space-y-3">
+                      <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Tu Inventario Asignado</h4>
+                      <div className="divide-y divide-slate-50">
+                        {Object.values(activeDriverSession.last_location.inventory).map((item: any) => {
+                          const remaining = Math.max(0, (item.assigned || 0) - (item.sold || 0));
+                          return (
+                            <div key={item.product_id} className="py-2 flex justify-between items-center first:pt-0 last:pb-0">
+                              <div>
+                                <p className="font-extrabold text-[11px] text-slate-700 uppercase italic leading-tight">{item.name}</p>
+                                <div className="flex items-center gap-1.5 text-[9px] text-slate-400 font-bold mt-0.5">
+                                  <span>ASIG: {item.assigned}</span>
+                                  <span>•</span>
+                                  <span>VEND: {item.sold}</span>
+                                </div>
+                              </div>
+                              <span className={`text-[11px] font-black px-2.5 py-1 rounded-xl uppercase tracking-wider ${
+                                remaining <= 3 
+                                  ? 'bg-rose-50 text-[#C32A2C]' 
+                                  : 'bg-emerald-50 text-emerald-600'
+                              }`}>
+                                {remaining} disp
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
                   {/* Math Formula visual presentation */}
                   <div className="bg-rose-50/20 p-8 rounded-[36px] border border-rose-100/30 space-y-6">
                     <h4 className="text-[10px] font-black text-[#C32A2C] uppercase tracking-widest mb-1">Cálculo de Fórmula de Cierre de Caja</h4>
@@ -1697,6 +1812,58 @@ export default function CashFloat({ userRole }: CashFloatProps) {
                     placeholderClassName="placeholder:font-bold"
                     className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl text-base font-black text-slate-800 outline-none focus:ring-2 focus:ring-[#C32A2C]/20 focus:border-[#C32A2C] transition-all"
                   />
+                </div>
+
+                {/* Product Inventory Assignment */}
+                <div className="space-y-3 border-t border-slate-100 pt-4 max-h-[190px] overflow-y-auto pr-1">
+                  <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1 block">Asignar Inventario Inicial (Unidades)</label>
+                  {productList.length === 0 ? (
+                    <p className="text-[10px] text-slate-400 font-bold italic text-center py-2">No hay productos registrados en el catálogo.</p>
+                  ) : (
+                    <div className="space-y-2">
+                      {productList.map((prod) => (
+                        <div key={prod.id} className="flex justify-between items-center bg-slate-50 p-2 text-xs rounded-xl border border-slate-100">
+                          <span className="text-[11px] font-black text-slate-650 truncate max-w-[170px] uppercase italic whitespace-nowrap">{prod.name}</span>
+                          <div className="flex items-center gap-1">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const current = Number(assignedQuantities[prod.id]) || 0;
+                                if (current > 0) {
+                                  setAssignedQuantities(prev => ({ ...prev, [prod.id]: String(current - 1) }));
+                                }
+                              }}
+                              className="w-6 h-6 flex items-center justify-center bg-slate-200 hover:bg-slate-300 rounded-lg text-slate-700 font-bold text-xs"
+                            >
+                              -
+                            </button>
+                            <input
+                              type="number"
+                              min="0"
+                              value={assignedQuantities[prod.id] || '0'}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                if (Number(val) >= 0) {
+                                  setAssignedQuantities(prev => ({ ...prev, [prod.id]: val }));
+                                }
+                              }}
+                              className="w-10 text-center bg-white border border-slate-200 py-0.5 rounded-lg text-xs font-bold text-slate-800 focus:outline-none focus:ring-1 focus:ring-[#C32A2C]"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const current = Number(assignedQuantities[prod.id]) || 0;
+                                setAssignedQuantities(prev => ({ ...prev, [prod.id]: String(current + 1) }));
+                              }}
+                              className="w-6 h-6 flex items-center justify-center bg-slate-200 hover:bg-slate-300 rounded-lg text-slate-700 font-bold text-xs"
+                            >
+                              +
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex gap-3 pt-2">

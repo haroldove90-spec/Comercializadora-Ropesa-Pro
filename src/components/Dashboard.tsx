@@ -403,7 +403,7 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.1 }}
-            className="bg-zinc-950 p-6 rounded-[24px] border border-zinc-900 shadow-xl overflow-hidden relative group"
+            className="bg-[#212020] p-6 rounded-[24px] border border-zinc-900 shadow-xl overflow-hidden relative group"
           >
             <p className="text-[9px] font-black text-zinc-500 uppercase tracking-[0.2em] mb-2">{stat.label}</p>
             <div className="flex items-baseline gap-2">
@@ -420,8 +420,8 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
       </div>
 
       {/* Table Area */}
-      <div className="bg-zinc-950 rounded-[24px] border border-zinc-900 overflow-hidden shadow-2xl">
-        <div className="p-6 md:p-8 border-b border-zinc-900 flex flex-wrap justify-between items-center bg-zinc-950 gap-4">
+      <div className="bg-[#212020] rounded-[24px] border border-zinc-900 overflow-hidden shadow-2xl">
+        <div className="p-6 md:p-8 border-b border-zinc-900 flex flex-wrap justify-between items-center bg-[#212020] gap-4 font-sans">
           <h2 className="font-black text-white uppercase italic flex items-center gap-3">
             <Truck size={20} className="text-[#C32A2C]" />
             Control de Despacho

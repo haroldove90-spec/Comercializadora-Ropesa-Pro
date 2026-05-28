@@ -591,7 +591,7 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
                   { label: 'Ticket Prom.', value: '$240', sub: 'MXN', icon: TrendingUp, color: 'text-[#C32A2C]', trend: '-2%', trendUp: false },
                   { label: 'Nuevos', value: '12', sub: 'Registros', icon: Users, color: 'text-[#C32A2C]', trend: '+4', trendUp: true },
                 ].map((stat, i) => (
-                  <div key={i} className="bg-zinc-950 p-5 rounded-3xl border border-zinc-900 shadow-xl">
+                  <div key={i} className="bg-[#212020] p-5 rounded-3xl border border-zinc-900 shadow-xl">
                     <div className="flex justify-between items-start mb-2">
                       <div className="w-8 h-8 rounded-lg bg-zinc-900 flex items-center justify-center">
                         <stat.icon size={16} className="text-[#C32A2C]" />
@@ -608,7 +608,7 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className="lg:col-span-2 bg-zinc-950 p-6 rounded-[32px] border border-zinc-900 shadow-xl">
+                <div className="lg:col-span-2 bg-[#212020] p-6 rounded-[32px] border border-zinc-900 shadow-xl">
                   <h3 className="font-black text-white mb-6 uppercase text-[10px] tracking-widest">Rendimiento Histórico (Ventas x Día)</h3>
                   <div className="h-64">
                     <ResponsiveContainer width="100%" height="100%">
@@ -623,7 +623,7 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
                   </div>
                 </div>
 
-                <div className="bg-zinc-950 p-6 rounded-[32px] border border-zinc-900 shadow-xl flex flex-col items-center">
+                <div className="bg-[#212020] p-6 rounded-[32px] border border-zinc-900 shadow-xl flex flex-col items-center">
                   <h3 className="font-black text-white mb-6 uppercase text-[10px] tracking-widest w-full">Canales de Pedido</h3>
                   <div className="h-48 w-full mt-4">
                     <ResponsiveContainer width="100%" height="100%">

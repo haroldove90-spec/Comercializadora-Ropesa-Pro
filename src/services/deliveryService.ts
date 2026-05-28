@@ -30,6 +30,59 @@ export async function handleCompleteDelivery(orderId: string, customItems?: stri
 
     const order = data as Order;
 
+    // Automatically update seller's inventory in their active cash drawer session
+    try {
+      if (order && order.assigned_to_name) {
+        const todayStr = new Date().toISOString().split('T')[0];
+        const { data: att } = await supabase
+          .from('daily_attendance')
+          .select('*')
+          .eq('user_name', order.assigned_to_name)
+          .eq('work_date', todayStr)
+          .maybeSingle();
+
+        if (att) {
+          const lastLoc = att.last_location || {};
+          const inventory = lastLoc.inventory || {};
+          let updatedIn = false;
+
+          Object.keys(inventory).forEach(prodId => {
+            const prod = inventory[prodId];
+            const regex = new RegExp(`(\\d+)\\s*x\\s*` + prod.name.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') + `|` + prod.name.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') + `\\s*\\(x(\\d+)\\)`, 'i');
+            const match = String(order.items).match(regex);
+            
+            let qty = 0;
+            if (match) {
+              qty = Number(match[1] || match[2]) || 1;
+            } else if (String(order.items).toLowerCase().includes(prod.name.toLowerCase())) {
+              const simpleRegex = new RegExp(`(\\d+)\\s+` + prod.name.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'i');
+              const matchSimple = String(order.items).match(simpleRegex);
+              qty = matchSimple ? (Number(matchSimple[1]) || 1) : 1;
+            }
+
+            if (qty > 0) {
+              prod.sold = (Number(prod.sold) || 0) + qty;
+              updatedIn = true;
+            }
+          });
+
+          if (updatedIn) {
+            await supabase
+              .from('daily_attendance')
+              .update({
+                last_location: {
+                  ...lastLoc,
+                  inventory
+                }
+              })
+              .eq('id', att.id);
+          }
+        }
+      }
+    } catch (invErr) {
+      console.warn('Error decrementing inventory during complete delivery:', invErr);
+    }
+
     // 2. Notificar a Admin y Planta que la venta/entrega se completó
     try {
       await supabase.from('notifications_log').insert([
