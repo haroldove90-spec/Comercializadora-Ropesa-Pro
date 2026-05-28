@@ -19,6 +19,7 @@ export default function Attendance({ userRole, userName }: AttendanceProps) {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [lastAction, setLastAction] = useState<string | null>(null);
   const [history, setHistory] = useState<any[]>([]);
+  const [selectedAttendanceIds, setSelectedAttendanceIds] = useState<string[]>([]);
   const [isExporting, setIsExporting] = useState(false);
   
   const { registrarAsistencia, registrarSalidaComer, registrarRegresoComer, registrarSalidaDefinitiva, fetchHistory } = useAttendanceEngine();
@@ -81,6 +82,23 @@ export default function Attendance({ userRole, userName }: AttendanceProps) {
     const { error } = await supabase.from('daily_attendance').delete().eq('id', id);
     if (error) alert('Error: ' + error.message);
     else loadHistory();
+  };
+
+  const handleBulkDeleteAttendance = async () => {
+    if (selectedAttendanceIds.length === 0) return;
+    if (!confirm(`¿Estás seguro de eliminar los ${selectedAttendanceIds.length} registros de asistencia seleccionados?`)) return;
+
+    const { error } = await supabase
+      .from('daily_attendance')
+      .delete()
+      .in('id', selectedAttendanceIds);
+
+    if (error) {
+      alert('Error: ' + error.message);
+    } else {
+      setSelectedAttendanceIds([]);
+      loadHistory();
+    }
   };
 
   // Datos de sesión - Prioriza localStorage para coherencia entre módulos
@@ -362,11 +380,36 @@ export default function Attendance({ userRole, userName }: AttendanceProps) {
                   </h3>
                   <p className="text-[9px] font-bold text-slate-400 uppercase mt-1">Todas las entradas, salidas y comidas registradas</p>
                 </div>
+                {selectedAttendanceIds.length > 0 && isMonitorMode && (
+                  <button
+                    onClick={handleBulkDeleteAttendance}
+                    className="flex items-center gap-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-100 px-3.5 py-1.5 rounded-xl font-bold text-[10px] uppercase tracking-wider transition-all active:scale-95"
+                  >
+                    <Trash2 size={12} className="text-rose-500" />
+                    Eliminar Seleccionados ({selectedAttendanceIds.length})
+                  </button>
+                )}
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-left">
                   <thead className="bg-slate-50/50 text-[9px] font-black uppercase text-slate-400 tracking-widest">
                     <tr>
+                      {isMonitorMode && (
+                        <th className="px-8 py-4 w-10">
+                          <input
+                            type="checkbox"
+                            className="rounded border-slate-200 accent-sky-500 cursor-pointer w-4 h-4 text-sky-500"
+                            checked={history.length > 0 && selectedAttendanceIds.length === history.length}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setSelectedAttendanceIds(history.map(h => h.id));
+                              } else {
+                                setSelectedAttendanceIds([]);
+                              }
+                            }}
+                          />
+                        </th>
+                      )}
                       <th className="px-8 py-4">Empleado / Fecha</th>
                       <th className="px-8 py-4">Entrada</th>
                       <th className="px-8 py-4">Comida (I/R)</th>
@@ -377,10 +420,26 @@ export default function Attendance({ userRole, userName }: AttendanceProps) {
                   <tbody className="divide-y divide-slate-50">
                     {history.length === 0 ? (
                       <tr>
-                        <td colSpan={isMonitorMode ? 5 : 4} className="px-8 py-12 text-center text-slate-300 font-bold uppercase italic text-xs">Cargando historial...</td>
+                        <td colSpan={isMonitorMode ? 6 : 4} className="px-8 py-12 text-center text-slate-300 font-bold uppercase italic text-xs">Cargando historial...</td>
                       </tr>
                     ) : history.map((record) => (
                       <tr key={record.id} className="hover:bg-slate-50 transition-colors group">
+                        {isMonitorMode && (
+                          <td className="px-8 py-5 w-10">
+                            <input
+                              type="checkbox"
+                              className="rounded border-slate-200 accent-sky-500 cursor-pointer w-4 h-4 text-sky-500"
+                              checked={selectedAttendanceIds.includes(record.id)}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setSelectedAttendanceIds(prev => [...prev, record.id]);
+                                } else {
+                                  setSelectedAttendanceIds(prev => prev.filter(id => id !== record.id));
+                                }
+                              }}
+                            />
+                          </td>
+                        )}
                         <td className="px-8 py-5">
                           <p className="font-black text-slate-800 text-xs italic">{record.user_name}</p>
                           <p className="text-[9px] text-slate-400 font-black uppercase tracking-tight">{record.work_date}</p>

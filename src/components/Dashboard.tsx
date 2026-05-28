@@ -64,6 +64,7 @@ interface Customer {
 
 export default function Dashboard({ userRole }: { userRole: string | null }) {
   const [orders, setOrders] = useState<Order[]>([]);
+  const [selectedOrderIds, setSelectedOrderIds] = useState<string[]>([]);
   const [drivers, setDrivers] = useState<Employee[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [customers, setCustomers] = useState<Customer[]>([]);
@@ -342,6 +343,29 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
     }
   };
 
+  const handleBulkDeleteOrders = async () => {
+    if (selectedOrderIds.length === 0) return;
+    if (!confirm(`¿Estás seguro de eliminar los ${selectedOrderIds.length} pedidos seleccionados? Esta acción no se puede deshacer.`)) return;
+
+    const { error } = await supabase
+      .from('orders')
+      .delete()
+      .in('id', selectedOrderIds);
+
+    if (error) {
+      alert('Error al eliminar pedidos: ' + error.message);
+    } else {
+      setSelectedOrderIds([]);
+      fetchOrders();
+      await supabase.from('notifications_log').insert({
+        title: 'Pedidos Eliminados en Lote',
+        message: `Se eliminaron ${selectedOrderIds.length} pedidos en lote por el administrador`,
+        type: 'system',
+        user_role: 'admin'
+      });
+    }
+  };
+
   return (
     <div className="space-y-6 pb-24">
       {/* Header */}
@@ -403,6 +427,15 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
             Control de Despacho
           </h2>
           <div className="flex items-center gap-2">
+            {selectedOrderIds.length > 0 && userRole === 'admin' && (
+              <button
+                onClick={handleBulkDeleteOrders}
+                className="flex items-center gap-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-100 px-3.5 py-1.5 rounded-xl font-bold text-[10px] uppercase tracking-wider transition-all active:scale-95"
+              >
+                <Trash2 size={12} className="text-rose-500 animate-pulse" />
+                Eliminar Seleccionados ({selectedOrderIds.length})
+              </button>
+            )}
             <button
               onClick={handleExportGlobal}
               className="flex items-center gap-1.5 bg-sky-50 hover:bg-sky-100 text-sky-600 border border-sky-100 px-3.5 py-1.5 rounded-xl font-bold text-[10px] uppercase tracking-wider transition-all active:scale-95"
@@ -421,6 +454,22 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
           <table className="w-full text-left">
             <thead className="bg-slate-50/50 text-slate-400 uppercase text-[9px] font-black tracking-[0.2em] border-b border-slate-50">
               <tr>
+                {userRole === 'admin' && (
+                  <th className="px-8 py-5 w-10">
+                    <input
+                      type="checkbox"
+                      className="rounded border-slate-200 accent-sky-500 cursor-pointer w-4 h-4"
+                      checked={filteredOrders.length > 0 && selectedOrderIds.length === filteredOrders.length}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setSelectedOrderIds(filteredOrders.map(o => o.id));
+                        } else {
+                          setSelectedOrderIds([]);
+                        }
+                      }}
+                    />
+                  </th>
+                )}
                 <th className="px-8 py-5">Cliente / Detalle</th>
                 <th className="px-8 py-5">Productos</th>
                 <th className="px-8 py-5">Vendedor</th>
@@ -431,6 +480,22 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
             <tbody className="divide-y divide-slate-50">
               {filteredOrders.map((order) => (
                 <tr key={order.id} className="hover:bg-sky-50/20 transition-colors group">
+                  {userRole === 'admin' && (
+                    <td className="px-8 py-6 w-10">
+                      <input
+                        type="checkbox"
+                        className="rounded border-slate-200 accent-sky-500 cursor-pointer w-4 h-4"
+                        checked={selectedOrderIds.includes(order.id)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectedOrderIds(prev => [...prev, order.id]);
+                          } else {
+                            setSelectedOrderIds(prev => prev.filter(id => id !== order.id));
+                          }
+                        }}
+                      />
+                    </td>
+                  )}
                   <td className="px-8 py-6">
                     <p className="font-black text-slate-800 uppercase italic leading-none">{order.customer_name}</p>
                     <p className="text-[11px] text-slate-400 font-bold mt-2 flex items-center gap-1.5 leading-tight">

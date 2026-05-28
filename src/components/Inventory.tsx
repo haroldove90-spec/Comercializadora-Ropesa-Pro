@@ -13,6 +13,7 @@ interface Product {
 
 export default function Products({ userRole }: { userRole: string | null }) {
   const [products, setProducts] = useState<Product[]>([]);
+  const [selectedProductIds, setSelectedProductIds] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -115,6 +116,23 @@ export default function Products({ userRole }: { userRole: string | null }) {
     else fetchProducts();
   };
 
+  const handleBulkDeleteProducts = async () => {
+    if (selectedProductIds.length === 0) return;
+    if (!confirm(`¿Estás seguro de eliminar los ${selectedProductIds.length} productos seleccionados?`)) return;
+
+    const { error } = await supabase
+      .from('products')
+      .delete()
+      .in('id', selectedProductIds);
+
+    if (error) {
+      alert('Error al eliminar productos: ' + error.message);
+    } else {
+      setSelectedProductIds([]);
+      fetchProducts();
+    }
+  };
+
   const filteredProducts = products.filter(p => 
     p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     p.description?.toLowerCase().includes(searchQuery.toLowerCase())
@@ -167,36 +185,85 @@ export default function Products({ userRole }: { userRole: string | null }) {
           <p className="text-sm font-bold text-slate-400 mt-2">Comienza agregando productos para que tus clientes puedan verlos.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProducts.map((product) => (
-            <motion.div
-              layout
-              key={product.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm hover:shadow-xl transition-all group relative overflow-hidden"
-            >
-              <div className="flex justify-between items-start mb-4">
-                <div className="p-3 bg-sky-50 text-sky-500 rounded-2xl group-hover:scale-110 transition-transform">
-                  <Tag size={24} />
-                </div>
-                <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button 
-                    onClick={() => handleStartEdit(product)} 
-                    className="p-2 text-slate-400 hover:text-sky-500 transition-colors"
-                  >
-                    <Edit3 size={18} />
-                  </button>
-                  {userRole === 'admin' && (
-                    <button 
-                      onClick={() => handleDeleteProduct(product.id)}
-                      className="p-2 text-slate-400 hover:text-rose-500 transition-colors"
-                    >
-                      <Trash2 size={18} />
-                    </button>
-                  )}
-                </div>
+        <div className="space-y-6">
+          {filteredProducts.length > 0 && (
+            <div className="bg-slate-50 p-4 rounded-2xl flex flex-wrap items-center justify-between gap-3 border border-slate-100">
+              <div className="flex items-center gap-2">
+                <input 
+                  type="checkbox"
+                  className="rounded border-slate-200 accent-sky-500 cursor-pointer w-4 h-4 ml-1"
+                  checked={selectedProductIds.length === filteredProducts.length && filteredProducts.length > 0}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setSelectedProductIds(filteredProducts.map(p => p.id));
+                    } else {
+                      setSelectedProductIds([]);
+                    }
+                  }}
+                />
+                <span className="text-[11px] font-black uppercase text-slate-500 tracking-wider">
+                  Seleccionar todos los productos ({filteredProducts.length})
+                </span>
               </div>
+
+              {selectedProductIds.length > 0 && userRole === 'admin' && (
+                <button
+                  onClick={handleBulkDeleteProducts}
+                  className="flex items-center gap-1.5 bg-rose-100 hover:bg-rose-200 text-rose-700 px-4 py-2 rounded-xl font-black text-[10px] uppercase tracking-wider transition-all"
+                >
+                  <Trash2 size={12} />
+                  Eliminar {selectedProductIds.length} Seleccionados
+                </button>
+              )}
+            </div>
+          )}
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredProducts.map((product) => (
+              <motion.div
+                layout
+                key={product.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm hover:shadow-xl transition-all group relative overflow-hidden"
+              >
+                <div className="flex justify-between items-start mb-4">
+                  <div className="flex items-center gap-3">
+                    {userRole === 'admin' && (
+                      <input 
+                        type="checkbox"
+                        className="rounded border-slate-200 accent-sky-500 cursor-pointer w-4 h-4"
+                        checked={selectedProductIds.includes(product.id)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectedProductIds(prev => [...prev, product.id]);
+                          } else {
+                            setSelectedProductIds(prev => prev.filter(id => id !== product.id));
+                          }
+                        }}
+                      />
+                    )}
+                    <div className="p-3 bg-sky-50 text-sky-500 rounded-2xl group-hover:scale-110 transition-transform">
+                      <Tag size={24} />
+                    </div>
+                  </div>
+                  <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button 
+                      onClick={() => handleStartEdit(product)} 
+                      className="p-2 text-slate-400 hover:text-sky-500 transition-colors"
+                    >
+                      <Edit3 size={18} />
+                    </button>
+                    {userRole === 'admin' && (
+                      <button 
+                        onClick={() => handleDeleteProduct(product.id)}
+                        className="p-2 text-slate-400 hover:text-rose-500 transition-colors"
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    )}
+                  </div>
+                </div>
               
               <h3 className="text-lg font-black text-slate-800 leading-tight uppercase italic">{product.name}</h3>
               <p className="text-slate-500 text-xs mt-2 line-clamp-2 font-medium leading-relaxed">
@@ -214,6 +281,7 @@ export default function Products({ userRole }: { userRole: string | null }) {
               </div>
             </motion.div>
           ))}
+          </div>
         </div>
       )}
 

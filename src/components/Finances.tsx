@@ -101,6 +101,9 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
   const [customersList, setCustomersList] = useState<any[]>([]);
   const [employeesList, setEmployeesList] = useState<any[]>([]);
   const [salesList, setSalesList] = useState<any[]>([]);
+  const [selectedSaleIds, setSelectedSaleIds] = useState<string[]>([]);
+  const [selectedCustomerIds, setSelectedCustomerIds] = useState<string[]>([]);
+  const [selectedEmployeeIds, setSelectedEmployeeIds] = useState<string[]>([]);
   const [loadingSales, setLoadingSales] = useState(false);
   const [salesSearch, setSalesSearch] = useState('');
   const [customerFilter, setCustomerFilter] = useState('');
@@ -453,6 +456,18 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
     else fetchSales();
   };
 
+  const handleBulkDeleteSales = async () => {
+    if (selectedSaleIds.length === 0) return;
+    if (!confirm(`¿Eliminar los ${selectedSaleIds.length} registros de venta seleccionados?`)) return;
+    const { error } = await supabase.from('orders').delete().in('id', selectedSaleIds);
+    if (error) {
+      alert('Error: ' + error.message);
+    } else {
+      setSelectedSaleIds([]);
+      fetchSales();
+    }
+  };
+
   const handleDeleteCustomer = async (id: string, name: string) => {
     if (!confirm(`¿Eliminar cliente ${name}?`)) return;
     const { error } = await supabase.from('customers').delete().eq('id', id);
@@ -460,11 +475,35 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
     else fetchCustomers();
   };
 
+  const handleBulkDeleteCustomers = async () => {
+    if (selectedCustomerIds.length === 0) return;
+    if (!confirm(`¿Eliminar los ${selectedCustomerIds.length} clientes seleccionados?`)) return;
+    const { error } = await supabase.from('customers').delete().in('id', selectedCustomerIds);
+    if (error) {
+      alert('Error: ' + error.message);
+    } else {
+      setSelectedCustomerIds([]);
+      fetchCustomers();
+    }
+  };
+
   const handleDeleteEmployee = async (id: string, name: string) => {
     if (!confirm(`¿Eliminar empleado ${name}?`)) return;
     const { error } = await supabase.from('employees').delete().eq('id', id);
     if (error) alert('Error: ' + error.message);
     else fetchEmployees();
+  };
+
+  const handleBulkDeleteEmployees = async () => {
+    if (selectedEmployeeIds.length === 0) return;
+    if (!confirm(`¿Eliminar los ${selectedEmployeeIds.length} empleados seleccionados?`)) return;
+    const { error } = await supabase.from('employees').delete().in('id', selectedEmployeeIds);
+    if (error) {
+      alert('Error: ' + error.message);
+    } else {
+      setSelectedEmployeeIds([]);
+      fetchEmployees();
+    }
   };
 
   const handleUpdateEmployeeRole = async (id: string, newRole: string) => {
@@ -633,6 +672,15 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
                   </div>
                   <div className="flex items-center gap-3">
                     {loadingSales && <Loader2 size={16} className="animate-spin text-sky-500" />}
+                    {selectedSaleIds.length > 0 && userRole === 'admin' && (
+                      <button
+                        onClick={handleBulkDeleteSales}
+                        className="flex items-center gap-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-100 px-3.5 py-2 rounded-xl font-bold text-[10px] uppercase tracking-wider transition-all"
+                      >
+                        <Trash2 size={12} className="text-rose-500" />
+                        Eliminar ({selectedSaleIds.length})
+                      </button>
+                    )}
                     <div className="flex items-center gap-2">
                       <button 
                         onClick={() => handleExport('Venta_Filtro')}
@@ -657,6 +705,22 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
                   <table className="w-full text-left">
                     <thead className="bg-slate-50/50 text-[10px] font-black uppercase text-slate-400 tracking-widest">
                       <tr>
+                        {userRole === 'admin' && (
+                          <th className="px-6 py-4 w-10">
+                            <input
+                              type="checkbox"
+                              className="rounded border-slate-200 accent-sky-500 cursor-pointer w-4 h-4"
+                              checked={getFilteredSales().length > 0 && selectedSaleIds.length === getFilteredSales().length}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setSelectedSaleIds(getFilteredSales().map(s => s.id));
+                                } else {
+                                  setSelectedSaleIds([]);
+                                }
+                              }}
+                            />
+                          </th>
+                        )}
                         <th className="px-6 py-4">Ref / Hora</th>
                         <th className="px-6 py-4">Cliente</th>
                         <th className="px-6 py-4">Cobrado Por</th>
@@ -669,6 +733,22 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
                     <tbody className="divide-y divide-slate-50">
                       {getFilteredSales().length > 0 ? getFilteredSales().map((sale) => (
                         <tr key={sale.id} className="hover:bg-slate-50 transition-colors group">
+                          {userRole === 'admin' && (
+                            <td className="px-6 py-4 w-10">
+                              <input
+                                type="checkbox"
+                                className="rounded border-slate-200 accent-sky-500 cursor-pointer w-4 h-4"
+                                checked={selectedSaleIds.includes(sale.id)}
+                                onChange={(e) => {
+                                  if (e.target.checked) {
+                                    setSelectedSaleIds(prev => [...prev, sale.id]);
+                                  } else {
+                                    setSelectedSaleIds(prev => prev.filter(id => id !== sale.id));
+                                  }
+                                }}
+                              />
+                            </td>
+                          )}
                           <td className="px-6 py-4">
                             <p className="font-black text-sky-500 text-xs">{sale.id.slice(0, 8).toUpperCase()}</p>
                             <p className="text-[10px] text-slate-400 font-bold">{new Date(sale.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
@@ -731,6 +811,15 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
                   <p className="text-[9px] font-bold text-slate-400 uppercase mt-1">Buscador y directorio completo de nombres, alias y zonas</p>
                 </div>
                 <div className="flex flex-wrap items-center gap-3">
+                  {selectedCustomerIds.length > 0 && userRole === 'admin' && (
+                    <button
+                      onClick={handleBulkDeleteCustomers}
+                      className="flex items-center gap-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-100 px-3.5 py-2.5 rounded-xl font-bold text-[10px] uppercase tracking-wider transition-all"
+                    >
+                      <Trash2 size={12} className="text-rose-500" />
+                      Eliminar ({selectedCustomerIds.length})
+                    </button>
+                  )}
                   <div className="relative">
                     <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
                     <input
@@ -770,6 +859,22 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
                 <table className="w-full text-left">
                   <thead className="bg-slate-50/50 text-[10px] font-black uppercase text-slate-400 tracking-widest">
                     <tr>
+                      {userRole === 'admin' && (
+                        <th className="px-6 py-4 w-10">
+                          <input
+                            type="checkbox"
+                            className="rounded border-slate-200 accent-sky-500 cursor-pointer w-4 h-4"
+                            checked={getFilteredCustomers().length > 0 && selectedCustomerIds.length === getFilteredCustomers().length}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setSelectedCustomerIds(getFilteredCustomers().map(c => c.id));
+                              } else {
+                                setSelectedCustomerIds([]);
+                              }
+                            }}
+                          />
+                        </th>
+                      )}
                       <th className="px-6 py-4">Nombre / Zona / Alias</th>
                       <th className="px-6 py-4">Suscripción</th>
                       <th className="px-6 py-4">Acumulado</th>
@@ -780,6 +885,22 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
                   <tbody className="divide-y divide-slate-50">
                     {getFilteredCustomers().map((client) => (
                       <tr key={client.id} className="hover:bg-slate-50 transition-colors">
+                        {userRole === 'admin' && (
+                          <td className="px-6 py-4 w-10">
+                            <input
+                              type="checkbox"
+                              className="rounded border-slate-200 accent-sky-500 cursor-pointer w-4 h-4"
+                              checked={selectedCustomerIds.includes(client.id)}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setSelectedCustomerIds(prev => [...prev, client.id]);
+                                } else {
+                                  setSelectedCustomerIds(prev => prev.filter(id => id !== client.id));
+                                }
+                              }}
+                            />
+                          </td>
+                        )}
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-2">
                             <p className="font-black text-slate-800 text-sm">{client.name}</p>
@@ -851,6 +972,15 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
                     <p className="text-[9px] font-bold text-slate-400 uppercase mt-1 italic tracking-widest leading-none">Administración de puestos y accesos</p>
                   </div>
                   <div className="flex items-center gap-2">
+                    {selectedEmployeeIds.length > 0 && userRole === 'admin' && (
+                      <button
+                        onClick={handleBulkDeleteEmployees}
+                        className="flex items-center gap-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-100 px-3.5 py-2.5 rounded-xl font-bold text-[10px] uppercase tracking-wider transition-all"
+                      >
+                        <Trash2 size={12} className="text-rose-500" />
+                        Eliminar ({selectedEmployeeIds.length})
+                      </button>
+                    )}
                     <button 
                       onClick={() => handleExport('Directorio de Empleados')}
                       className="flex items-center gap-2 bg-slate-100 text-slate-600 px-4 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-slate-200 transition-all"
@@ -869,6 +999,22 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
                   <table className="w-full text-left">
                     <thead className="bg-slate-50/50 text-[10px] font-black uppercase text-slate-400 tracking-widest">
                       <tr>
+                        {userRole === 'admin' && (
+                          <th className="px-6 py-4 w-10">
+                            <input
+                              type="checkbox"
+                              className="rounded border-slate-200 accent-sky-500 cursor-pointer w-4 h-4"
+                              checked={employeesList.length > 0 && selectedEmployeeIds.length === employeesList.length}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setSelectedEmployeeIds(employeesList.map(emp => emp.id));
+                                } else {
+                                  setSelectedEmployeeIds([]);
+                                }
+                              }}
+                            />
+                          </th>
+                        )}
                         <th className="px-6 py-4">Empleado / Cargo</th>
                         <th className="px-6 py-4">Teléfono</th>
                         <th className="px-6 py-4">Ingreso</th>
@@ -879,6 +1025,22 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
                     <tbody className="divide-y divide-slate-50">
                       {employeesList.length > 0 ? employeesList.map((emp) => (
                         <tr key={emp.id} className="hover:bg-slate-50 transition-colors">
+                          {userRole === 'admin' && (
+                            <td className="px-6 py-4 w-10">
+                              <input
+                                type="checkbox"
+                                className="rounded border-slate-200 accent-sky-500 cursor-pointer w-4 h-4"
+                                checked={selectedEmployeeIds.includes(emp.id)}
+                                onChange={(e) => {
+                                  if (e.target.checked) {
+                                    setSelectedEmployeeIds(prev => [...prev, emp.id]);
+                                  } else {
+                                    setSelectedEmployeeIds(prev => prev.filter(id => id !== emp.id));
+                                  }
+                                }}
+                              />
+                            </td>
+                          )}
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-3">
                               <div className="w-8 h-8 rounded-lg bg-sky-500 text-white flex items-center justify-center font-black text-xs">
@@ -886,7 +1048,9 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
                               </div>
                               <div>
                                 <p className="font-black text-slate-800 text-sm italic">{emp.name}</p>
-                                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-tight leading-none mt-0.5">{emp.role}</p>
+                                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-tight leading-none mt-0.5">
+                                  {emp.role === 'driver' ? 'Vendedor' : emp.role}
+                                </p>
                               </div>
                             </div>
                           </td>
@@ -910,7 +1074,7 @@ export default function Finances({ initialTab = 'metrics', userRole, userName }:
                               >
                                 <option value="admin">Admin</option>
                                 <option value="operator">Operador</option>
-                                <option value="driver">Repartidor</option>
+                                <option value="driver">Vendedor</option>
                                 <option value="client">Cliente</option>
                               </select>
                               
