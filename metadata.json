@@ -1,0 +1,11 @@
+{
+  "name": "Remix: Ropesa",
+  "description": "Sistema integral de gestión para la Comercializadora Ropesa, facilitando la operación, finanzas, reparto y pedidos automatizados.",
+  "requestFramePermissions": [
+    "geolocation",
+    "notifications"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

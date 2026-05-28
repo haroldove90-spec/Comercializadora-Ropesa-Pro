@@ -1,0 +1,53 @@
+
+// Ejemplo de implementacion en Next.js App Router
+// Ubicacion recomendada: app/api/webhook-whatsapp/route.ts
+
+import { createClient } from '@supabase/supabase-js';
+import { NextResponse } from 'next/server';
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY! // Usar Service Role en el backend para bypass RLS
+);
+
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
+    
+    // Validacion basica de payload (esto depende de tu proveedor de WhatsApp, e.g., Twilio o Meta)
+    const { from, message, name } = body;
+
+    // 1. Insertar en Supabase
+    const { data, error } = await supabase
+      .from('orders')
+      .insert([
+        {
+          customer_name: name || 'Usuario WhatsApp',
+          address: body.address || 'Ubicación pendiente', 
+          items: body.message || 'Pedido automático',
+          status: 'pending',
+          whatsapp_number: from,
+          total_price: 0,
+          metadata: {
+            lat: body.latitude || null,
+            lng: body.longitude || null,
+            timestamp: new Date().toISOString()
+          }
+        }
+      ])
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    // 2. Respuesta al Webhook
+    return NextResponse.json({ 
+      success: true, 
+      order_id: data.id 
+    }, { status: 201 });
+
+  } catch (error: any) {
+    console.error('Webhook Error:', error.message);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
