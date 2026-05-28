@@ -1063,7 +1063,7 @@ export default function CashFloat({ userRole }: CashFloatProps) {
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-2">
         <div>
           <h2 className="text-3xl font-black text-slate-800 italic uppercase">
-            Módulo <span className="text-[#C32A2C]">Fondo de Caja</span>
+            Módulo <span className="text-[#C32A2C]">Asignación de inventarios</span>
           </h2>
           <p className="text-sm font-bold text-slate-400 mt-2 uppercase tracking-widest leading-none">
             {isAdmin 
@@ -1159,10 +1159,10 @@ export default function CashFloat({ userRole }: CashFloatProps) {
                 <div>
                   <h3 className="font-black text-slate-800 uppercase text-sm tracking-tight flex items-center gap-2">
                     <Plus size={18} className="text-[#C32A2C]" />
-                    Registrar y Asignar <span className="text-[#C32A2C]">Fondo de Caja</span>
+                    Registrar y Asignar <span className="text-[#C32A2C]">inventarios</span>
                   </h3>
                   <p className="text-[10px] font-bold text-slate-400 uppercase mt-0.5">
-                    Habilita el fondo de caja diario seleccionando a cualquier empleado, ingresando el monto y enviando el registro
+                    Habilita la asignación de inventarios y fondo diario seleccionando a cualquier empleado, ingresando el monto/unidades y enviando el registro
                   </p>
                 </div>
 
@@ -1339,7 +1339,7 @@ export default function CashFloat({ userRole }: CashFloatProps) {
                         </tr>
                       ) : (
                         driversStatusData.map((drv) => (
-                          <tr key={drv.id} className="hover:bg-slate-50 transition-all">
+                          <tr key={drv.id} className="hover:bg-zinc-800/30 transition-all">
                             {isAdmin && (
                               <td className="px-6 py-5 text-center w-12">
                                 <input
@@ -1758,7 +1758,7 @@ export default function CashFloat({ userRole }: CashFloatProps) {
               className="relative w-full max-w-md bg-white rounded-[40px] shadow-2xl overflow-hidden p-8 z-[121]"
             >
               <div className="flex justify-between items-center mb-6">
-                <h3 className="text-lg font-black text-slate-800 uppercase italic">Asignar <span className="text-[#C32A2C]">Fondo de Caja</span></h3>
+                <h3 className="text-lg font-black text-slate-800 uppercase italic">Asignar <span className="text-[#C32A2C]">Inventarios</span></h3>
                 <button 
                   type="button"
                   onClick={() => setSelectedDriverForFloat(null)}
