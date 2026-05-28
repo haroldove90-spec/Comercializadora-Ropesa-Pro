@@ -575,8 +575,8 @@ export default function App() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center p-6 text-center">
-        <div className="mb-8">
+      <div className="min-h-screen bg-[#000000] flex flex-col items-center justify-center p-6 text-center">
+        <div className="mb-8 overflow-hidden rounded-3xl border-4 border-zinc-900 bg-zinc-950 p-6 shadow-2xl">
           <img 
             src="https://cossma.com.mx/ropesa.png" 
             alt="Splash Ropesa" 
@@ -586,11 +586,11 @@ export default function App() {
         <div className="space-y-4">
           <div className="space-y-2">
             <h1 className="text-2xl font-black text-white uppercase tracking-tight">Ropesa</h1>
-            <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] animate-pulse">Iniciando Centro de Control...</p>
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] animate-pulse">Iniciando Centro de Control...</p>
           </div>
           <button 
             onClick={() => setLoading(false)}
-            className="text-[10px] font-black text-slate-600 uppercase tracking-widest hover:text-sky-500 transition-colors border border-slate-800 px-4 py-2 rounded-full"
+            className="text-[10px] font-black text-white uppercase tracking-widest hover:bg-[#C32A2C] hover:border-[#C32A2C] transition-all bg-transparent border border-zinc-800 px-5 py-3 rounded-full cursor-pointer"
           >
             ¿Tarda mucho? Cargar Manualmente
           </button>
@@ -606,28 +606,24 @@ export default function App() {
   }
 
   return (
-    <div className={`min-h-screen flex flex-col transition-colors duration-300 ${darkMode ? 'dark bg-slate-950 text-slate-100' : 'text-slate-800 bg-[#f1f5f9]'}`}>
+    <div className="min-h-screen flex flex-col bg-[#000000] text-slate-100">
       
       {/* Background overlay for mobile when sidebar is open */}
       {isSidebarOpen && (
         <div 
           onClick={() => setIsSidebarOpen(false)}
-          className="md:hidden fixed inset-0 bg-black/60 z-[45] backdrop-blur-xs transition-opacity duration-300 animate-fade-in"
+          className="md:hidden fixed inset-0 bg-black/80 z-[45] backdrop-blur-xs transition-opacity duration-300 animate-fade-in"
         />
       )}
 
       {/* Header - Mobile Only */}
-      <header className={`md:hidden shrink-0 sticky top-0 z-[50] border-b transition-colors duration-300 ${darkMode ? 'bg-slate-900/95 backdrop-blur-md border-slate-800' : 'bg-white/95 backdrop-blur-md border-slate-250'}`}>
+      <header className="md:hidden shrink-0 sticky top-0 z-[50] border-b border-zinc-900 bg-[#000000]">
         <div className="flex items-center justify-between p-3.5">
           <div className="flex items-center gap-3">
             {/* Hamburger / Close Toggle Button */}
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className={`p-2.5 rounded-xl transition-all ${
-                darkMode 
-                  ? 'bg-slate-800 text-white hover:bg-slate-700 active:scale-95' 
-                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200 active:scale-95'
-              }`}
+              className="p-2.5 rounded-xl bg-[#C32A2C] text-white hover:bg-[#a12022] active:scale-95 transition-all cursor-pointer"
               title={isSidebarOpen ? "Cerrar menú" : "Abrir menú"}
               aria-label="Toggle menú"
             >
@@ -641,10 +637,10 @@ export default function App() {
                 className="w-8 h-8 object-contain rounded"
               />
               <div className="flex flex-col">
-                <span className="font-display font-black text-sm tracking-tight leading-none text-slate-800 dark:text-white">
+                <span className="font-display font-black text-sm tracking-tight leading-none text-white">
                   Ropesa
                 </span>
-                <span className="text-[8px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 mt-1">{userName || 'Usuario'}</span>
+                <span className="text-[8px] font-black uppercase tracking-widest text-[#C32A2C] mt-1">{userName || 'Usuario'}</span>
               </div>
             </div>
           </div>
@@ -654,19 +650,13 @@ export default function App() {
               <button
                 onClick={installApp}
                 title="Instalar App"
-                className="p-2 rounded-xl bg-sky-500/10 text-sky-500 hover:bg-sky-500 hover:text-white transition-all flex items-center gap-1"
+                className="p-2 rounded-xl bg-[#C32A2C]/20 text-[#C32A2C] hover:bg-[#C32A2C] hover:text-white transition-all flex items-center gap-1"
               >
                 <Download size={14} />
                 <span className="text-[8px] font-black uppercase tracking-tight">Instalar</span>
               </button>
             )}
             <NotificationHub userRole={currentRoleView} onViewAll={() => setActiveView('notifications')} />
-            <button 
-              onClick={() => setDarkMode(!darkMode)}
-              className={`p-2 rounded-xl transition-colors ${darkMode ? 'bg-slate-800 text-amber-400' : 'bg-slate-100 text-slate-500'}`}
-            >
-              {darkMode ? <Sun size={15} /> : <Moon size={15} />}
-            </button>
           </div>
         </div>
 
@@ -679,14 +669,14 @@ export default function App() {
       <motion.aside
         initial={false}
         animate={{ width: isSidebarOpen ? 280 : (typeof window !== 'undefined' && window.innerWidth < 768 ? 280 : 80) }}
-        className={`flex flex-col fixed inset-y-0 left-0 z-50 border-r transition-transform duration-300 ease-in-out ${
+        className={`flex flex-col fixed inset-y-0 left-0 z-50 border-r border-zinc-900 transition-transform duration-300 ease-in-out ${
           isSidebarOpen 
             ? 'translate-x-0' 
             : '-translate-x-full md:translate-x-0'
-        } ${darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-slate-900 text-white border-slate-800'}`}
+        } bg-[#000000] text-white`}
       >
         <div 
-          className="p-6 flex items-center gap-3 group border-b border-slate-800/50"
+          className="p-6 flex items-center gap-3 group border-b border-zinc-900"
         >
           <img 
             src="https://cossma.com.mx/ropesa.png" 
@@ -695,8 +685,8 @@ export default function App() {
           />
           {isSidebarOpen && (
             <div className="flex flex-col">
-              <span className="font-display font-bold text-lg tracking-tight whitespace-nowrap leading-none">Ropesa</span>
-              <span className="text-[8px] font-black uppercase tracking-widest text-slate-500 mt-1">{userName || 'Usuario'}</span>
+              <span className="font-display font-bold text-lg tracking-tight whitespace-nowrap leading-none text-white">Ropesa</span>
+              <span className="text-[8px] font-black uppercase tracking-widest text-[#C32A2C] mt-1">{userName || 'Usuario'}</span>
             </div>
           )}
         </div>
@@ -705,7 +695,7 @@ export default function App() {
             {isInstallable && (
               <button
                 onClick={installApp}
-                className="w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all bg-sky-500/10 text-sky-400 hover:bg-sky-500 hover:text-white mb-4 border border-sky-500/20"
+                className="w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all bg-[#C32A2C]/10 text-[#C32A2C] hover:bg-[#C32A2C] hover:text-white mb-4 border border-[#C32A2C]/20"
               >
                 <Download size={22} className="shrink-0" />
                 {isSidebarOpen && <span className="text-[10px] font-black uppercase tracking-widest text-left">Instalar Aplicación</span>}
@@ -716,12 +706,12 @@ export default function App() {
             <button
               key={item.id}
               onClick={() => handleNavClick(item.id)}
-              className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all ${
+              className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all cursor-pointer ${
                 item.isShortcut 
                   ? 'border border-dashed border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:text-amber-300'
                   : activeView === item.id 
-                    ? 'bg-sky-500 text-white shadow-lg shadow-sky-500/20 font-bold' 
-                    : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                    ? 'bg-[#C32A2C] text-white shadow-lg shadow-[#C32A2C]/20 font-black' 
+                    : 'text-slate-400 hover:bg-zinc-900 hover:text-white'
               }`}
             >
               <item.icon size={22} className={item.isShortcut ? 'text-amber-400 animate-pulse shrink-0' : 'shrink-0'} />
@@ -731,7 +721,7 @@ export default function App() {
           
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all text-slate-400 hover:bg-rose-500/10 hover:text-rose-400 mt-8"
+            className="w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all text-slate-400 hover:bg-rose-500/10 hover:text-rose-400 mt-8 cursor-pointer"
           >
             <LogOut size={22} />
             {isSidebarOpen && <span className="text-sm font-bold uppercase tracking-wider text-slate-400">Cerrar Sesión</span>}
@@ -741,7 +731,7 @@ export default function App() {
         <div className="p-6">
           <button 
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="w-full flex items-center justify-center p-2 rounded-lg bg-slate-800 text-slate-400 hover:text-white transition-colors"
+            className="w-full flex items-center justify-center p-2 rounded-lg bg-[#C32A2C] hover:bg-[#a12022] text-white transition-colors cursor-pointer"
           >
             {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -750,9 +740,9 @@ export default function App() {
 
       <main className={`flex-1 flex flex-col transition-all duration-300 ${isSidebarOpen ? 'md:ml-[280px]' : 'md:ml-[80px]'}`}>
         {/* Header - Desktop */}
-        <header className={`h-16 hidden md:flex border-b items-center justify-between px-6 shrink-0 sticky top-0 z-50 transition-colors ${darkMode ? 'bg-slate-900/80 backdrop-blur-md border-slate-800' : 'bg-white/80 backdrop-blur-md border-slate-200'}`}>
+        <header className="h-16 hidden md:flex border-b border-zinc-900 bg-[#000000] items-center justify-between px-6 shrink-0 sticky top-0 z-50 text-white">
           <div className="flex items-center gap-4">
-            <h2 className="text-sm font-black uppercase tracking-widest text-slate-400">
+            <h2 className="text-sm font-black uppercase tracking-widest text-[#C32A2C] italic">
               {navItems.find((i: any) => i.id === activeView)?.label || 'Panel'}
             </h2>
           </div>
@@ -763,27 +753,21 @@ export default function App() {
               <button
                 onClick={installApp}
                 title="Instalar App"
-                className="p-2 rounded-lg bg-sky-500/10 text-sky-500 hover:bg-sky-500 hover:text-white transition-all flex items-center gap-2"
+                className="p-2 rounded-lg bg-[#C32A2C]/10 text-[#C32A2C] hover:bg-[#C32A2C] hover:text-white transition-all flex items-center gap-2 border border-[#C32A2C]/20 cursor-pointer"
               >
                 <Download size={18} />
                 <span className="text-[9px] font-black uppercase tracking-tight">Instalar</span>
               </button>
             )}
-            <button 
-              onClick={() => setDarkMode(!darkMode)}
-              className={`p-2 rounded-lg transition-colors ${darkMode ? 'bg-slate-800 text-amber-400' : 'bg-slate-100 text-slate-500'}`}
-            >
-              {darkMode ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
             <div className="flex items-center gap-4">
               <div className="text-right hidden sm:block">
-                <p className="text-[10px] font-black text-sky-500 uppercase tracking-widest leading-none mb-1">
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">
                   {currentRoleView === 'admin' ? 'Administrador' : currentRoleView === 'operator' ? 'Planta' : currentRoleView === 'driver' ? 'Vendedor' : 'Cliente'}
                   {currentRoleView !== userRole && (
                     <span className="text-amber-500 ml-1 text-[8px] tracking-normal lowercase italic">(vista)</span>
                   )}
                 </p>
-                <p className="text-xs font-bold text-slate-700 uppercase italic">{userName || 'Usuario'}</p>
+                <p className="text-xs font-bold text-slate-200 uppercase italic">{userName || 'Usuario'}</p>
               </div>
               <div className="bg-emerald-500 w-2 h-2 rounded-full animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" title="Sistema Online" />
             </div>

@@ -204,9 +204,9 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
   };
 
   const stats = [
-    { label: 'Pedidos Hoy', value: orders.length.toString(), subValue: 'Total', color: 'text-slate-900' },
-    { label: 'Pdtes de Asignar', value: orders.filter(o => o.status === 'pending').length.toString(), subValue: '! Acción Requerida', color: 'text-amber-600', trendColor: 'text-amber-600' },
-    { label: 'En Ruta', value: orders.filter(o => o.status === 'assigned').length.toString(), subValue: 'Activos', color: 'text-sky-600' },
+    { label: 'Pedidos Hoy', value: orders.length.toString(), subValue: 'Total', color: 'text-white' },
+    { label: 'Pdtes de Asignar', value: orders.filter(o => o.status === 'pending').length.toString(), subValue: '! Acción Requerida', color: 'text-[#C32A2C]', trendColor: 'text-[#C32A2C]' },
+    { label: 'En Ruta', value: orders.filter(o => o.status === 'assigned').length.toString(), subValue: 'Activos', color: 'text-sky-400' },
   ];
 
   const filteredOrders = orders.filter(order => 
@@ -367,29 +367,29 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
   };
 
   return (
-    <div className="space-y-6 pb-24">
+    <div className="space-y-6 pb-24 text-white">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black text-slate-800 tracking-tight uppercase italic leading-none">Gestión de <span className="text-sky-500">Pedidos</span></h1>
-          <p className="text-slate-500 mt-2 font-bold italic uppercase text-[10px] tracking-wider">Centro de despacho y asignación en tiempo real</p>
+          <h1 className="text-3xl font-black text-white tracking-tight uppercase italic leading-none">Gestión de <span className="text-[#C32A2C]">Pedidos</span></h1>
+          <p className="text-zinc-400 mt-2 font-bold uppercase text-[9px] tracking-[0.2em]">Centro de despacho y asignación en tiempo real</p>
         </div>
         
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <button 
             onClick={() => setShowRegisterModal(true)}
-            className="flex items-center gap-2 bg-slate-900 text-white px-5 py-3 rounded-2xl font-black text-[11px] uppercase tracking-widest shadow-xl hover:bg-slate-800 transition-all active:scale-95 shrink-0"
+            className="flex items-center gap-2 bg-[#C32A2C] hover:bg-[#a12022] text-white px-5 py-3 rounded-2xl font-black text-[11px] uppercase tracking-widest shadow-xl transition-all active:scale-95 shrink-0 cursor-pointer"
           >
             <Plus size={18} /> Registrar Venta/Ped.
           </button>
           <div className="relative w-full md:w-80">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500" size={18} />
             <input 
               type="text" 
               placeholder="Buscar por cliente o dirección..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-sky-500 outline-none transition-all shadow-sm font-bold text-sm"
+              className="w-full pl-11 pr-4 py-3 bg-zinc-950 border border-zinc-900 text-white placeholder-zinc-500 rounded-2xl focus:ring-2 focus:ring-[#C32A2C] outline-none transition-all shadow-sm font-bold text-sm"
             />
           </div>
         </div>
@@ -403,16 +403,16 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.1 }}
-            className="bg-white p-6 rounded-[24px] border border-slate-100 shadow-sm overflow-hidden relative group"
+            className="bg-zinc-950 p-6 rounded-[24px] border border-zinc-900 shadow-xl overflow-hidden relative group"
           >
-            <p className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">{stat.label}</p>
+            <p className="text-[9px] font-black text-zinc-500 uppercase tracking-[0.2em] mb-2">{stat.label}</p>
             <div className="flex items-baseline gap-2">
               <p className={`text-3xl font-black ${stat.color}`}>{stat.value}</p>
-              <span className={`text-[10px] font-black uppercase ${stat.trendColor || 'text-slate-500/50'}`}>
+              <span className={`text-[10px] font-black uppercase ${stat.trendColor || 'text-zinc-600'}`}>
                 {stat.subValue}
               </span>
             </div>
-            <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:scale-125 transition-transform">
+            <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:scale-125 transition-transform text-white">
               <Package size={80} />
             </div>
           </motion.div>
@@ -420,31 +420,31 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
       </div>
 
       {/* Table Area */}
-      <div className="bg-white rounded-[32px] border border-slate-100 overflow-hidden shadow-sm">
-        <div className="p-6 md:p-8 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
-          <h2 className="font-black text-slate-800 uppercase italic flex items-center gap-3">
-            <Truck size={20} className="text-sky-500" />
+      <div className="bg-zinc-950 rounded-[24px] border border-zinc-900 overflow-hidden shadow-2xl">
+        <div className="p-6 md:p-8 border-b border-zinc-900 flex flex-wrap justify-between items-center bg-zinc-950 gap-4">
+          <h2 className="font-black text-white uppercase italic flex items-center gap-3">
+            <Truck size={20} className="text-[#C32A2C]" />
             Control de Despacho
           </h2>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             {selectedOrderIds.length > 0 && userRole === 'admin' && (
               <button
                 onClick={handleBulkDeleteOrders}
-                className="flex items-center gap-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-100 px-3.5 py-1.5 rounded-xl font-bold text-[10px] uppercase tracking-wider transition-all active:scale-95"
+                className="flex items-center gap-1.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/25 px-3.5 py-2 rounded-xl font-bold text-[10px] uppercase tracking-wider transition-all active:scale-95 cursor-pointer"
               >
-                <Trash2 size={12} className="text-rose-500 animate-pulse" />
+                <Trash2 size={12} className="text-rose-400 animate-pulse" />
                 Eliminar Seleccionados ({selectedOrderIds.length})
               </button>
             )}
             <button
               onClick={handleExportGlobal}
-              className="flex items-center gap-1.5 bg-sky-50 hover:bg-sky-100 text-sky-600 border border-sky-100 px-3.5 py-1.5 rounded-xl font-bold text-[10px] uppercase tracking-wider transition-all active:scale-95"
+              className="flex items-center gap-1.5 bg-zinc-900 hover:bg-zinc-800 text-white border border-zinc-800 px-3.5 py-2 rounded-xl font-bold text-[10px] uppercase tracking-wider transition-all active:scale-95 cursor-pointer"
               title="Exportar todos los pedidos de la lista actual"
             >
-              <Download size={12} className="text-sky-500 animate-pulse" />
+              <Download size={12} className="text-[#C32A2C]" />
               Exportar Todo ({filteredOrders.length})
             </button>
-            <span className="text-[10px] bg-slate-800 text-white px-3 py-1.5 rounded-xl font-black uppercase tracking-widest whitespace-nowrap">
+            <span className="text-[10px] bg-zinc-900 border border-zinc-850 text-slate-300 px-3 py-2 rounded-xl font-black uppercase tracking-widest whitespace-nowrap">
               {filteredOrders.length} Resultados
             </span>
           </div>
@@ -452,13 +452,13 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
         
         <div className="overflow-x-auto">
           <table className="w-full text-left">
-            <thead className="bg-slate-50/50 text-slate-400 uppercase text-[9px] font-black tracking-[0.2em] border-b border-slate-50">
+            <thead className="bg-[#000000] text-[#C32A2C] uppercase text-[9px] font-black tracking-[0.2em] border-b border-zinc-900">
               <tr>
                 {userRole === 'admin' && (
                   <th className="px-8 py-5 w-10">
                     <input
                       type="checkbox"
-                      className="rounded border-slate-200 accent-sky-500 cursor-pointer w-4 h-4"
+                      className="rounded border-[#C32A2C] accent-[#C32A2C] cursor-pointer w-4 h-4"
                       checked={filteredOrders.length > 0 && selectedOrderIds.length === filteredOrders.length}
                       onChange={(e) => {
                         if (e.target.checked) {
@@ -477,14 +477,14 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
                 <th className="px-8 py-5 text-right">Acción</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-50">
+            <tbody className="divide-y divide-zinc-900">
               {filteredOrders.map((order) => (
-                <tr key={order.id} className="hover:bg-sky-50/20 transition-colors group">
+                <tr key={order.id} className="hover:bg-zinc-900/50 transition-colors group">
                   {userRole === 'admin' && (
                     <td className="px-8 py-6 w-10">
                       <input
                         type="checkbox"
-                        className="rounded border-slate-200 accent-sky-500 cursor-pointer w-4 h-4"
+                        className="rounded border-[#C32A2C] accent-[#C32A2C] cursor-pointer w-4 h-4"
                         checked={selectedOrderIds.includes(order.id)}
                         onChange={(e) => {
                           if (e.target.checked) {
@@ -497,33 +497,33 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
                     </td>
                   )}
                   <td className="px-8 py-6">
-                    <p className="font-black text-slate-800 uppercase italic leading-none">{order.customer_name}</p>
-                    <p className="text-[11px] text-slate-400 font-bold mt-2 flex items-center gap-1.5 leading-tight">
-                      <MapPin size={12} className="text-rose-400" /> {order.address}
+                    <p className="font-black text-white uppercase italic leading-none">{order.customer_name}</p>
+                    <p className="text-[11px] text-zinc-400 font-bold mt-2 flex items-center gap-1.5 leading-tight">
+                      <MapPin size={12} className="text-[#C32A2C]" /> {order.address}
                     </p>
                   </td>
                   <td className="px-8 py-6">
-                    <p className="text-xs font-bold text-slate-500 italic max-w-[200px] truncate">{order.items}</p>
+                    <p className="text-xs font-bold text-zinc-400 italic max-w-[200px] truncate">{order.items}</p>
                   </td>
                   <td className="px-8 py-6">
                     {order.assigned_to_name ? (
                       <div className="flex items-center gap-2">
-                        <div className="w-7 h-7 bg-sky-100 rounded-full flex items-center justify-center text-sky-600">
+                        <div className="w-7 h-7 bg-zinc-900 rounded-full flex items-center justify-center text-[#C32A2C]">
                           <Users size={14} />
                         </div>
-                        <span className="text-xs font-black uppercase tracking-tight text-slate-700">{order.assigned_to_name}</span>
+                        <span className="text-xs font-black uppercase tracking-tight text-zinc-200">{order.assigned_to_name}</span>
                       </div>
                     ) : (
-                      <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest">Sin asignar</span>
+                      <span className="text-[10px] font-black text-zinc-600 uppercase tracking-widest">Sin asignar</span>
                     )}
                   </td>
                   <td className="px-8 py-6">
                     <span className={`px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-[0.1em] inline-flex items-center gap-2 ${
-                      order.status === 'delivered' ? 'bg-emerald-100 text-emerald-700' :
-                      order.status === 'assigned' ? 'bg-sky-100 text-sky-700' :
-                      'bg-slate-100 text-slate-500 animate-pulse'
+                      order.status === 'delivered' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
+                      order.status === 'assigned' ? 'bg-[#C32A2C]/10 text-rose-400 border border-[#C32A2C]/20' :
+                      'bg-zinc-800 text-zinc-400 border border-zinc-700 animate-pulse'
                     }`}>
-                      <div className={`w-1.5 h-1.5 rounded-full ${order.status === 'delivered' ? 'bg-emerald-500' : 'bg-sky-500'}`} />
+                      <div className={`w-1.5 h-1.5 rounded-full ${order.status === 'delivered' ? 'bg-emerald-400' : 'bg-[#C32A2C]'}`} />
                       {order.status === 'assigned' ? 'En Ruta' : order.status === 'delivered' ? (order.source === 'local' ? 'Venta Local' : 'Entregado') : 'Pendiente'}
                     </span>
                   </td>
@@ -531,7 +531,7 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
                     <div className="flex items-center justify-end gap-2">
                       <button 
                         onClick={(e) => { e.stopPropagation(); handleExportIndividual(order); }}
-                        className="p-2 text-slate-300 hover:text-sky-500 transition-colors"
+                        className="p-2 text-zinc-500 hover:text-[#C32A2C] transition-colors cursor-pointer"
                         title="Exportar Reporte Individual"
                       >
                         <Download size={16} />
@@ -539,7 +539,7 @@ export default function Dashboard({ userRole }: { userRole: string | null }) {
                       {userRole === 'admin' && (
                         <button 
                           onClick={(e) => { e.stopPropagation(); handleDeleteOrder(order.id, order.customer_name); }}
-                          className="p-2 text-slate-300 hover:text-rose-500 transition-colors"
+                          className="p-2 text-zinc-500 hover:text-rose-500 transition-colors cursor-pointer"
                           title="Eliminar Pedido"
                         >
                           <Trash2 size={16} />
